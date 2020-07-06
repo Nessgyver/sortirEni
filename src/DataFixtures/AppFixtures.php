@@ -30,35 +30,20 @@ class AppFixtures extends Fixture
         }
 
         //création des états pour les sorties
-        $cree = new Etats();
-        $cree->setLibelle("Créée");
-        $manager->persist($cree);
-        $ouverte = new Etats();
-        $ouverte->setLibelle("Ouverte");
-        $manager->persist($ouverte);
-        $cloturee = new Etats();
-        $cloturee->setLibelle("Cloturée");
-        $manager->persist($cloturee);
-        $enCours = new Etats();
-        $enCours->setLibelle("Activité en cours");
-        $manager->persist($enCours);
-        $passee = new Etats();
-        $passee->setLibelle("Passée");
-        $manager->persist($passee);
-        $annulee = new Etats();
-        $annulee->setLibelle("Annulée");
-        $manager->persist($annulee);
+        $etats = ["Créée", "Ouverte", "Clôturée", "Activité en cours", "Passée", "Annulée"];
+        foreach ($etats as $etat){
+            $e = new Etats();
+            $e->setLibelle($etat);
+            $manager->persist($e);
+        }
 
         //création des campus
-        $nantes = new Campus();
-        $nantes->setNomCampus("Nantes");
-        $manager->persist($nantes);
-        $rennes = new Campus();
-        $rennes->setNomCampus("Rennes");
-        $manager->persist($rennes);
-        $niort = new Campus();
-        $niort->setNomCampus("Niort");
-        $manager->persist($niort);
+        $campuses = ["Nantes", "Rennes", "Niort"];
+        foreach ($campuses as $campus){
+            $c = new Campus();
+            $c->setNomCampus($campus);
+            $manager->persist($c);
+        }
 
         $manager->flush();
     }
