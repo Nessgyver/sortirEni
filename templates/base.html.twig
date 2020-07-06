@@ -36,16 +36,14 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Mon profil</a>
                             </li>
-                            {#TODO : ajout lien href vers logout#}
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Se déconnecter</a>
+                                <a class="nav-link" href="{{ path('logout') }}">Se déconnecter</a>
                             </li>
 
                         <!-- If i'm disconnected -->
                         {% else %}
-                            {#TODO : ajout lien href vers login#}
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Se connecter</a>
+                                <a class="nav-link" href="{{ path('login') }}">Se connecter</a>
                             </li>
                         {% endif %}
 

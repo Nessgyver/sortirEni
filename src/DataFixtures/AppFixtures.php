@@ -8,7 +8,6 @@ use App\Entity\Lieu;
 use App\Entity\Participant;
 use App\Entity\Ville;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ObjectManager;
 
 class AppFixtures extends Fixture

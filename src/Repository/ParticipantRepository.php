@@ -28,7 +28,7 @@ class ParticipantRepository extends ServiceEntityRepository implements PasswordU
      */
     public function upgradePassword(UserInterface $user, string $newEncodedPassword): void
     {
-        if (!$user instanceof Participants) {
+        if (!$user instanceof Participant) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
         }
 

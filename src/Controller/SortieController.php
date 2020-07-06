@@ -15,6 +15,10 @@ class SortieController extends AbstractController
      */
     public function afficher()
     {
+
+
+
+
         return $this->render('sortie/afficher.html.twig', [
             'controller_name' => 'SortieController',
         ]);
