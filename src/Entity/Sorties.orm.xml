@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="App\Entity\Sorties" table="sorties">
+    <indexes>
+      <index name="sorties_etats_fk" columns="etats_no_etat"/>
+      <index name="sorties_lieux_fk" columns="lieux_no_lieu"/>
+      <index name="sorties_participants_fk" columns="organisateur"/>
+    </indexes>
+    <id name="noSortie" type="integer" column="no_sortie">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="nom" type="string" column="nom" length="30" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="datedebut" type="datetime" column="datedebut" nullable="false"/>
+    <field name="duree" type="integer" column="duree" nullable="true">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="datecloture" type="datetime" column="datecloture" nullable="false"/>
+    <field name="nbinscriptionsmax" type="integer" column="nbinscriptionsmax" nullable="false">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="descriptioninfos" type="string" column="descriptioninfos" length="500" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="etatsortie" type="integer" column="etatsortie" nullable="true">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="urlphoto" type="string" column="urlPhoto" length="250" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="organisateur" type="integer" column="organisateur" nullable="false">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="lieuxNoLieu" type="integer" column="lieux_no_lieu" nullable="false">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="etatsNoEtat" type="integer" column="etats_no_etat" nullable="false">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+  </entity>
+</doctrine-mapping>

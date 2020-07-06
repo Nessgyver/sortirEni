@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="App\Entity\Inscriptions" table="inscriptions">
+    <indexes>
+      <index name="inscriptions_participants_fk" columns="participants_no_participant"/>
+    </indexes>
+    <id name="sortiesNoSortie" type="integer" column="sorties_no_sortie"/>
+    <id name="participantsNoParticipant" type="integer" column="participants_no_participant"/>
+    <field name="dateInscription" type="datetime" column="date_inscription" nullable="false"/>
+  </entity>
+</doctrine-mapping>
