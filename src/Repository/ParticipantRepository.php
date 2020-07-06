@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Participant;
 use App\Entity\Participants;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -10,16 +11,16 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @method Participants|null find($id, $lockMode = null, $lockVersion = null)
- * @method Participants|null findOneBy(array $criteria, array $orderBy = null)
- * @method Participants[]    findAll()
- * @method Participants[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Participant|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Participant|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Participant[]    findAll()
+ * @method Participant[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ParticipantsRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
+class ParticipantRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Participants::class);
+        parent::__construct($registry, Participant::class);
     }
 
     /**
@@ -37,7 +38,7 @@ class ParticipantsRepository extends ServiceEntityRepository implements Password
     }
 
     // /**
-    //  * @return Participants[] Returns an array of Participants objects
+    //  * @return Participant[] Returns an array of Participant objects
     //  */
     /*
     public function findByExampleField($value)
@@ -54,7 +55,7 @@ class ParticipantsRepository extends ServiceEntityRepository implements Password
     */
 
     /*
-    public function findOneBySomeField($value): ?Participants
+    public function findOneBySomeField($value): ?Participant
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.exampleField = :val')

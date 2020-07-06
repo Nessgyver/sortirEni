@@ -2,55 +2,83 @@
 
 namespace App\Entity;
 
+use App\Repository\CampusRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Campus
- *
- * @ORM\Table(name="campus")
- * @ORM\Entity(repositoryClass="App\Repository\CampusRepository")
+ * @ORM\Entity(repositoryClass=CampusRepository::class)
  */
 class Campus
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="no_campus", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
-    private $noCampus;
+    private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="nom_campus", type="string", length=30, nullable=false)
+     * @ORM\Column(type="string", length=30)
      */
-    private $nomCampus;
+    private $nom;
 
     /**
-     * @return int
+     * @ORM\OneToMany(targetEntity=Participant::class, mappedBy="campus")
      */
-    public function getNoCampus(): int
+    private $stagiaire;
+
+    public function __construct()
     {
-        return $this->noCampus;
+        $this->stagiaire = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): self
+    {
+        $this->nom = $nom;
+
+        return $this;
     }
 
     /**
-     * @return string
+     * @return Collection|Participant[]
      */
-    public function getNomCampus(): string
+    public function getStagiaire(): Collection
     {
-        return $this->nomCampus;
+        return $this->stagiaire;
     }
 
-    /**
-     * @param string $nomCampus
-     */
-    public function setNomCampus(string $nomCampus): void
+    public function addStagiaire(Participant $stagiaire): self
     {
-        $this->nomCampus = $nomCampus;
+        if (!$this->stagiaire->contains($stagiaire)) {
+            $this->stagiaire[] = $stagiaire;
+            $stagiaire->setCampus($this);
+        }
+
+        return $this;
     }
 
+    public function removeStagiaire(Participant $stagiaire): self
+    {
+        if ($this->stagiaire->contains($stagiaire)) {
+            $this->stagiaire->removeElement($stagiaire);
+            // set the owning side to null (unless already changed)
+            if ($stagiaire->getCampus() === $this) {
+                $stagiaire->setCampus(null);
+            }
+        }
 
+        return $this;
+    }
 }
