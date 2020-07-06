@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Participant;
-use App\Entity\Participants;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -28,7 +27,7 @@ class ParticipantRepository extends ServiceEntityRepository implements PasswordU
      */
     public function upgradePassword(UserInterface $user, string $newEncodedPassword): void
     {
-        if (!$user instanceof Participants) {
+        if (!$user instanceof Participant) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
         }
 

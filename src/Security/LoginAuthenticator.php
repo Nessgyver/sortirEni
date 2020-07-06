@@ -2,7 +2,7 @@
 
 namespace App\Security;
 
-use App\Entity\Participants;
+use App\Entity\Participant;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -67,7 +67,7 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator implements Passw
             throw new InvalidCsrfTokenException();
         }
 
-        $user = $this->entityManager->getRepository(Participants::class)->findOneBy(['username' => $credentials['username']]);
+        $user = $this->entityManager->getRepository(Participant::class)->findOneBy(['username' => $credentials['username']]);
 
         if (!$user) {
             // fail authentication with a custom error

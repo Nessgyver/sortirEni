@@ -3,7 +3,7 @@ security:
     providers:
         our_db_provider:
             entity:
-                class: App\Entity\Participants
+                class: App\Entity\Participant
                 property: username
 
     firewalls:
@@ -27,7 +27,7 @@ security:
                 target: home
 
     encoders:
-        App\Entity\Participants:
+        App\Entity\Participant:
             algorithm: auto
 
     access_control:

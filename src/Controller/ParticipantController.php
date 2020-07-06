@@ -4,7 +4,7 @@ namespace App\Controller;
 
 
 
-use App\Entity\Participants;
+use App\Entity\Participant;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
