@@ -1,0 +1,12 @@
+Noms des url
+
+home: home
+login: login 
+profil: profil
+sorties/afficher: sortie_afficher
+sorties/modifier: sortie_modifier
+sorties/annuler: sortie_annuler
+admin: admin
+admin/campus: admin_campus
+admin/villes: admin_villes
+
