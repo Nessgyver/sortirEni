@@ -41,20 +41,21 @@ ALTER TABLE LIEUX ADD constraint lieux_pk PRIMARY KEY  (no_lieu);
 
 CREATE TABLE PARTICIPANTS (
     no_participant   INTEGER NOT NULL,
-	pseudo           VARCHAR(30) NOT NULL,
+	username           VARCHAR(180) NOT NULL,
     nom              VARCHAR(30) NOT NULL,
     prenom           VARCHAR(30) NOT NULL,
     telephone        VARCHAR(15),
-    mail             VARCHAR(20) NOT NULL,
-	mot_de_passe	 VARCHAR(20) NOT NULL,
-    administrateur   bit NOT NULL,
-    actif            bit NOT NULL,
+    mail             VARCHAR(50) NOT NULL,
+	password	 VARCHAR(255) NOT NULL,
+	role        JSON NOT NULL,
+    administrateur   TINYINT NOT NULL,
+    actif            TINYINT NULL,
 	campus_no_campus    INTEGER NOT NULL
 );
 
 ALTER TABLE PARTICIPANTS ADD constraint participants_pk PRIMARY KEY  (no_participant);
 
-ALTER TABLE PARTICIPANTS add constraint participants_pseudo_uk unique (pseudo);
+ALTER TABLE PARTICIPANTS add constraint participants_username_uk unique (usrname);
 
 CREATE TABLE CAMPUS (
     no_campus       INTEGER NOT NULL,
