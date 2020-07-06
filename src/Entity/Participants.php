@@ -2,247 +2,225 @@
 
 namespace App\Entity;
 
+use App\Repository\ParticipantsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * Participants
- *
- * @ORM\Table(name="participants", uniqueConstraints={@ORM\UniqueConstraint(name="participants_pseudo_uk", columns={"pseudo"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=ParticipantsRepository::class)
  */
-class Participants
+class Participants implements UserInterface
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="no_participant", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
     private $noParticipant;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="pseudo", type="string", length=30, nullable=false)
+     * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $pseudo;
+    private $username;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="nom", type="string", length=30, nullable=false)
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
+    /**
+     * @var string The hashed password
+     * @ORM\Column(type="string")
+     */
+    private $password;
+
+    /**
+     * @ORM\Column(type="string", length=30)
      */
     private $nom;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="prenom", type="string", length=30, nullable=false)
+     * @ORM\Column(type="string", length=30)
      */
     private $prenom;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="telephone", type="string", length=15, nullable=true)
+     * @ORM\Column(type="string", length=15, nullable=true)
      */
     private $telephone;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="mail", type="string", length=20, nullable=false)
+     * @ORM\Column(type="string", length=100)
      */
     private $mail;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="mot_de_passe", type="string", length=20, nullable=false)
-     */
-    private $motDePasse;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="administrateur", type="boolean", nullable=false)
+     * @ORM\Column(type="boolean")
      */
     private $administrateur;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(name="actif", type="boolean", nullable=false)
+     * @ORM\Column(type="boolean")
      */
     private $actif;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="campus_no_campus", type="integer", nullable=false)
+     * @ORM\Column(type="integer")
      */
-    private $campusNoCampus;
+    private $campus_no_campus;
 
-    /**
-     * @return int
-     */
-    public function getNoParticipant(): int
+    public function getNoParticipant(): ?int
     {
         return $this->noParticipant;
     }
 
     /**
-     * @param int $noParticipant
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
      */
-    public function setNoParticipant(int $noParticipant): void
+    public function getUsername(): string
     {
-        $this->noParticipant = $noParticipant;
+        return (string) $this->username;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
     }
 
     /**
-     * @return string
+     * @see UserInterface
      */
-    public function getPseudo(): string
+    public function getRoles(): array
     {
-        return $this->pseudo;
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
     }
 
     /**
-     * @param string $pseudo
+     * @see UserInterface
      */
-    public function setPseudo(string $pseudo): void
+    public function getPassword(): string
     {
-        $this->pseudo = $pseudo;
+        return (string) $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
     }
 
     /**
-     * @return string
+     * @see UserInterface
      */
-    public function getNom(): string
+    public function getSalt()
+    {
+
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+    }
+
+    public function getNom(): ?string
     {
         return $this->nom;
     }
 
-    /**
-     * @param string $nom
-     */
-    public function setNom(string $nom): void
+    public function setNom(string $nom): self
     {
         $this->nom = $nom;
+
+        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getPrenom(): string
+    public function getPrenom(): ?string
     {
         return $this->prenom;
     }
 
-    /**
-     * @param string $prenom
-     */
-    public function setPrenom(string $prenom): void
+    public function setPrenom(string $prenom): self
     {
         $this->prenom = $prenom;
+
+        return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getTelephone(): ?string
     {
         return $this->telephone;
     }
 
-    /**
-     * @param string|null $telephone
-     */
-    public function setTelephone(?string $telephone): void
+    public function setTelephone(?string $telephone): self
     {
         $this->telephone = $telephone;
+
+        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getMail(): string
+    public function getMail(): ?string
     {
         return $this->mail;
     }
 
-    /**
-     * @param string $mail
-     */
-    public function setMail(string $mail): void
+    public function setMail(string $mail): self
     {
         $this->mail = $mail;
+
+        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getMotDePasse(): string
-    {
-        return $this->motDePasse;
-    }
-
-    /**
-     * @param string $motDePasse
-     */
-    public function setMotDePasse(string $motDePasse): void
-    {
-        $this->motDePasse = $motDePasse;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isAdministrateur(): bool
+    public function getAdministrateur(): ?bool
     {
         return $this->administrateur;
     }
 
-    /**
-     * @param bool $administrateur
-     */
-    public function setAdministrateur(bool $administrateur): void
+    public function setAdministrateur(bool $administrateur): self
     {
         $this->administrateur = $administrateur;
+
+        return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function isActif(): bool
+    public function getActif(): ?bool
     {
         return $this->actif;
     }
 
-    /**
-     * @param bool $actif
-     */
-    public function setActif(bool $actif): void
+    public function setActif(bool $actif): self
     {
         $this->actif = $actif;
+
+        return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getCampusNoCampus(): int
+    public function getCampusNoCampus(): ?int
     {
-        return $this->campusNoCampus;
+        return $this->campus_no_campus;
     }
 
-    /**
-     * @param int $campusNoCampus
-     */
-    public function setCampusNoCampus(int $campusNoCampus): void
+    public function setCampusNoCampus(int $campus_no_campus): self
     {
-        $this->campusNoCampus = $campusNoCampus;
+        $this->campus_no_campus = $campus_no_campus;
+
+        return $this;
     }
-
-
 }
