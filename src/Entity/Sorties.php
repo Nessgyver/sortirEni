@@ -98,5 +98,189 @@ class Sorties
      */
     private $etatsNoEtat;
 
+    /**
+     * @return int
+     */
+    public function getNoSortie(): int
+    {
+        return $this->noSortie;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNom(): string
+    {
+        return $this->nom;
+    }
+
+    /**
+     * @param string $nom
+     */
+    public function setNom(string $nom): void
+    {
+        $this->nom = $nom;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDatedebut(): \DateTime
+    {
+        return $this->datedebut;
+    }
+
+    /**
+     * @param \DateTime $datedebut
+     */
+    public function setDatedebut(\DateTime $datedebut): void
+    {
+        $this->datedebut = $datedebut;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getDuree(): ?int
+    {
+        return $this->duree;
+    }
+
+    /**
+     * @param int|null $duree
+     */
+    public function setDuree(?int $duree): void
+    {
+        $this->duree = $duree;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDatecloture(): \DateTime
+    {
+        return $this->datecloture;
+    }
+
+    /**
+     * @param \DateTime $datecloture
+     */
+    public function setDatecloture(\DateTime $datecloture): void
+    {
+        $this->datecloture = $datecloture;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNbinscriptionsmax(): int
+    {
+        return $this->nbinscriptionsmax;
+    }
+
+    /**
+     * @param int $nbinscriptionsmax
+     */
+    public function setNbinscriptionsmax(int $nbinscriptionsmax): void
+    {
+        $this->nbinscriptionsmax = $nbinscriptionsmax;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescriptioninfos(): ?string
+    {
+        return $this->descriptioninfos;
+    }
+
+    /**
+     * @param string|null $descriptioninfos
+     */
+    public function setDescriptioninfos(?string $descriptioninfos): void
+    {
+        $this->descriptioninfos = $descriptioninfos;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getEtatsortie(): ?int
+    {
+        return $this->etatsortie;
+    }
+
+    /**
+     * @param int|null $etatsortie
+     */
+    public function setEtatsortie(?int $etatsortie): void
+    {
+        $this->etatsortie = $etatsortie;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getUrlphoto(): ?string
+    {
+        return $this->urlphoto;
+    }
+
+    /**
+     * @param string|null $urlphoto
+     */
+    public function setUrlphoto(?string $urlphoto): void
+    {
+        $this->urlphoto = $urlphoto;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOrganisateur(): int
+    {
+        return $this->organisateur;
+    }
+
+    /**
+     * @param int $organisateur
+     */
+    public function setOrganisateur(int $organisateur): void
+    {
+        $this->organisateur = $organisateur;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLieuxNoLieu(): int
+    {
+        return $this->lieuxNoLieu;
+    }
+
+    /**
+     * @param int $lieuxNoLieu
+     */
+    public function setLieuxNoLieu(int $lieuxNoLieu): void
+    {
+        $this->lieuxNoLieu = $lieuxNoLieu;
+    }
+
+    /**
+     * @return int
+     */
+    public function getEtatsNoEtat(): int
+    {
+        return $this->etatsNoEtat;
+    }
+
+    /**
+     * @param int $etatsNoEtat
+     */
+    public function setEtatsNoEtat(int $etatsNoEtat): void
+    {
+        $this->etatsNoEtat = $etatsNoEtat;
+    }
+
 
 }

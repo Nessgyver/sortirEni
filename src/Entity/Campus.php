@@ -28,5 +28,29 @@ class Campus
      */
     private $nomCampus;
 
+    /**
+     * @return int
+     */
+    public function getNoCampus(): int
+    {
+        return $this->noCampus;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNomCampus(): string
+    {
+        return $this->nomCampus;
+    }
+
+    /**
+     * @param string $nomCampus
+     */
+    public function setNomCampus(string $nomCampus): void
+    {
+        $this->nomCampus = $nomCampus;
+    }
+
 
 }

@@ -56,5 +56,93 @@ class Lieux
      */
     private $villesNoVille;
 
+    /**
+     * @return int
+     */
+    public function getNoLieu(): int
+    {
+        return $this->noLieu;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNomLieu(): string
+    {
+        return $this->nomLieu;
+    }
+
+    /**
+     * @param string $nomLieu
+     */
+    public function setNomLieu(string $nomLieu): void
+    {
+        $this->nomLieu = $nomLieu;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getRue(): ?string
+    {
+        return $this->rue;
+    }
+
+    /**
+     * @param string|null $rue
+     */
+    public function setRue(?string $rue): void
+    {
+        $this->rue = $rue;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getLatitude(): ?float
+    {
+        return $this->latitude;
+    }
+
+    /**
+     * @param float|null $latitude
+     */
+    public function setLatitude(?float $latitude): void
+    {
+        $this->latitude = $latitude;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getLongitude(): ?float
+    {
+        return $this->longitude;
+    }
+
+    /**
+     * @param float|null $longitude
+     */
+    public function setLongitude(?float $longitude): void
+    {
+        $this->longitude = $longitude;
+    }
+
+    /**
+     * @return int
+     */
+    public function getVillesNoVille(): int
+    {
+        return $this->villesNoVille;
+    }
+
+    /**
+     * @param int $villesNoVille
+     */
+    public function setVillesNoVille(int $villesNoVille): void
+    {
+        $this->villesNoVille = $villesNoVille;
+    }
+
 
 }
