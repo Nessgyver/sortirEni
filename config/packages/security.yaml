@@ -28,7 +28,7 @@ security:
 
     encoders:
         App\Entity\Participant:
-            algorithm: auto
+            algorithm: argon2
 
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
