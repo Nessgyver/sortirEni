@@ -1,12 +1,77 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta charset="UTF-8" lang="fr">
+        <title>{% block title %}Bienvenu !{% endblock %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <header>
+            <nav class="navbar navbar-light bg-light navbar-expand-md">
+                <div class="col-6">
+                    <a class="navbar-brand" href="#">
+                        <img src="https://source.unsplash.com/1600x800?nature,water" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+                        SortirENI.com
+                    </a>
+                </div>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse col-12 col-md-6 d-flex flex-row-reverse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Accueil <span class="sr-only">(current)</span></a>
+                        </li>
+                        <!-- If i'm connected -->
+                        {% if app.user %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Mon profil</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Se déconnecter</a>
+                            </li>
+
+                        <!-- If i'm disconnected -->
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Se connecter</a>
+                            </li>
+                        {% endif %}
+
+                        <!-- If i have admin access -->
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Villes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Campus</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
+            {% block header %}
+
+            {% endblock %}
+        </header>
+
+        <main>
+            {% block main %}
+
+            {% endblock %}
+        </main>
+
+        <footer>
+            {% block footer %}
+
+            {% endblock %}
+        </footer>
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>
