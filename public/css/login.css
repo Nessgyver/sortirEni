@@ -1,0 +1,23 @@
+.label-login {
+    font-weight: bold;
+    font-size: 1vw;
+    margin-top: 2vw;
+}
+
+.btn-login {
+    margin-top: 2vw;
+}
+
+.form-control {
+    width: 30%;
+}
+
+.inline-btn {
+    display: flex;
+    justify-content: flex-start;
+    align-items: baseline;
+}
+
+.login-options {
+    margin-left: 2vw;
+}

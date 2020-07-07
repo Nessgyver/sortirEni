@@ -1,0 +1,17 @@
+.flash-success {
+    background-color: aquamarine;
+    color: #313131;
+}
+
+.flash-error {
+    background-color: #B0413E;
+    color: #313131;
+}
+
+.navbar {
+    margin-bottom: 3vw;
+}
+
+main {
+    padding: 0 3vw;
+}

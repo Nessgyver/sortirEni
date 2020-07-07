@@ -25,6 +25,11 @@ security:
             logout:
                 path: logout
                 target: home
+            remember_me:
+                secret:   '%kernel.secret%'
+                lifetime: 31536000 # 1 an (secondes)
+                path:     /
+                always_remember_me: true
 
     encoders:
         App\Entity\Participant:
