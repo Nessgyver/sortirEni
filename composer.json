@@ -38,8 +38,19 @@
     },
     "config": {
         "preferred-install": {
-            "*": "dist"
+            "*": "dist",
+            "secure-http": false
+
         },
+        "repositories":[
+            {
+                "type": "composer",
+                "url": "http://nexus.depot-eni.fr:8081/repository/composer-proxy-packagist.org/"
+            },
+            {
+                "packagist.org": false
+            }
+        ],
         "sort-packages": true
     },
     "autoload": {
