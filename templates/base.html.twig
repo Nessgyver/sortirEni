@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <link rel="stylesheet" href="{{ asset('css/main.css') }}">
         {% block stylesheets %}{% endblock %}
         {#TODO: MAJ favicon #}
         <link rel="icon" href="../public/img/favicon.png">
@@ -32,7 +33,6 @@
                         </li>
                         <!-- If i'm connected -->
                         {% if app.user %}
-                            {#TODO : ajout lien href vers monProfil#}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path('profil', {'id':app.user.id})}}">Mon profil</a>
                             </li>
