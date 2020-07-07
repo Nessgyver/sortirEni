@@ -9,9 +9,15 @@ use App\Entity\Participant;
 use App\Entity\Ville;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
+    private $encode;
+
+    public function __construct(UserPasswordEncoderInterface $encoder){
+        $this->encode = $encoder;
+    }
     public function load(ObjectManager $manager)
     {
         $faker = \Faker\Factory::create('fr_FR');
@@ -36,11 +42,13 @@ class AppFixtures extends Fixture
             $participant->setPrenom($faker->firstNameMale);
             $participant->setTelephone($faker->e164PhoneNumber);
             $participant->setMail($faker->email);
-            $participant->setPassword($faker->passWord);
+            $password = $this->encode->encodePassword($participant,"symfony");
+            $participant->setPassword($password);
             $participant->setRoles(["ROLE_USER"]);
             $participant->setAdministrateur(0);
             $participant->setActif(1);
             $participant->setCampus($campusTest);
+
             $manager->persist($participant);
         }
 
@@ -73,7 +81,7 @@ class AppFixtures extends Fixture
             $manager->persist($lieu);
         }
 
+
         $manager->flush();
     }
-
 }

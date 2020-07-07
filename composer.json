@@ -40,8 +40,18 @@
         "preferred-install": {
             "*": "dist"
         },
-        "sort-packages": true
+        "sort-packages": true,
+		"secure-http" : false
     },
+	"repositories":[
+		{
+			"type": "composer",
+			"url": "http://nexus.depot-eni.fr:8081/repository/composer-proxy-packagist.org/"
+		},
+		{
+			"packagist.org": false
+		}
+		],
     "autoload": {
         "psr-4": {
             "App\\": "src/"
