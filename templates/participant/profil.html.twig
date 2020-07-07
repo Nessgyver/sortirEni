@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    {% if (id==app.user.id) %}
+        <img src="{{ asset('img/default.png') }}">
+        <div class="">
+            <h1>Mon profil</h1>
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button type="submit">Enregistrer</button>
+            <a href="{{ path('home') }}"><button>Annuler</button></a>
+            {{ form_end(form) }}
+        </div>
+    {% else %}
+        <img src="{{ asset('img/default.png') }}">
+        <div class="">
+            <h1>{{ participantLambda.username }}</h1>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Prénom: </td>
+                        <td>{{ participantLambda.prenom }}</td>
+                    </tr>
+                    <tr>
+                        <td>Nom: </td>
+                        <td>{{ participantLambda.nom }}</td>
+                    </tr>
+                    <tr>
+                        <td>Téléphone: </td>
+                        <td>{{ participantLambda.telephone }}</td>
+                    </tr>
+                    <tr>
+                        <td>Email: </td>
+                        <td>{{ participantLambda.mail }}</td>
+                    </tr>
+                    <tr>
+                        <td>Campus: </td>
+                        <td>{{ participantLambda.campus.nom }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <a href="{{ path('home') }}"><button>Retour</button></a>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block title %}profil | {{ parent() }}{% endblock %}
