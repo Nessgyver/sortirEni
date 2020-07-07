@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\SortieType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -15,9 +16,6 @@ class SortieController extends AbstractController
      */
     public function afficher()
     {
-
-
-
 
         return $this->render('sortie/afficher.html.twig', [
             'controller_name' => 'SortieController',
@@ -39,8 +37,9 @@ class SortieController extends AbstractController
      */
     public function creer()
     {
+        $sortieForm = $this->createForm(SortieType::class);
         return $this->render('sortie/creer.html.twig', [
-            'controller_name' => 'SortieController',
+            "sortieForm" => $sortieForm->createView()
         ]);
     }
 
