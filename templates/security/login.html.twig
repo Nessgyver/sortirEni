@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Connexion | {{ parent() }}{% endblock %}
+{% block stylesheets %}<link rel="stylesheet" href="{{ asset('css/login.css') }}">{% endblock %}
 
 {% block main %}
     <form method="post">
@@ -14,29 +15,34 @@
             </div>
         {% endif %}
 
-        <h1 class="h3 mb-3 font-weight-normal">Connectez-vous</h1>
-        <label for="inputUsername">Identifiant: </label>
+        <h1 class="mb-3">Connectez-vous</h1>
+        <label class="label-login" for="inputUsername">Identifiant: </label>
         <input type="text" value="{{ last_username }}" name="_username" id="inputUsername" class="form-control" required autofocus>
-        <label for="inputPassword">Mot de passe: </label>
+        <label class="label-login" for="inputPassword">Mot de passe: </label>
         <input type="password" name="_password" id="inputPassword" class="form-control" required>
 
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" >
+        <div class="inline-btn">
+            <div>
+                <button class="btn btn-lg btn-primary btn-login" type="submit">Connexion</button>
+            </div>
+            <div class="login-options">
+                <div>
+                    Mot de passe oublié
+                </div>
 
-        {#
-            Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-            See https://symfony.com/doc/current/security/remember_me.html
-        #}
-        <div class="">
-            Mot de passe oublié
+                <div class="checkbox mb-3">
+                    <label>
+                        {# attention à bien garder le name avec le _ au début ! #}
+                        <input type="checkbox" name="_remember_me" checked> Se souvenir de moi
+                    </label>
+                </div>
+            </div>
         </div>
 
-        <div class="checkbox mb-3">
-            <label>
-                {# attention à bien garder le name avec le _ au début ! #}
-                <input type="checkbox" name="_remember_me" checked> Se souvenir de moi
-            </label>
-        </div>
 
-        <button class="btn btn-lg btn-primary" type="submit">Connexion</button>
+
+
+
     </form>
 {% endblock %}
