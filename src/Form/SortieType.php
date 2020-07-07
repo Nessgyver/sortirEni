@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Participant;
 use App\Entity\Sortie;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,6 +20,13 @@ class SortieType extends AbstractType
             ->add('nbInscriptionMax')
             ->add('duree')
             ->add('infosSortie')
+            ->add('campus', EntityType::class,[
+                'class' => Participant::class,
+                'choice_label'=> function(Participant $p){
+                    return $p->getCampus()->getNom();
+                },
+                'disabled' =>true
+            ])
         ;
     }
 
