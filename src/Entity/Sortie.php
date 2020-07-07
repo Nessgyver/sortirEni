@@ -56,20 +56,10 @@ class Sortie
     private $urlPhoto;
 
     /**
-     * @ORM\OneToMany(targetEntity=Participant::class, mappedBy="sortieOrganisee")
-     */
-    private $organisateur;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Lieu::class, inversedBy="sorties")
      * @ORM\JoinColumn(nullable=false)
      */
     private $lieu;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Participant::class, inversedBy="sorties")
-     */
-    private $participant;
 
     /**
      * @ORM\ManyToOne(targetEntity=Etat::class, inversedBy="sorties")
@@ -77,10 +67,22 @@ class Sortie
      */
     private $etat;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Inscription::class, mappedBy="sortie")
+     */
+    private $inscriptions;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Participant::class, inversedBy="sortieOrganisee")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $Organisteur;
+
     public function __construct()
     {
-        $this->organisateur = new ArrayCollection();
+
         $this->participant = new ArrayCollection();
+        $this->inscriptions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -173,37 +175,6 @@ class Sortie
         return $this;
     }
 
-    /**
-     * @return Collection|Participant[]
-     */
-    public function getOrganisateur(): Collection
-    {
-        return $this->organisateur;
-    }
-
-    public function addOrganisateur(Participant $organisateur): self
-    {
-        if (!$this->organisateur->contains($organisateur)) {
-            $this->organisateur[] = $organisateur;
-            $organisateur->setSortie($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOrganisateur(Participant $organisateur): self
-    {
-        if ($this->organisateur->contains($organisateur)) {
-            $this->organisateur->removeElement($organisateur);
-            // set the owning side to null (unless already changed)
-            if ($organisateur->getSortie() === $this) {
-                $organisateur->setSortie(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getLieu(): ?Lieu
     {
         return $this->lieu;
@@ -216,32 +187,6 @@ class Sortie
         return $this;
     }
 
-    /**
-     * @return Collection|Participant[]
-     */
-    public function getParticipant(): Collection
-    {
-        return $this->participant;
-    }
-
-    public function addParticipant(Participant $participant): self
-    {
-        if (!$this->participant->contains($participant)) {
-            $this->participant[] = $participant;
-        }
-
-        return $this;
-    }
-
-    public function removeParticipant(Participant $participant): self
-    {
-        if ($this->participant->contains($participant)) {
-            $this->participant->removeElement($participant);
-        }
-
-        return $this;
-    }
-
     public function getEtat(): ?Etat
     {
         return $this->etat;
@@ -250,6 +195,49 @@ class Sortie
     public function setEtat(?Etat $etat): self
     {
         $this->etat = $etat;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Inscription[]
+     */
+    public function getInscriptions(): Collection
+    {
+        return $this->inscriptions;
+    }
+
+    public function addInscription(Inscription $inscription): self
+    {
+        if (!$this->inscriptions->contains($inscription)) {
+            $this->inscriptions[] = $inscription;
+            $inscription->setSortie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInscription(Inscription $inscription): self
+    {
+        if ($this->inscriptions->contains($inscription)) {
+            $this->inscriptions->removeElement($inscription);
+            // set the owning side to null (unless already changed)
+            if ($inscription->getSortie() === $this) {
+                $inscription->setSortie(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getOrganisteur(): ?Participant
+    {
+        return $this->Organisteur;
+    }
+
+    public function setOrganisteur(?Participant $Organisteur): self
+    {
+        $this->Organisteur = $Organisteur;
 
         return $this;
     }
