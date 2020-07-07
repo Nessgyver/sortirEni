@@ -1,4 +1,28 @@
 {% extends 'sortie/sortie.html.twig' %}
 
-{% block title %}Hello SortieController!{% endblock %}
+{% block title %}Créer une sortie{% endblock %}
+
+{% block titrePage %}Créer{{ parent() }} {% endblock %}
+{% block contenu %}
+        {{ form_start(sortieForm) }}
+        <div class="row">
+            <div class="col">
+                {{ form_row(sortieForm.nom) }}
+                {{ form_row(sortieForm.dateHeureDebut) }}
+                {{ form_row(sortieForm.dateLimiteInscription) }}
+                {{ form_row(sortieForm.nbInscriptionMax) }}
+                {{ form_row(sortieForm.duree) }}
+                {{ form_row(sortieForm.infosSortie) }}
+            </div>
+            <div class="col">
+
+            </div>
+        </div>
+        <div class="row justify-content-around">
+            <button type="submit" class="col-sm-2 btn btn-success" value="enregistrer">Enregistrer</button>
+            <button type="submit" class="col-sm-2 btn btn-primary" value="publier">Publier</button>
+            <button type="reset" class="col-sm-2  btn btn-danger" value="annuler">Annuler</button>
+        </div>
+        {{ form_end(sortieForm) }}
+{% endblock %}
 
