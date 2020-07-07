@@ -1,4 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello SortieController!{% endblock %}
+{% block title %}Yolo!{% endblock %}
 
+{% block main %}
+
+<main class="container">
+    <h2 class="jumbotron text-center">{% block titrePage %} une sortie{% endblock %}</h2>
+    {% block contenu%}{% endblock %}
+</main>
+
+{% endblock %}

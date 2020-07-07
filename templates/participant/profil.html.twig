@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}<link rel="stylesheet" href="{{ asset('css/profil.css') }}">{% endblock %}
+
+{% block main %}
+    {% if (id==app.user.id) %}
+        <div class="container">
+            <div class="row">
+                <div class="col-sm left-profile">
+                    <img class="profile-pic" src="{{ asset('img/default.png') }}">
+                </div>
+                <div class="col-sm right-profile">
+                    <h1>Mon profil</h1>
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <button type="submit">Enregistrer</button>
+                    <a href="{{ path('home') }}"><button>Annuler</button></a>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+
+    {% else %}
+        <div class="container">
+            <div class="row">
+                <div class="col-sm left-profile">
+                    <img class="profile-pic" src="{{ asset('img/default.png') }}">
+                </div>
+                <div class="col-sm right-profile">
+                    <h1>{{ participantLambda.username }}</h1>
+                    <table class="profile-table">
+                        <tbody>
+                        <tr>
+                            <td class="label-table">Prénom: </td>
+                            <td>{{ participantLambda.prenom }}</td>
+                        </tr>
+                        <tr>
+                            <td class="label-table">Nom: </td>
+                            <td>{{ participantLambda.nom }}</td>
+                        </tr>
+                        <tr>
+                            <td class="label-table">Téléphone: </td>
+                            <td>{{ participantLambda.telephone }}</td>
+                        </tr>
+                        <tr>
+                            <td class="label-table">Email: </td>
+                            <td>{{ participantLambda.mail }}</td>
+                        </tr>
+                        <tr>
+                            <td class="label-table">Campus: </td>
+                            <td>{{ participantLambda.campus.nom }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <a href="{{ path('home') }}"><button class="btn btn-primary btn-profile-back">Retour</button></a>
+                </div>
+
+            </div>
+        </div>
+
+    {% endif %}
+
+{% endblock %}
+
+{% block title %}profil | {{ parent() }}{% endblock %}
