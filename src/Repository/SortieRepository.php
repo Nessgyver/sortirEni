@@ -27,7 +27,7 @@ class SortieRepository extends ServiceEntityRepository
     {
         $currentUser = $this->security->getUser();
         $qb = $this->createQueryBuilder('s');
-        $qb -> andWhere('s.Organisteur = :currentUser')
+        $qb -> andWhere('s.Organisateur = :currentUser')
             ->setParameter('currentUser', $currentUser->getId());
 
         return $qb->getQuery()->getResult();
@@ -39,6 +39,15 @@ class SortieRepository extends ServiceEntityRepository
         $qb->andWhere('s.etat = :etat')
             ->setParameter('etat', 'Passée')
             ->join('s.etat', 'e');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findByMotCle(String $motCle)
+    {
+        $qb = $this->createQueryBuilder('s');
+        $qb->andWhere('s.nom LIKE %:motCle%')
+            ->setParameter('motCle', $motCle);
 
         return $qb->getQuery()->getResult();
     }

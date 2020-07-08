@@ -6,7 +6,7 @@
     <div class="container">
         <div class="row col-4">
             <h1>Filtrer les sorties</h1>
-            {{ form_start(form) }}
+            {{ form_start(form, {'attr': {'novalidate':'novalidate'}}) }}
 
             {{ form_widget(form)}}
             <button type="submit">Rechercher</button>
@@ -37,7 +37,7 @@
                     {% if app.user.id in sortie.inscriptions %}
                         <td> X </td>
                     {% endif %}
-                    <td> {{ sortie.organisteur }}</td>
+                    <td> {{ sortie.organisateur }}</td>
                 </tr>
                 {% endfor %}
                 </tbody>
