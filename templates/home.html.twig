@@ -34,7 +34,9 @@
                     <td>{{ sortie.dateLimiteInscription }}</td>
                     <td>{{ sortie.nbInscriptionMax }}</td>
                     <td>{{ sortie.etat }}</td>
-                    <td>  </td>
+                    {% if app.user.id in sortie.inscriptions %}
+                        <td> X </td>
+                    {% endif %}
                     <td> {{ sortie.organisteur }}</td>
                 </tr>
                 {% endfor %}

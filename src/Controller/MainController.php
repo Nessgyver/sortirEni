@@ -2,9 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Sortie;
 use App\Form\ListeSortieType;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\SortieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -13,13 +12,9 @@ class MainController extends AbstractController
     /**
      * @Route("/home", name="home")
      */
-    public function home(EntityManagerInterface $em)
+    public function home(SortieRepository $sortieRepository)
     {
-        $sortieRepo = $em->getRepository(Sortie::class);
-        $listeSorties = $sortieRepo->findAll();
-
-
-
+        $listeSorties = $sortieRepository->findAll();
 
         $form = $this->createForm(ListeSortieType::class);
 

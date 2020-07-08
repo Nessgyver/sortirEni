@@ -51,6 +51,7 @@ class InscriptionRepository extends ServiceEntityRepository
     }
 
 
+
     // /**
     //  * @return Inscription[] Returns an array of Inscription objects
     //  */
