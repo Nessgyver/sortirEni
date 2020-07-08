@@ -44,8 +44,6 @@ class SortieType extends AbstractType
                     return $l->getNom();
                 }
             ]);
-        dump($options);
-        exit();
     }
 
     public function configureOptions(OptionsResolver $resolver)
