@@ -43,33 +43,6 @@ class SortieRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    /*public function findBySubscribed()
-    {
-        $inscriptionRepo = $this->getEntityManager()->getRepository('App:Inscription');
-        $idsSorties =$inscriptionRepo->findIdSortiesByParticipant();
-
-        $qb = $this->createQueryBuilder('s');
-        foreach ($idsSorties as $iDsortie)
-        {
-            $qb -> andWhere('s.id = :sortie')
-                ->setParameter('sortie', $iDsortie);
-        }
-        return $qb->getQuery()->getResult();
-    }
-
-    public function findByUnsubscribed()
-    {
-        $inscriptionRepo = $this->getEntityManager()->getRepository('App:Inscription');
-        $idsSorties =$inscriptionRepo->findIdSortiesByParticipant();
-
-        $qb = $this->createQueryBuilder('s');
-        foreach ($idsSorties as $iDsortie)
-        {
-            $qb -> andWhere('s.id != :sortie')
-                ->setParameter('sortie', $iDsortie);
-        }
-        return $qb->getQuery()->getResult();
-    }*/
 
 
 

@@ -22,16 +22,6 @@ class InscriptionRepository extends ServiceEntityRepository
         parent::__construct($registry, Inscription::class);
         $this->security = $security;
     }
-    /*
-    public function findIdSortiesByParticipant()
-    {
-        $currentUser = $this->security->getUser();
-        $qb = $this->createQueryBuilder('i');
-        $qb -> andWhere('i.participant = :currentUser')
-            ->setParameter('currentUser', $currentUser->getId());
-
-        return $qb->getQuery()->getResult();
-    }*/
 
     public function findBySubscribed2()
     {
