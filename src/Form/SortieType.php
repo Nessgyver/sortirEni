@@ -8,6 +8,7 @@ use App\Entity\Sortie;
 use App\Entity\Ville;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,7 +17,7 @@ class SortieType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nom', )
+            ->add('nom')
             ->add('dateHeureDebut')
             ->add('dateLimiteInscription')
             ->add('nbInscriptionMax')
@@ -27,7 +28,8 @@ class SortieType extends AbstractType
                 'choice_label'=> function(Participant $p){
                     return $p->getCampus()->getNom();
                 },
-                'disabled' =>true
+                'disabled' =>true,
+                'label'=>'Campus'
             ])
 //            ->add('ville', EntityType::class,[
 //                'class' => Ville::class,
@@ -40,7 +42,21 @@ class SortieType extends AbstractType
                 'choice_label' => function(Lieu $l){
                     return $l->getNom();
                 }
+            ])
+            ->add('enregistrer', SubmitType::class, [
+                'label'=> 'Enregistrer'
+            ])
+            ->add('publier', SubmitType::class, [
+                'label'=> 'Publier'
+            ])
+            ->add('modifier', SubmitType::class, [
+                'label'=> 'Modifier'
+            ])
+            ->add('annuler', SubmitType::class, [
+                'label'=> 'Annuler'
             ]);
+
+
     }
 
     public function configureOptions(OptionsResolver $resolver)

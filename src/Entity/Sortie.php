@@ -76,7 +76,7 @@ class Sortie
      * @ORM\ManyToOne(targetEntity=Participant::class, inversedBy="sortieOrganisee")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $organisteur;
+    private $organisateur;
 
     public function __construct()
     {
@@ -230,14 +230,14 @@ class Sortie
         return $this;
     }
 
-    public function getOrganisteur(): ?Participant
+    public function getOrganisateur(): ?Participant
     {
-        return $this->organisteur;
+        return $this->organisateur;
     }
 
-    public function setOrganisteur(?Participant $organisteur): self
+    public function setOrganisteur(?Participant $organisateur): self
     {
-        $this->organisteur = $organisteur;
+        $this->organisateur = $organisateur;
 
         return $this;
     }

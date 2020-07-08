@@ -51,27 +51,37 @@ class SortieController extends AbstractController
         //la sortie est ajoutée en base de données
         if($sortieForm->isSubmitted() && $sortieForm->isValid())
         {
+            $sortie->setOrganisteur($this->getUser());
             //récupère la valeur du bouton cliqué pour modifier le champ état de la sortie
-            if($request->request->has('enregistrer'))
+            if($sortieForm->get('enregistrer')->isClicked())
             {
                 $sortie->setEtat($etatRepository->findOneBy([
                     'libelle'=>'Créée'
                 ]));
-            }elseif ($request->request->has('publier'))
+                $action = 'sortie enregistrée';
+            }
+            elseif ($sortieForm->get('publier')->isClicked())
             {
                 $sortie->setEtat($etatRepository->findOneBy([
                     'libelle'=>'Ouverte'
                 ]));
-            }elseif ($request->request->has('supprimer'))
-            {
-                return $this->redirectToRoute('sortie_annuler');
-            }else
-            {
-                throw new DatabaseObjectNotFoundException();
+                $action = 'sortie publiée';
             }
+            elseif ($sortieForm->get('modifier')->isClicked())
+            {
+                $action = 'modifier';
+            }
+            elseif ($sortieForm->get('annuler')->isClicked())
+            {
+                $action = 'annuler';
+            }
+
+
+//                return $this->redirectToRoute('sortie_annuler');
 
             $em->persist($sortie);
             $em->flush();
+
         }
 
 
@@ -81,10 +91,13 @@ class SortieController extends AbstractController
     }
 
     /**
-     * @Route("/modifier", name="modifier")
+     * @Route("/modifier/{id}", name="modifier")
      */
-    public function modifier()
+    public function modifier($id, EntityManagerInterface $em)
     {
+        $sortieRepo = $em->getRepository(Sortie::class);
+        $sortie = $sortieRepo->find($id);
+
         return $this->render('sortie/modifier.html.twig', [
             'controller_name' => 'SortieController',
         ]);

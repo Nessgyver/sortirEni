@@ -6,7 +6,32 @@
 
 <main class="container">
     <h2 class="jumbotron text-center">{% block titrePage %} une sortie{% endblock %}</h2>
-    {% block contenu%}{% endblock %}
+    {% block contenu %}
+        {{ form_start(sortieForm) }}
+        <div class="row">
+            <div class="col">
+                {{ form_row(sortieForm.nom) }}
+                {{ form_row(sortieForm.dateHeureDebut) }}
+                {{ form_row(sortieForm.dateLimiteInscription) }}
+                {{ form_row(sortieForm.nbInscriptionMax) }}
+                {{ form_row(sortieForm.duree) }}
+                {{ form_row(sortieForm.infosSortie) }}
+            </div>
+            <div class="col">
+                {{ form_row(sortieForm.organisateur) }}
+                {{ form_row(sortieForm.lieu) }}
+            </div>
+        </div>
+        <div class="row justify-content-around">
+            {% block boutons %}
+                {{ form_row(sortieForm.enregistrer) }}
+                {{ form_row(sortieForm.publier) }}
+                {{ form_row(sortieForm.modifier) }}
+                {{ form_row(sortieForm.annuler) }}
+            {% endblock %}
+        </div>
+        {{ form_end(sortieForm) }}
+    {% endblock %}
 </main>
 
 {% endblock %}
