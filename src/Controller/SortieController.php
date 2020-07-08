@@ -67,7 +67,7 @@ class SortieController extends AbstractController
         //la sortie est ajoutée en base de données
         if($sortieForm->isSubmitted() && $sortieForm->isValid())
         {
-            $sortie->setOrganisteur($this->getUser());
+            $sortie->setOrganisateur($this->getUser());
             //récupère la valeur du bouton cliqué pour modifier le champ état de la sortie
             if($sortieForm->get('enregistrer')->isClicked())
             {
