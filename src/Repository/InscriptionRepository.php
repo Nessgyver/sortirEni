@@ -23,23 +23,28 @@ class InscriptionRepository extends ServiceEntityRepository
         $this->security = $security;
     }
 
-    public function findBySubscribed2()
+    public function findBySubscribed()
     {
+        $currentUser = $this->security->getUser();
+
         $qb = $this->createQueryBuilder('i');
         $qb -> join('i.participant', 'p')
             -> join('i.sortie', 's')
-            -> andWhere('p.id = :currentUser');
-
+            -> andWhere('p.id = :currentUser')
+            -> setParameter('currentUser', $currentUser->getId());
 
         return $qb->getQuery()->getResult();
     }
 
     public function findByUnsubscribed()
     {
+        $currentUser = $this->security->getUser();
+
         $qb = $this->createQueryBuilder('i');
         $qb -> join('i.participant', 'p')
             -> join('i.sortie', 's')
-            -> andWhere('p.id != :currentUser');
+            -> andWhere('p.id != :currentUser')
+            -> setParameter('currentUser', $currentUser->getId());
 
 
         return $qb->getQuery()->getResult();
