@@ -6,6 +6,7 @@ use App\Entity\Lieu;
 use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Entity\Ville;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -42,21 +43,9 @@ class SortieType extends AbstractType
                 'choice_label' => function(Lieu $l){
                     return $l->getNom();
                 }
-            ])
-            ->add('enregistrer', SubmitType::class, [
-                'label'=> 'Enregistrer'
-            ])
-            ->add('publier', SubmitType::class, [
-                'label'=> 'Publier'
-            ])
-            ->add('supprimer', SubmitType::class, [
-                'label'=> 'Modifier'
-            ])
-            ->add('annuler', SubmitType::class, [
-                'label'=> 'Annuler'
             ]);
-
-
+        dump($options);
+        exit();
     }
 
     public function configureOptions(OptionsResolver $resolver)
