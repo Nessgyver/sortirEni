@@ -78,7 +78,7 @@ class Participant implements UserInterface
     private $inscriptions;
 
     /**
-     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="Organisateur")
+     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organisateur")
      */
     private $sortieOrganisee;
 
