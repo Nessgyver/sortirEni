@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @method Sortie|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,10 +15,65 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class SortieRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $security;
+
+    public function __construct(ManagerRegistry $registry, Security $security)
     {
         parent::__construct($registry, Sortie::class);
+        $this->security = $security;
     }
+
+    public function findByOrganisateur()
+    {
+        $currentUser = $this->security->getUser();
+        $qb = $this->createQueryBuilder('s');
+        $qb -> andWhere('s.Organisteur = :currentUser')
+            ->setParameter('currentUser', $currentUser->getId());
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findByArchivedSortie()
+    {
+        $qb = $this->createQueryBuilder('s');
+        $qb->andWhere('s.etat = :etat')
+            ->setParameter('etat', 'Passée')
+            ->join('s.etat', 'e');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /*public function findBySubscribed()
+    {
+        $inscriptionRepo = $this->getEntityManager()->getRepository('App:Inscription');
+        $idsSorties =$inscriptionRepo->findIdSortiesByParticipant();
+
+        $qb = $this->createQueryBuilder('s');
+        foreach ($idsSorties as $iDsortie)
+        {
+            $qb -> andWhere('s.id = :sortie')
+                ->setParameter('sortie', $iDsortie);
+        }
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findByUnsubscribed()
+    {
+        $inscriptionRepo = $this->getEntityManager()->getRepository('App:Inscription');
+        $idsSorties =$inscriptionRepo->findIdSortiesByParticipant();
+
+        $qb = $this->createQueryBuilder('s');
+        foreach ($idsSorties as $iDsortie)
+        {
+            $qb -> andWhere('s.id != :sortie')
+                ->setParameter('sortie', $iDsortie);
+        }
+        return $qb->getQuery()->getResult();
+    }*/
+
+
+
+
 
     // /**
     //  * @return Sortie[] Returns an array of Sortie objects

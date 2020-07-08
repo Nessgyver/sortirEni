@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Inscription;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @method Inscription|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,10 +15,46 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class InscriptionRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $security;
+
+    public function __construct(ManagerRegistry $registry, Security $security)
     {
         parent::__construct($registry, Inscription::class);
+        $this->security = $security;
     }
+    /*
+    public function findIdSortiesByParticipant()
+    {
+        $currentUser = $this->security->getUser();
+        $qb = $this->createQueryBuilder('i');
+        $qb -> andWhere('i.participant = :currentUser')
+            ->setParameter('currentUser', $currentUser->getId());
+
+        return $qb->getQuery()->getResult();
+    }*/
+
+    public function findBySubscribed2()
+    {
+        $qb = $this->createQueryBuilder('i');
+        $qb -> join('i.participant', 'p')
+            -> join('i.sortie', 's')
+            -> andWhere('p.id = :currentUser');
+
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findByUnsubscribed()
+    {
+        $qb = $this->createQueryBuilder('i');
+        $qb -> join('i.participant', 'p')
+            -> join('i.sortie', 's')
+            -> andWhere('p.id != :currentUser');
+
+
+        return $qb->getQuery()->getResult();
+    }
+
 
     // /**
     //  * @return Inscription[] Returns an array of Inscription objects
