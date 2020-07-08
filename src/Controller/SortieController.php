@@ -51,27 +51,34 @@ class SortieController extends AbstractController
         //la sortie est ajoutée en base de données
         if($sortieForm->isSubmitted() && $sortieForm->isValid())
         {
+            $sortie->setOrganisteur($this->getUser());
             //récupère la valeur du bouton cliqué pour modifier le champ état de la sortie
-            if($request->request->has('enregistrer'))
+            if($sortieForm->get('enregistrer')->isClicked())
             {
                 $sortie->setEtat($etatRepository->findOneBy([
                     'libelle'=>'Créée'
                 ]));
-            }elseif ($request->request->has('publier'))
+            }
+            elseif ($sortieForm->get('publier')->isClicked())
             {
                 $sortie->setEtat($etatRepository->findOneBy([
                     'libelle'=>'Ouverte'
                 ]));
-            }elseif ($request->request->has('supprimer'))
+            }
+            elseif ($sortieForm->get('supprimer')->isClicked())
             {
                 return $this->redirectToRoute('sortie_annuler');
-            }else
-            {
-                throw new DatabaseObjectNotFoundException();
             }
+            elseif ($sortieForm->get('annuler')->isClicked())
+            {
+                return $this->redirectToRoute('home');
+            }
+
+
 
             $em->persist($sortie);
             $em->flush();
+
         }
 
 
@@ -81,12 +88,51 @@ class SortieController extends AbstractController
     }
 
     /**
-     * @Route("/modifier", name="modifier")
+     * @Route("/modifier/{id}", name="modifier")
      */
-    public function modifier()
+    public function modifier($id, EntityManagerInterface $em, Request $request, EtatRepository $etatRepository)
     {
+        $sortieRepo = $em->getRepository(Sortie::class);
+        $sortie = $sortieRepo->find($id);
+        $sortieForm = $this->createForm(SortieType::class, $sortie);
+        $sortieForm->handleRequest($request);
+
+
+        //si le formulaire de création de sortie est soumis et toutes les données sont valides,
+        //la sortie est ajoutée en base de données
+        if($sortieForm->isSubmitted() && $sortieForm->isValid())
+        {
+            $sortie->setOrganisteur($this->getUser());
+            //récupère la valeur du bouton cliqué pour modifier le champ état de la sortie
+            if($sortieForm->get('enregistrer')->isClicked())
+            {
+                $sortie->setEtat($etatRepository->findOneBy([
+                    'libelle'=>'Créée'
+                ]));
+            }
+            elseif ($sortieForm->get('publier')->isClicked())
+            {
+                $sortie->setEtat($etatRepository->findOneBy([
+                    'libelle'=>'Ouverte'
+                ]));
+            }
+            elseif ($sortieForm->get('supprimer')->isClicked())
+            {
+                return $this->redirectToRoute('sortie_annuler');
+            }
+            elseif ($sortieForm->get('annuler')->isClicked())
+            {
+                return $this->redirectToRoute('home');
+            }
+
+            $em->persist($sortie);
+            $em->flush();
+
+        }
+
+
         return $this->render('sortie/modifier.html.twig', [
-            'controller_name' => 'SortieController',
+            "sortieForm" => $sortieForm->createView()
         ]);
     }
 
