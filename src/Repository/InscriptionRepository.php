@@ -23,7 +23,7 @@ class InscriptionRepository extends ServiceEntityRepository
         $this->security = $security;
     }
 
-    public function findBySubscribed()
+    public function findBySubscribedSorties()
     {
         $currentUser = $this->security->getUser();
 
@@ -36,7 +36,7 @@ class InscriptionRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findByUnsubscribed()
+    public function findByUnsubscribedSorties()
     {
         $currentUser = $this->security->getUser();
 
