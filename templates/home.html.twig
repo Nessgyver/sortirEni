@@ -13,48 +13,51 @@
             {{ form_end(form) }}
         </div>
         <div>
-            <table>
+            <table class="table table-border table-hover table-striped">
                 <thead>
-                    <tr>
-                        <th>Nom de la sortie</th>
-                        <th>Date de la sortie</th>
-                        <th>Clôture</th>
-                        <th>Inscrits/places</th>
-                        <th>Etat</th>
-                        <th>Inscrit</th>
-                        <th>Organisateur</th>
-                        <th>Actions</th>
-                    </tr>
+                <tr>
+                    <th scope="col">Nom de la sortie</th>
+                    <th scope="col">Date de la sortie</th>
+                    <th scope="col">Clôture</th>
+                    <th scope="col">Inscrits/places</th>
+                    <th scope="col">Etat</th>
+                    <th scope="col">Inscrit</th>
+                    <th scope="col">Organisateur</th>
+                    <th scope="col">Actions</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                    {% for sortie in listeSorties %}
-                        <td>{{ sortie.nom }}</td>
-                        <td>{{ sortie.dateHeureDebut }}</td>
-                        <td>{{ sortie.dateLimiteInscription }}</td>
-                        <td>{{ sortie.nbInscriptionMax }}</td>
-                        <td>{{ sortie.etat }}</td>
-                        <td>inscrit</td>
-                        <td> {{ sortie.organisteur }}</td>
-                        {#
-                        {% if sortie.etat === 'Créée' %}
-                            <td><a href="#">Modifier</a> - <a href="#">Publier</a></td>
-                        {% else %}
-                            <td><a href="#">Afficher</a></td>
-                        {% endif %}
-                        {% if je suis inscrit et je ne suis pas organisateur %}
-                            <td><a href="#">Se désister</a></td>
-                        {% endif %}
-                        {% if je ne suis pas inscrit et et je ne suis pas organisateur %}
-                            <td><a>S'inscrire</a></td>
-                        {% endif %}
-                        {% if je suis organisateur et la sortie est ouverte %}
-                            <td><a>Annuler</a></td>
-                        {% endif %}#}
-                    {% endfor %}
-                    </tr>
+                {% for sortie in listeSorties %}
+                <tr>
+                    <td>{{ sortie.nom }}</td>
+                    <td>{{ sortie.dateHeureDebut }}</td>
+                    <td>{{ sortie.dateLimiteInscription }}</td>
+                    <td>{{ sortie.nbInscriptionMax }}</td>
+                    <td>{{ sortie.etat }}</td>
+                    <td>  </td>
+                    <td> {{ sortie.organisteur }}</td>
+                </tr>
+                {% endfor %}
                 </tbody>
             </table>
+
+                {#
+                {% if sortie.etat === 'Créée' %}
+                    <td><a href="#">Modifier</a> - <a href="#">Publier</a></td>
+                {% else %}
+                    <td><a href="#">Afficher</a></td>
+                {% endif %}
+                {% if je suis inscrit et je ne suis pas organisateur %}
+                    <td><a href="#">Se désister</a></td>
+                {% endif %}
+                {% if je ne suis pas inscrit et et je ne suis pas organisateur %}
+                    <td><a>S'inscrire</a></td>
+                {% endif %}
+                {% if je suis organisateur et la sortie est ouverte %}
+                    <td><a>Annuler</a></td>
+                {% endif %}#}
+
+
         </div>
 
     </div>
