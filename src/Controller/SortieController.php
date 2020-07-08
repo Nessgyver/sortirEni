@@ -58,26 +58,23 @@ class SortieController extends AbstractController
                 $sortie->setEtat($etatRepository->findOneBy([
                     'libelle'=>'Créée'
                 ]));
-                $action = 'sortie enregistrée';
             }
             elseif ($sortieForm->get('publier')->isClicked())
             {
                 $sortie->setEtat($etatRepository->findOneBy([
                     'libelle'=>'Ouverte'
                 ]));
-                $action = 'sortie publiée';
             }
-            elseif ($sortieForm->get('modifier')->isClicked())
+            elseif ($sortieForm->get('supprimer')->isClicked())
             {
-                $action = 'modifier';
+                return $this->redirectToRoute('sortie_annuler');
             }
             elseif ($sortieForm->get('annuler')->isClicked())
             {
-                $action = 'annuler';
+                return $this->redirectToRoute('home');
             }
 
 
-//                return $this->redirectToRoute('sortie_annuler');
 
             $em->persist($sortie);
             $em->flush();
@@ -93,13 +90,49 @@ class SortieController extends AbstractController
     /**
      * @Route("/modifier/{id}", name="modifier")
      */
-    public function modifier($id, EntityManagerInterface $em)
+    public function modifier($id, EntityManagerInterface $em, Request $request, EtatRepository $etatRepository)
     {
         $sortieRepo = $em->getRepository(Sortie::class);
         $sortie = $sortieRepo->find($id);
+        $sortieForm = $this->createForm(SortieType::class, $sortie);
+        $sortieForm->handleRequest($request);
+
+
+        //si le formulaire de création de sortie est soumis et toutes les données sont valides,
+        //la sortie est ajoutée en base de données
+        if($sortieForm->isSubmitted() && $sortieForm->isValid())
+        {
+            $sortie->setOrganisteur($this->getUser());
+            //récupère la valeur du bouton cliqué pour modifier le champ état de la sortie
+            if($sortieForm->get('enregistrer')->isClicked())
+            {
+                $sortie->setEtat($etatRepository->findOneBy([
+                    'libelle'=>'Créée'
+                ]));
+            }
+            elseif ($sortieForm->get('publier')->isClicked())
+            {
+                $sortie->setEtat($etatRepository->findOneBy([
+                    'libelle'=>'Ouverte'
+                ]));
+            }
+            elseif ($sortieForm->get('supprimer')->isClicked())
+            {
+                return $this->redirectToRoute('sortie_annuler');
+            }
+            elseif ($sortieForm->get('annuler')->isClicked())
+            {
+                return $this->redirectToRoute('home');
+            }
+
+            $em->persist($sortie);
+            $em->flush();
+
+        }
+
 
         return $this->render('sortie/modifier.html.twig', [
-            'controller_name' => 'SortieController',
+            "sortieForm" => $sortieForm->createView()
         ]);
     }
 

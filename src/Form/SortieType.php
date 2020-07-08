@@ -49,7 +49,7 @@ class SortieType extends AbstractType
             ->add('publier', SubmitType::class, [
                 'label'=> 'Publier'
             ])
-            ->add('modifier', SubmitType::class, [
+            ->add('supprimer', SubmitType::class, [
                 'label'=> 'Modifier'
             ])
             ->add('annuler', SubmitType::class, [
