@@ -22,32 +22,25 @@ class SortieType extends AbstractType
             ->add('nbInscriptionMax')
             ->add('duree')
             ->add('infosSortie')
-            ->add('campus', EntityType::class,[
+            ->add('organisateur', EntityType::class,[
                 'class' => Participant::class,
                 'choice_label'=> function(Participant $p){
                     return $p->getCampus()->getNom();
                 },
                 'disabled' =>true
             ])
-            ->add('ville', EntityType::class,[
-                'class' => Ville::class,
-                'choice_label' => function(Ville $v){
-                    return $v->getNom();
-                }
-            ])
+//            ->add('ville', EntityType::class,[
+//                'class' => Ville::class,
+//                'choice_label' => function(Ville $v){
+//                    return $v->getNom();
+//                }
+//            ])
             ->add('lieu', EntityType::class,[
                 'class' => Lieu::class,
                 'choice_label' => function(Lieu $l){
                     return $l->getNom();
                 }
-            ])->add('rue', EntityType::class,[
-                'class' => Lieu::class,
-                'choice_label' => function(Lieu $l){
-                    return $l->getNom();
-                }
-            ])
-
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
