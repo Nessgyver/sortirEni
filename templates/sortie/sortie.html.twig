@@ -23,12 +23,7 @@
             </div>
         </div>
         <div class="row justify-content-around">
-            {% block boutons %}
-                {{ form_row(sortieForm.enregistrer) }}
-                {{ form_row(sortieForm.publier) }}
-                {{ form_row(sortieForm.supprimer) }}
-                {{ form_row(sortieForm.annuler) }}
-            {% endblock %}
+            {% block basDePage %}{% endblock %}
         </div>
         {{ form_end(sortieForm) }}
     {% endblock %}

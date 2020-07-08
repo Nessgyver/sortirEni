@@ -1,4 +1,29 @@
 {% extends 'sortie/sortie.html.twig' %}
 
-{% block title %}Hello SortieController!{% endblock %}
+{% block title %}Modifier une sortie{% endblock %}
+
+{% block titrePage %}Afficher{{ parent() }} {% endblock %}
+
+{% block basDePage %}
+
+    <div>
+        <h2>Liste des participants</h2>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Pseudo</th>
+                <th scope="col">Nom</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Mark</td>
+                <td>Otto</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+{% endblock %}
 

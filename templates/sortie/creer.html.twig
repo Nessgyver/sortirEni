@@ -4,12 +4,11 @@
 
 {% block titrePage %}Créer{{ parent() }} {% endblock %}
 
-{% block boutons %}
+{% block basDePage %}
 
     {{ form_row(sortieForm.enregistrer, { 'attr': {'class': 'btn btn-block btn-success'} }) }}
     {{ form_row(sortieForm.publier, { 'attr': {'class': 'btn btn-block btn-primary'} }) }}
     {{ form_row(sortieForm.annuler, { 'attr': {'class': 'btn btn-clock btn-danger'} }) }}
-    {{ form_row(sortieForm.modifier, { 'attr': {'class': 'd-none'} }) }}
 
 {% endblock %}
 

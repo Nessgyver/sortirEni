@@ -4,3 +4,10 @@
 
 {% block titrePage %}Modifier{{ parent() }} {% endblock %}
 
+{% block basDePage %}
+    {{ form_row(sortieForm.enregistrer) }}
+    {{ form_row(sortieForm.publier) }}
+    {{ form_row(sortieForm.supprimer) }}
+    {{ form_row(sortieForm.annuler) }}
+{% endblock %}
+
