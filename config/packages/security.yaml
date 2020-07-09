@@ -37,3 +37,7 @@ security:
 
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/profil, roles: [ROLE_ADMIN, ROLE_USER] }
+        - { path: ^/home, roles: [ROLE_ADMIN, ROLE_USER] }
+        - { path: ^/logout, roles: [ROLE_ADMIN, ROLE_USER] }
+
