@@ -28,9 +28,9 @@
             {{ form_start(annulationForm) }}
                 {{ form_row(annulationForm.motif) }}
 
-            <div class="row justify-content-around">
+            <div class="row justify-content-around col">
                 {{ form_row(annulationForm.enregistrer, { 'attr': {'class': 'btn btn-block btn-success'} }) }}
-                {{ form_row(annulationForm.annuler, { 'attr': {'class': 'btn btn-clock btn-danger'} }) }}
+                {% block boutonAnnuler %} {{ parent() }} {% endblock %}
             </div>
 
             {{ form_end(annulationForm) }}

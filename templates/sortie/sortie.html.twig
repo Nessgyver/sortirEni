@@ -23,7 +23,11 @@
             </div>
         </div>
         <div class="row justify-content-around">
-            {% block basDePage %}{% endblock %}
+            {% block basDePage %}
+                {% block boutonAnnuler%}
+                    <a href="{{ path('home') }}" class="btn btn-block btn-secondary" >Annuler</a>
+                {% endblock %}
+            {% endblock %}
         </div>
         {{ form_end(sortieForm) }}
     {% endblock %}
