@@ -71,7 +71,7 @@ class SortieController extends AbstractController
            $em->persist($sortie);
            $em->flush();
 
-
+           $this->addFlash('success', 'la sortie a bien été annulée');
 
            return $this->redirectToRoute('home');
         }

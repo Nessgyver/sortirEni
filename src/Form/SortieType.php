@@ -10,6 +10,7 @@ use Doctrine\DBAL\Types\TextType;
 use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -19,19 +20,13 @@ class SortieType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $optionBoutons = $options['optionBoutons'];
-        $optionForm = $options['optionForm'];
         $builder
             ->add('nom')
-            ->add('dateHeureDebut');
-            if ($optionForm = 'annuler')
-            {
-                $builder
-                ->add('dateLimiteInscription')
-                ->add('nbInscriptionMax')
-                ->add('duree')
-                ->add('infosSortie');
-            }
-            $builder
+            ->add('dateHeureDebut')
+            ->add('dateLimiteInscription')
+            ->add('nbInscriptionMax')
+            ->add('duree')
+            ->add('infosSortie')
             ->add('organisateur', EntityType::class,[
                 'class' => Participant::class,
                 'choice_label'=> function(Participant $p){
@@ -52,7 +47,7 @@ class SortieType extends AbstractType
                     return $l->getNom();
                 }
             ]);
-            if($optionBoutons == 'modifier' || $optionBoutons == 'creer' || $optionForm == 'annuler')
+            if($optionBoutons == 'modifier' || $optionBoutons == 'creer')
             {
                 $builder
                 ->add('enregistrer', SubmitType::class, [
@@ -72,11 +67,7 @@ class SortieType extends AbstractType
                         ]);
                     }
 
-                }
-                $builder
-                ->add('annuler', SubmitType::class, [
-                    'label'=> 'Annuler'
-                ]);
+                };
             }
     }
 
@@ -85,7 +76,6 @@ class SortieType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Sortie::class,
             'optionBoutons' => 'aucun',
-            'optionForm' => 'default',
         ]);
     }
 }

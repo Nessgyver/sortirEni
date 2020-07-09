@@ -5,11 +5,11 @@
 {% block titrePage %}Créer{{ parent() }} {% endblock %}
 
 {% block basDePage %}
-
-    {{ form_row(sortieForm.enregistrer, { 'attr': {'class': 'btn btn-block btn-success'} }) }}
-    {{ form_row(sortieForm.publier, { 'attr': {'class': 'btn btn-block btn-primary'} }) }}
-    {{ form_row(sortieForm.annuler, { 'attr': {'class': 'btn btn-clock btn-danger'} }) }}
-
+    <div class="row justify-content-around col">
+        <div class="col">{{ form_widget(sortieForm.enregistrer, { 'attr': {'class': 'btn btn-block btn-success'} }) }}</div>
+        <div class="col">{{ form_widget(sortieForm.publier, { 'attr': {'class': 'btn btn-block btn-primary'} }) }}</div>
+        <div class="col">{% block boutonAnnuler %} {{ parent() }} {% endblock %}</div>
+    </div>
 {% endblock %}
 
 
