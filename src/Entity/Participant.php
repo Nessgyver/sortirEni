@@ -8,10 +8,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+
 /**
  * @ORM\Entity(repositoryClass=ParticipantRepository::class)
  */
-class Participant implements UserInterface
+class Participant implements UserInterface, \Serializable
 {
     /**
      * @ORM\Id()
@@ -71,7 +72,6 @@ class Participant implements UserInterface
      */
     private $campus;
 
-
     /**
      * @ORM\OneToMany(targetEntity=Inscription::class, mappedBy="participant")
      */
@@ -81,6 +81,14 @@ class Participant implements UserInterface
      * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organisateur")
      */
     private $sortieOrganisee;
+
+    /**
+     * @ORM\OneToOne(targetEntity=PhotoParticipant::class, inversedBy="participant", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $photo;
+
+
 
 
     public function __construct()
@@ -280,7 +288,7 @@ class Participant implements UserInterface
     {
         if (!$this->sortieOrganisee->contains($sortieOrganisee)) {
             $this->sortieOrganisee[] = $sortieOrganisee;
-            $sortieOrganisee->setOrganisteur($this);
+            $sortieOrganisee->setOrganisateur($this);
         }
 
         return $this;
@@ -291,11 +299,36 @@ class Participant implements UserInterface
         if ($this->sortieOrganisee->contains($sortieOrganisee)) {
             $this->sortieOrganisee->removeElement($sortieOrganisee);
             // set the owning side to null (unless already changed)
-            if ($sortieOrganisee->getOrganisteur() === $this) {
-                $sortieOrganisee->setOrganisteur(null);
+            if ($sortieOrganisee->getOrganisateur() === $this) {
+                $sortieOrganisee->setOrganisateur(null);
             }
         }
 
         return $this;
+    }
+
+    public function getPhoto(): ?PhotoParticipant
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(?PhotoParticipant $photo): self
+    {
+        $this->photo = $photo;
+
+        return $this;
+    }
+
+
+    public function serialize()
+    {
+        return serialize(array($this->id, $this->username, $this->mail, $this->nom, $this->prenom, $this->roles, $this->administrateur,
+            $this->actif, $this->campus, $this->sortieOrganisee, $this->inscriptions, $this->password));
+    }
+
+    public function unserialize($serialized)
+    {
+        list ($this->id, $this->username, $this->mail, $this->nom, $this->prenom, $this->roles, $this->administrateur,
+            $this->actif, $this->campus, $this->sortieOrganisee, $this->inscriptions, $this->password) = unserialize($serialized, array('allowed_classes' => false));
     }
 }

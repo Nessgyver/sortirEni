@@ -1,3 +1,7 @@
+body{
+    font-family: 'IBM Plex Sans', sans-serif;
+}
+
 .flash-success {
     background-color: aquamarine;
     color: #313131;
@@ -14,4 +18,21 @@
 
 main {
     padding: 0 3vw;
+
+}
+
+.sortireni {
+    font-family: 'Fredoka One', cursive;
+}
+
+
+h1{
+    margin-bottom: 5vw !important;
+    text-align: center;
+    font-family: 'Fredoka One', cursive;
+}
+
+label {
+    font-size: 1vw;
+    font-weight: bold;
 }

@@ -7,6 +7,7 @@ use App\Entity\Etat;
 use App\Entity\Inscription;
 use App\Entity\Lieu;
 use App\Entity\Participant;
+use App\Entity\PhotoParticipant;
 use App\Entity\Sortie;
 use App\Entity\Ville;
 use App\Repository\CampusRepository;
@@ -81,6 +82,10 @@ class AppFixtures extends Fixture
             $campus = $this->campusEntities[$faker->numberBetween(0,2)];
             $participant->setCampus($campus);
             array_push($this->participantEntities, $participant);
+            $photo = new PhotoParticipant();
+            $photo->setPhotoNom('default.png');
+            $manager->persist($photo);
+            $participant->setPhoto($photo);
             $manager->persist($participant);
         }
         $manager->flush();

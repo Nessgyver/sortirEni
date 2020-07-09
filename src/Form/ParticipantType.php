@@ -3,9 +3,12 @@
 namespace App\Form;
 
 use App\Entity\Participant;
+use App\Entity\PhotoParticipant;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -18,37 +21,38 @@ class ParticipantType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, [
-                'label'=>'Pseudo: '
+                'label' => 'Pseudo: '
             ])
             ->add('prenom', TextType::class, [
-                'label'=>'Prénom: '
+                'label' => 'Prénom: '
             ])
             ->add('nom', TextType::class, [
-                'label'=>'Nom: '
+                'label' => 'Nom: '
             ])
             ->add('telephone', TextType::class, [
-                'label'=>'Téléphone: '
+                'label' => 'Téléphone: '
             ])
             ->add('mail', EmailType::class, [
-                'label'=>'Email: '
+                'label' => 'Email: '
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les mots de passe doivent correspondre.',
                 'options' => ['attr' => ['class' => 'password-field']],
                 'required' => true,
-                'first_options'  => ['label' => 'Mot de passe: '],
+                'first_options' => ['label' => 'Mot de passe: '],
                 'second_options' => ['label' => 'Confirmation: '],
             ])
-            ->add("campus", null,[
+            ->add("campus", null, [
                 'label' => "Campus: ",
                 'choice_label' => "nom",
-                'query_builder' => function(EntityRepository $repo){
+                'query_builder' => function (EntityRepository $repo) {
                     return $repo->createQueryBuilder('c')->addOrderBy('c.nom', 'ASC');
                 }
             ])
-           
-
+            ->add('photo', PhotoType::class, [
+                'required' => false
+            ])
         ;
     }
 
