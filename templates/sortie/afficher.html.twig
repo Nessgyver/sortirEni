@@ -1,6 +1,6 @@
 {% extends 'sortie/sortie.html.twig' %}
 
-{% block title %}Modifier une sortie{% endblock %}
+{% block title %}Afficher une sortie{% endblock %}
 
 {% block titrePage %}Afficher{{ parent() }} {% endblock %}
 
@@ -20,6 +20,14 @@
                 <td>Mark</td>
                 <td>Otto</td>
             </tr>
+            {#
+            {% for participant in inscriptions%}
+                <tr>
+                    <td>{{ participant.pseudo }}</td>
+                    <td>{{ participant.nom }} {{ participant.prenom }}</td>
+                </tr>
+            {% endfor %}
+            #}
             </tbody>
         </table>
     </div>

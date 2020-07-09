@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Inscription;
 use App\Entity\Sortie;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
@@ -30,9 +31,14 @@ class SortieController extends AbstractController
         $sortieForm = $this->createForm(SortieType::class, $sortie,['disabled'=>true]);
 
         //to do: récupère la liste des participants associés à cette sortie
+        $inscriptionRepo = $em->getRepository(Inscription::class);
+        $inscriptions = $inscriptionRepo->findBy([
+            'sortie'=>$sortie
+        ]);
 
         return $this->render('sortie/afficher.html.twig', [
-            'sortieForm'=> $sortieForm->createView()
+            'sortieForm'=> $sortieForm->createView(),
+            'inscriptions'=> $inscriptions
         ]);
     }
 
@@ -51,9 +57,6 @@ class SortieController extends AbstractController
             ->add('enregistrer', SubmitType::class, [
                 'label'=> 'Enregistrer'
             ])
-            ->add('annuler', SubmitType::class, [
-                'label'=> 'Retour'
-            ])
             ->getForm()
         ;
 
@@ -65,8 +68,8 @@ class SortieController extends AbstractController
            $motif = $data['motif'];
            $sortie->setMotifAnnulation($motif);
            $etatAnnule = $etatRepository->findOneBy([
-               'libelle'=>'Annulée']
-           );
+               'libelle'=>'Annulée'
+           ]);
            $sortie->setEtat($etatAnnule);
            $em->persist($sortie);
            $em->flush();
