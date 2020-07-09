@@ -5,10 +5,10 @@ namespace App\Controller;
 use App\Entity\Sortie;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
-use Doctrine\DBAL\Exception\DatabaseObjectNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -37,19 +37,54 @@ class SortieController extends AbstractController
     }
 
     /**
-     * @Route("/annuler", name="annuler")
+     * @Route("/annuler/{id}", name="annuler")
      */
-    public function annuler()
+    public function annuler($id, EntityManagerInterface $em, Request $request, EtatRepository $etatRepository)
     {
-        return $this->render('sortie/annuler.html.twig', [
-            'controller_name' => 'SortieController',
+        $sortie = new Sortie();
+        //récupère la sortie passée en $id pour l'afficher
+        $sortieRepo = $em->getRepository(Sortie::class);
+        $sortie = $sortieRepo->find($id);
+
+        $annulationForm = $this->createFormBuilder()
+            ->add('motif', TextareaType::class)
+            ->add('enregistrer', SubmitType::class, [
+                'label'=> 'Enregistrer'
+            ])
+            ->add('annuler', SubmitType::class, [
+                'label'=> 'Retour'
+            ])
+            ->getForm()
+        ;
+
+        $annulationForm->handleRequest($request);
+
+        if($annulationForm->isSubmitted() && $annulationForm->isValid())
+        {
+           $data = $annulationForm->getData();
+           $motif = $data['motif'];
+           $sortie->setMotifAnnulation($motif);
+           $etatAnnule = $etatRepository->findOneBy([
+               'libelle'=>'Annulée']
+           );
+           $sortie->setEtat($etatAnnule);
+           $em->persist($sortie);
+           $em->flush();
+
+
+
+           return $this->redirectToRoute('home');
+        }
+
+        return $this->render('sortie/annuler.html.twig',[
+            'sortie'=>$sortie, 'annulationForm'=>$annulationForm->createView()
         ]);
     }
 
     /**
      * @Route("/creer", name="creer")
      */
-    public function creer(Request $request, EntityManagerInterface $em, EtatRepository $etatRepository)
+    public function creer(Request $request, EntityManagerInterface $em)
     {
         //créé une nouvelle sortie pour pouvoir créer un formulaire vide
         $sortie = new Sortie();
@@ -95,7 +130,7 @@ class SortieController extends AbstractController
         //la sortie est ajoutée en base de données
         if($sortieForm->isSubmitted() && $sortieForm->isValid())
         {
-            $sortie->setOrganisteur($this->getUser());
+            $sortie->setOrganisateur($this->getUser());
 
             return $this->redirectionFormulaire($sortieForm, $sortie, $etatRepository, $em);
 
