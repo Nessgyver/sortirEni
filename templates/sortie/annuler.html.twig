@@ -1,4 +1,43 @@
 {% extends 'sortie/sortie.html.twig' %}
 
-{% block title %}Hello SortieController!{% endblock %}
+{% block title %}Annuler une sortie{% endblock %}
+
+{% block titrePage %}Annuler{{ parent() }} {% endblock %}
+
+{% block contenu %}
+    <div class="col-sm-6 offset-3">
+        <fieldset class="col-sm-12 " disabled>
+            <div class="row form-group form-inline">
+                <label class="col-md-4 " for="nomSortie">Nom de la sortie : </label>
+                <input type="text" class="col-md-8" value="{{ sortie.nom }}" name="nomSortie" id="nomSortie">
+            </div>
+            <div class="row form-group form-inline">
+                <label class="col-md-4" for="dateSortie">Date de la sortie : </label>
+                <input type="text" class="col-md-8" value="{{ sortie.dateHeureDebut | date('d/m/Y H:i') }}" name="dateSortie" id="dateSortie">
+            </div>
+            <div class="row form-group form-inline">
+                <label class="col-md-4" for="campusSortie">Campus : </label>
+                <input type="text" class="col-md-8" value="{{ sortie.organisateur.campus.nom }}" name="campusSortie" id="campusSortie">
+            </div>
+            <div class="row form-group form-inline">
+                <label class="col-md-4" for="lieuSortie">Campus : </label>
+                <input type="text" class="col-md-8" value="{{ sortie.lieu.rue}} {{ sortie.lieu.ville.codePostal }} {{ sortie.lieu.ville.nom }}" name="lieuSortie" id="lieuSortie">
+            </div>
+        </fieldset>
+        <div>
+            {{ form_start(annulationForm) }}
+                {{ form_row(annulationForm.motif) }}
+
+            <div class="row justify-content-around">
+                {{ form_row(annulationForm.enregistrer, { 'attr': {'class': 'btn btn-block btn-success'} }) }}
+                {{ form_row(annulationForm.annuler, { 'attr': {'class': 'btn btn-clock btn-danger'} }) }}
+            </div>
+
+            {{ form_end(annulationForm) }}
+        </div>
+    </div>
+
+{% endblock %}
+
+
 
