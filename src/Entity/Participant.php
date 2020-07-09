@@ -84,6 +84,7 @@ class Participant implements UserInterface, \Serializable
 
     /**
      * @ORM\OneToOne(targetEntity=PhotoParticipant::class, inversedBy="participant", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=true)
      */
     private $photo;
 
@@ -321,11 +322,13 @@ class Participant implements UserInterface, \Serializable
 
     public function serialize()
     {
-        return serialize(array( $this->id, $this->username, $this->password, $this->mail));
+        return serialize(array($this->id, $this->username, $this->mail, $this->nom, $this->prenom, $this->roles, $this->administrateur,
+            $this->actif, $this->campus, $this->sortieOrganisee, $this->inscriptions, $this->password));
     }
 
     public function unserialize($serialized)
     {
-        list ( $this->id, $this->username, $this->mail, $this->password, ) = unserialize($serialized, array('allowed_classes' => false));
+        list ($this->id, $this->username, $this->mail, $this->nom, $this->prenom, $this->roles, $this->administrateur,
+            $this->actif, $this->campus, $this->sortieOrganisee, $this->inscriptions, $this->password) = unserialize($serialized, array('allowed_classes' => false));
     }
 }
