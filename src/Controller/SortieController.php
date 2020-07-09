@@ -25,7 +25,7 @@ class SortieController extends AbstractController
 
         $sortieRepo = $em->getRepository(Sortie::class);
         $sortie = $sortieRepo->find($id);
-        $sortieForm = $this->createForm(SortieType::class, $sortie);
+        $sortieForm = $this->createForm(SortieType::class, $sortie,['disabled'=>true]);
 
         return $this->render('sortie/afficher.html.twig', [
             'sortieForm'=> $sortieForm->createView()
@@ -48,20 +48,10 @@ class SortieController extends AbstractController
     public function creer(Request $request, EntityManagerInterface $em, EtatRepository $etatRepository)
     {
         $sortie = new Sortie();
-        $sortieForm = $this->createForm(SortieType::class, $sortie);
+        $sortieForm = $this->createForm(SortieType::class, $sortie, [
+            'optionBoutons'=>'creer',
+        ]);
         $sortieForm->handleRequest($request);
-
-        $sortieForm
-            ->add('enregistrer', SubmitType::class, [
-            'label'=> 'Enregistrer'
-            ])
-            ->add('publier', SubmitType::class, [
-                'label'=> 'Publier'
-            ])
-            ->add('annuler', SubmitType::class, [
-                'label'=> 'Annuler'
-            ]);
-
 
         //si le formulaire de création de sortie est soumis et toutes les données sont valides,
         //la sortie est ajoutée en base de données
@@ -90,8 +80,6 @@ class SortieController extends AbstractController
                 return $this->redirectToRoute('home');
             }
 
-
-
             $em->persist($sortie);
             $em->flush();
 
@@ -110,20 +98,10 @@ class SortieController extends AbstractController
     {
         $sortieRepo = $em->getRepository(Sortie::class);
         $sortie = $sortieRepo->find($id);
-        $sortieForm = $this->createForm(SortieType::class, $sortie);
-        $sortieForm
-            ->add('enregistrer', SubmitType::class, [
-            'label'=> 'Enregistrer'
-            ])
-            ->add('publier', SubmitType::class, [
-                'label'=> 'Publier'
-            ])
-            ->add('supprimer', SubmitType::class, [
-                'label'=> 'Supprimer'
-            ])
-            ->add('annuler', SubmitType::class, [
-                'label'=> 'Annuler'
-            ]);
+        $sortieForm = $this->createForm(SortieType::class, $sortie, [
+            'optionBoutons'=>'modifier',
+        ]);
+
         $sortieForm->handleRequest($request);
 
 
