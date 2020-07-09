@@ -6,14 +6,16 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm left-profile">
-                    <img class="profile-pic" src="{{ asset('img/default.png') }}">
+                    <img class="profile-pic" src="{{ asset('img/'~app.user.photo.photoNom) }}">
                 </div>
                 <div class="col-sm right-profile">
                     <h1>Mon profil</h1>
                     {{ form_start(form) }}
                     {{ form_widget(form) }}
+
                     <button type="submit">Enregistrer</button>
                     <a href="{{ path('home') }}"><button>Annuler</button></a>
+
                     {{ form_end(form) }}
                 </div>
             </div>
@@ -60,5 +62,16 @@
     {% endif %}
 
 {% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function() {
+            $('.custom-file-input').click(function() {
+                $(this).text('Choisir une photo');
+            })
+        });
+    </script>
+{% endblock %}
+
 
 {% block title %}profil | {{ parent() }}{% endblock %}

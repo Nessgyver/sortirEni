@@ -27,5 +27,7 @@
     margin-top: 3vw;
 }
 
-
+.custom-file-input ~ .custom-file-label::after {
+    content: "Choisir une photo";
+}
 
