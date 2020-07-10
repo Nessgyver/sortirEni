@@ -9,7 +9,7 @@
             {{ form_start(form, {'attr': {'novalidate':'novalidate'}}) }}
 
             {{ form_widget(form)}}
-            <button type="button" class="btn btn-primary">Rechercher</button>
+            <button type="submit" class="btn btn-primary">Rechercher</button>
             {{ form_end(form) }}
         </div>
         <div>
@@ -99,7 +99,7 @@
                 </tbody>
             </table>
 
-            <button type="button" class="btn btn-primary">Créer une sortie</button>
+            <a href="{{ path('sortie_creer') }}" class="btn btn-primary">Créer une sortie</a>
 
         </div>
 
