@@ -1,0 +1,12 @@
+{
+    "nom": "Rack",
+    "prenom": "jackson",
+    "username": "man",
+    "telephone": "564515624",
+    "mail": "roro@gg.com",
+    "password": "symfony",
+    "roles": "[ROLE_USER]",
+    "administrateur": 0,
+    "actif": 1,
+    "campus": 1,
+}

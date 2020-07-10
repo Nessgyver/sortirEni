@@ -13,6 +13,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -34,25 +36,42 @@ class SortieType extends AbstractType
             ->add('duree')
             ->add('infosSortie')
             ->add('organisateur', EntityType::class,[
-                'class' => Participant::class,
-                'choice_label'=> function(Participant $p){
+                'class'         => Participant::class,
+                'choice_label'  => function(Participant $p){
                     return $p->getCampus()->getNom();
                 },
-                'disabled' =>true,
-                'label'=>'Campus'
+                'disabled'      =>true,
+                'label'         =>'Campus'
             ])
-//            ->add('ville', EntityType::class,[
-//                'class' => Ville::class,
-//                'choice_label' => function(Ville $v){
-//                    return $v->getNom();
-//                }
-//            ])
-            ->add('lieu', EntityType::class,[
-                'class' => Lieu::class,
-                'choice_label' => function(Lieu $l){
-                    return $l->getNom();
-                }
+            ->add('ville', EntityType::class,[
+                'class'         => Ville::class,
+                'choice_label'  => function(Ville $v){
+                    return $v->getNom();
+                },
+                'mapped'        => false,
+                'placeholder'   => 'veuillez sélectionner une ville'
             ]);
+            $builder->get('ville')->addEventListener(
+        FormEvents::POST_SET_DATA,
+                function(FormEvent $event)
+                {
+                    $form = $event->getForm();
+                    if($form){
+                        dump($form->getData());
+
+                    }
+                    $form->getParent()->add('lieu', EntityType::class,[
+                        'class'         => Lieu::class,
+                        'choices'       => $form->getData() != null ? $form->getData()->getLieu() :[],
+                        'choice_label'  => function(Lieu $l){
+                            return $l->getNom();
+                        },
+                        'placeholder'   => 'veuillez sélectionner un lieu'
+                    ]);
+                }
+        );
+
+
             if($optionBoutons == 'modifier' || $optionBoutons == 'creer')
             {
                 $builder

@@ -21,6 +21,13 @@ use phpDocumentor\Reflection\Types\AbstractList;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Constraints\DateTime;
 
+/**
+ * Créé par Mathieu
+ * Méthodes implémentées par Amandine, Damien et Mathieu
+ *
+ * Class AppFixtures
+ * @package App\DataFixtures
+ */
 class AppFixtures extends Fixture
 {
     private $encode;
@@ -92,11 +99,13 @@ class AppFixtures extends Fixture
             $campus = $this->campusEntities[$faker->numberBetween(0,2)];
             $participant->setCampus($campus);
             array_push($this->participantEntities, $participant);
+
             $photo = new PhotoParticipant();
             //les participants ont une photo par défaut qu'ils pourront modifier via leur profil
             $photo->setPhotoNom('default.png');
             $manager->persist($photo);
             $participant->setPhoto($photo);
+
             $manager->persist($participant);
         }
         $manager->flush();
@@ -116,6 +125,7 @@ class AppFixtures extends Fixture
             $manager->persist($ville);
             $lieu->setVille($ville);
             array_push($this->lieuEntities, $lieu);
+
             $manager->persist($lieu);
         }
         $manager->flush();
