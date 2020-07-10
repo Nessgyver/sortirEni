@@ -6,6 +6,9 @@ use App\Entity\Admin;
 use App\Entity\Participant;
 use App\Entity\Campus;
 use App\Entity\PhotoParticipant;
+use App\Form\ParticipantAdminType;
+use App\Form\ParticipantType;
+use App\Form\RegistrationFormType;
 use App\Form\UploadAdminType;
 use App\Repository\CampusRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -129,6 +132,33 @@ class AdminController extends AbstractController
         return $this->render('admin/admin.html.twig',[
             'formUpload' => $formUpload->createView()
         ]);
+    }
+
+    /**
+     * @Route("/participants/formulaire", name="participants_form", methods={"GET", "POST"})
+     */
+    public function addParticipantForm(Request $request, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder){
+
+        $participant = new Participant();
+        $form = $this->createForm(RegistrationFormType::class, $participant);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            //encodage du mot de passe en base de données
+            $password = $participant->getPassword();
+            $encodedPassword = $encoder->encodePassword($participant, $password);
+            $participant->setPassword($encodedPassword);
+
+            $em->persist($participant);
+            $em->flush();
+
+            $this->addFlash("success", "Participant ajouté en base de données");
+            }
+
+
+
+        return $this->render('admin/participants-form.html.twig', ['participant'=>$participant, 'form' => $form->createView()]);
     }
 
 }
