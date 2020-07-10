@@ -14,38 +14,75 @@ class MainController extends AbstractController
     /**
      * @Route("/home", name="home")
      */
-    public function home(SortieRepository $sortieRepository, Request $request, InscriptionRepository $inscriptionRepository)
+    public function home(SortieRepository $sortieRepository, Request $request)
     {
         $listeSorties = $sortieRepository->findAll();
 
+
         $listeSortiesForm = $this->createForm(ListeSortieType::class);
         $data = $listeSortiesForm->handleRequest($request)->getData();
+        $motCle = $data['nomSortie'];
+        $campus = $data['campus'];
+        $dataFiltes = $data['Filtres'];
+        $dataMotCle = $data['nomSortie'];
+        $dataDateDebut = $data['dateDebut'];
+        $dataDateFin = $data['dateFin'];
+
+
+
 
         if($listeSortiesForm->isSubmitted() && $listeSortiesForm->isValid())
         {
-            if (in_array(0, $data))
+
+            //Liste des sorties si je suis organisateur
+            if (in_array(0, $dataFiltes))
             {
-                $sortiesOrganisateur = $sortieRepository->findByOrganisateur();
+
+                $listeSorties =  array_merge($listeSorties, $sortieRepository->findByOrganisateur());
+            }
+
+            //Liste des sorties si je suis inscrit
+            if (in_array(1, $dataFiltes))
+            {
+                $listeSorties =  array_merge($listeSorties, $sortieRepository->findSubscribed());
 
             }
-            if (in_array(1, $data))
+
+            //Liste des sorties si je NE suis PAS inscrit
+            if (in_array(2, $dataFiltes))
             {
-                $participantsInscrits = $inscriptionRepository->findBySubscribedSorties();
+                $listeSorties =  array_merge($listeSorties, $sortieRepository->findUnsubscribed());
 
             }
-            if (in_array(2, $data))
+
+            //Liste des sorties archivées(+ d'un mois)
+            if (in_array(3, $dataFiltes))
             {
-                $participantsNonInscrits = $inscriptionRepository->findByUnsubscribedSorties();
+                $listeSorties =  array_merge($listeSorties, $sortieRepository->findByArchivedSortie());
 
             }
-            if (in_array(3, $data))
+
+
+            //Filtre mot clé
+            if ($motCle)
             {
-                $sortiesArchivees = $sortieRepository->findByArchivedSortie();
+                foreach ($listeSorties as $sortie)
+                {
+                    if(!str_contains($sortie->getNom(), $motCle))
+                    {
+                        $sortie->unset();
+                    }
+                }
 
             }
+
+
+
+
+            //$listeSorties = $sortieRepository->findByCampus('Nantes');
+            //$listeSorties = $sortieRepository->findByCampus($campus);
         }
 
-        var_dump($data);
 
 
 
