@@ -2,9 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Inscription;
 use App\Entity\Sortie;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
+use App\Repository\InscriptionRepository;
+use App\Repository\SortieRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -47,7 +51,6 @@ class SortieController extends AbstractController
      */
     public function annuler($id, EntityManagerInterface $em, Request $request, EtatRepository $etatRepository)
     {
-        $sortie = new Sortie();
         //récupère la sortie passée en $id pour l'afficher
         $sortieRepo = $em->getRepository(Sortie::class);
         $sortie = $sortieRepo->find($id);
@@ -197,22 +200,63 @@ class SortieController extends AbstractController
     public function seDesister()
     {
 
+
+
     }
 
     /**
      * @Route("/publier/{id}", name="publier")
      */
-    public function publier()
+    public function publier(int $id, SortieRepository $sortieRepository, EtatRepository $etatRepository, EntityManagerInterface $em)
     {
+        //Création de la route et récupération de l'id
+        $route = 'sortie_afficher';
+        $sortie = $sortieRepository->findOneBy([
+            'id' => $id
+        ]);
 
+        //Changement de l'état -> Ouverte
+        $sortie->setEtat($etatRepository->findOneBy([
+            'libelle' => 'Ouverte'
+        ]));
+
+        //Update en base
+        $em->persist($sortie);
+        $em->flush();
+
+        return $this->redirectToRoute($route, [
+                'id' => $sortie->getId()
+            ]
+        );
     }
 
     /**
      * @Route("/inscrire/{id}", name="inscrire")
      */
-    public function inscrire()
+    public function inscrire(int $id, SortieRepository $sortieRepository, EntityManagerInterface $entityManager)
     {
+        //Création de la route et récupération de l'id
+        $route = 'sortie_afficher';
+        $sortie = $sortieRepository->findOneBy([
+            'id' => $id
+        ]);
 
+        //Création et hydratation de l'inscription à insérer en base
+        $inscription = new Inscription();
+
+        $currentUser = $this->getUser();
+        $inscription->setParticipant($currentUser);
+        $inscription->setDateInscription(new DateTime());
+        $inscription->setSortie($sortie);
+
+        //Insertion en base
+        $entityManager->persist($inscription);
+        $entityManager->flush();
+
+        return $this->redirectToRoute($route, [
+                'id' => $sortie->getId()
+            ]
+        );
     }
 
 }

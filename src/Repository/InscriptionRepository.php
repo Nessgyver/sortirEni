@@ -23,24 +23,6 @@ class InscriptionRepository extends ServiceEntityRepository
         $this->security = $security;
     }
 
-    public function findBySubscribedSorties()
-    {
-        $currentUser = $this->security->getUser();
-
-        $qb = $this->createQueryBuilder('i');
-        $qb -> join('i.participant', 'p')
-            -> join('i.sortie', 's')
-            -> andWhere('p = :currentUser')
-            -> setParameter('currentUser', $currentUser);
-
-
-        return $qb->getQuery()->getResult();
-    }
-
-
-
-
-
     // /**
     //  * @return Inscription[] Returns an array of Inscription objects
     //  */
