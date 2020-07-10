@@ -86,7 +86,7 @@ class SortieController extends AbstractController
     /**
      * @Route("/creer", name="creer")
      */
-    public function creer(Request $request, EntityManagerInterface $em)
+    public function creer(Request $request, EntityManagerInterface $em, EtatRepository $etatRepository)
     {
         //créé une nouvelle sortie pour pouvoir créer un formulaire vide
         $sortie = new Sortie();

@@ -19,7 +19,11 @@
             </div>
             <div class="col">
                 {{ form_row(sortieForm.organisateur) }}
-                {{ form_row(sortieForm.lieu) }}
+                {{ form_row(sortieForm.ville) }}
+                {% if sortieForm.lieu is defined%}
+                    {{ form_row(sortieForm.lieu) }}
+                {% endif %}
+                <div id="infoLieu"></div>
             </div>
         </div>
         <div class="row justify-content-around">
@@ -33,4 +37,8 @@
     {% endblock %}
 </main>
 
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/sortie.js') }}"></script>
 {% endblock %}
