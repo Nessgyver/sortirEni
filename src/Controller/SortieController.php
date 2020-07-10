@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Sortie;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
-use Doctrine\DBAL\Exception\DatabaseObjectNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -160,9 +159,27 @@ class SortieController extends AbstractController
         }
 
 
+
+
         return $this->render('sortie/modifier.html.twig', [
             "sortieForm" => $sortieForm->createView()
         ]);
+    }
+
+    /**
+     * @Route("/seDesister/{id}", name="seDesister")
+     */
+    public function seDesister()
+    {
+
+    }
+
+    /**
+     * @Route("/publier", name="publier")
+     */
+    public function publier()
+    {
+
     }
 
 }
