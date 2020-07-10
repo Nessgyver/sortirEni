@@ -5,9 +5,11 @@
 {% block titrePage %}Modifier{{ parent() }} {% endblock %}
 
 {% block basDePage %}
-    {{ form_row(sortieForm.enregistrer) }}
-    {{ form_row(sortieForm.publier) }}
-    {{ form_row(sortieForm.supprimer) }}
-    {{ form_row(sortieForm.annuler) }}
+    <div class="row justify-content-around col">
+        <div class="col">{{ form_widget(sortieForm.enregistrer, { 'attr': {'class': 'btn btn-block btn-success'} }) }}</div>
+        <div class="col">{{ form_widget(sortieForm.publier, { 'attr': {'class': 'btn btn-block btn-primary'} }) }}</div>
+        <div class="col">{{ form_widget(sortieForm.supprimer, { 'attr': {'class': 'btn btn-block btn-danger'} }) }}</div>
+        <div class="col">{% block boutonAnnuler %} {{ parent() }} {% endblock %}</div>
+    </div>
 {% endblock %}
 

@@ -4,45 +4,43 @@
 {% block stylesheets %}<link rel="stylesheet" href="{{ asset('css/login.css') }}">{% endblock %}
 
 {% block main %}
-    <form method="post">
-        {% if error %}
-            <div class="alert alert-danger">Erreur d'authentification: identifiant ou mot de passe invalide</div>
-        {% endif %}
+    <h1>Connectez-vous</h1>
+    <div class="pad-l-40">
+        <form method="post">
+            {% if error %}
+                <div class="alert alert-danger">Erreur d'authentification: identifiant ou mot de passe invalide</div>
+            {% endif %}
 
-        {% if app.user %}
-            <div class="mb-3">
-                You are logged in as {{ app.user.username }}, <a href="{{ path('logout') }}">Logout</a>
-            </div>
-        {% endif %}
+            {% if app.user %}
+                <div class="mb-3">
+                    You are logged in as {{ app.user.username }}, <a href="{{ path('logout') }}">Logout</a>
+                </div>
+            {% endif %}
 
-        <h1 class="mb-3">Connectez-vous</h1>
-        <label class="label-login" for="inputUsername">Identifiant: </label>
-        <input type="text" value="{{ last_username }}" name="_username" id="inputUsername" class="form-control" required autofocus>
-        <label class="label-login" for="inputPassword">Mot de passe: </label>
-        <input type="password" name="_password" id="inputPassword" class="form-control" required>
+            <label class="label-login" for="inputUsername">Identifiant: </label>
+            <input type="text" value="{{ last_username }}" name="_username" id="inputUsername" class="form-control" required autofocus>
+            <label class="label-login" for="inputPassword">Mot de passe: </label>
+            <input type="password" name="_password" id="inputPassword" class="form-control" required>
 
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" >
-        <div class="inline-btn">
-            <div>
-                <button class="btn btn-lg btn-primary btn-login" type="submit">Connexion</button>
-            </div>
-            <div class="login-options">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" >
+            <div class="inline-btn">
                 <div>
-                    Mot de passe oublié
+                    <button class="btn btn-lg btn-primary btn-login" type="submit">Connexion</button>
                 </div>
+                <div class="login-options">
+                    <div>
+                        Mot de passe oublié
+                    </div>
 
-                <div class="checkbox mb-3">
-                    <label>
-                        {# attention à bien garder le name avec le _ au début ! #}
-                        <input type="checkbox" name="_remember_me" checked> Se souvenir de moi
-                    </label>
+                    <div class="checkbox mb-3">
+                        <label>
+                            {# attention à bien garder le name avec le _ au début ! #}
+                            <input type="checkbox" name="_remember_me" checked> Se souvenir de moi
+                        </label>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
+    </div>
 
-
-
-
-
-    </form>
 {% endblock %}
