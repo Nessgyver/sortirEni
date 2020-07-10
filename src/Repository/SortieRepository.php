@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Sortie;
-use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Security;
@@ -24,6 +23,59 @@ class SortieRepository extends ServiceEntityRepository
         $this->security = $security;
     }
 
+    public function findByFilters($data)
+    {
+        $currentUser = $this->security->getUser();
+        $motCle = $data['nomSortie'];
+        $campus = $data['campus'];
+        $dataFiltres = $data['Filtres'];
+        $dataMotCle = $data['nomSortie'];
+        $dataDateDebut = $data['dateDebut'];
+        $dataDateFin = $data['dateFin'];
+
+        $qb = $this->createQueryBuilder('s');
+
+        //Gestion intervalle de dates
+        if ($dataDateFin && $dataDateDebut) {
+            $qb->andWhere('s.dateHeureDebut BETWEEN :dateDebut AND :dateFin')
+                ->setParameter('dateDebut', $dataDateDebut)
+                ->setParameter('dateFin', $dataDateFin);
+
+        }
+
+        //Gestion pour un mot clé
+        if ($dataMotCle) {
+            $qb->andWhere('s.nom LIKE :motCle')
+                ->setParameter('motCle', "%$motCle%");
+
+        }
+
+        //Sorties dont je suis l'organisateur
+        if (in_array(0, $dataFiltres)) {
+            $qb->andWhere('s.organisateur = :currentUser')
+                ->setParameter('currentUser', $currentUser);
+            $qb->join('s.organisateur', 'o')
+                ->addSelect('o');
+
+        }
+
+        //Sorties dont je suis inscrit
+
+        //Sorties dont je ne suis pas inscrit
+
+        //Sorties passées
+        if (in_array(3, $dataFiltres)) {
+            $qb->andWhere('s.etat = :etat')
+                ->setParameter('etat', '6')
+                ->join('s.etat', 'e')
+                ->addSelect('e');
+        }
+        return $qb->getQuery()->getResult();
+    }
+
+
+
+    /*
     public function findByOrganisateur()
     {
         $currentUser = $this->security->getUser();
@@ -111,7 +163,9 @@ class SortieRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
 
-    }
+    }*/
+
+
 
 
     // /**

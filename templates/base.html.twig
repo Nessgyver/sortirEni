@@ -18,7 +18,7 @@
         <header>
             <nav class="navbar navbar-expand-md navbar-light bg-light sortireni">
                 <div class="col-6">
-                    <a class="navbar-brand" href="#">
+                    <a class="navbar-brand" href="{{ path('home') }}">
                         <img src="https://source.unsplash.com/1600x800?nature,water" width="30" height="30" class="d-inline-block align-top" alt="">
                         SortirENI.com
                     </a>
@@ -54,6 +54,9 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path('admin_campus') }}">Campus</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('admin_participants') }}">Ajout de Participants</a>
                             </li>
                         {% endif %}
                     </ul>
@@ -92,6 +95,12 @@
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                bsCustomFileInput.init()
+            })
+        </script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

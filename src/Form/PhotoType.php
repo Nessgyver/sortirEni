@@ -8,6 +8,12 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Créé par Amandine
+ * Méthodes implémentées par Amandine
+ * Class PhotoType
+ * @package App\Form
+ */
 class PhotoType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -17,7 +23,6 @@ class PhotoType extends AbstractType
                 'label' => 'Ma photo: ',
                 'required' => false
             ])
-
         ;
     }
 

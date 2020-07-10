@@ -10,6 +10,9 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class LoginController extends AbstractController
 {
     /**
+     * Créé et implémenté par Amandine
+     * Méthodes implémentées par Amandine
+     *
      * @Route("/login", name="login")
      */
     public function login(AuthenticationUtils $authenticationUtils): Response

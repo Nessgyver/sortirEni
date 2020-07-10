@@ -9,7 +9,7 @@
             {{ form_start(form, {'attr': {'novalidate':'novalidate'}}) }}
 
             {{ form_widget(form)}}
-            <button type="submit">Rechercher</button>
+            <button type="submit" class="btn btn-primary">Rechercher</button>
             {{ form_end(form) }}
         </div>
         <div>
@@ -46,8 +46,8 @@
                         <td>{{ sortie.etat.libelle }}</td>
                         {# Si je suis inscrit à la sortie, la case est cochée #}
                         <td>
-                            {% for participant in sortie.inscriptions %}
-                                {% if app.user.id == participant.id %}
+                            {% for inscription in sortie.inscriptions %}
+                                {% if app.user.id == inscription.participant.id %}
                                     X
                                 {% endif %}
                             {% endfor %}
@@ -56,64 +56,54 @@
                         <td>
                             {# Si je suis organisateur et que la sortie n'est pas publiée (ouverte)
                                Je peux modifier et publier ma sortie #}
-                            {% if sortie.etat.libelle == 'Créée' %}
-                                <a href="{{ path('sortie_modifier', {'id': sortie.id}) }}">Modifier</a> - <a href="{{ path('sortie_publier') }}">Publier</a>
+                            {% if sortie.etat.libelle == 'Créée' and app.user.id == sortie.organisateur.id %}
+                                <a href="{{ path('sortie_modifier', {'id': sortie.id}) }}">Modifier</a> - <a href="{{ path('sortie_publier', {'id': sortie.id}) }}">Publier</a>
                             {# Sinon je peux afficher la sortie #}
                             {% else %}
                                 <a href="{{ path('sortie_afficher', {'id': sortie.id}) }}">Afficher</a>
                             {% endif %}
 
-                            {# Si je suis inscrit, je peux me désister #}
-                            {% for participant in sortie.inscriptions %}
-                                {% if app.user.id == participant.id and sortie.etat.libelle == 'Ouverte'%}
-                                    - <a href="{{ path('sortie_seDesister') }}">Se désister</a>
-                                {% endif %}
-                            {% endfor %}
-
-
-                            {# Si je ne suis pas organisateur, ni inscrit à la sortie et que la sortie est ouverte
-                               Je peux m'inscrire
-                            {% if not sortie.inscriptions %}
-                                {% for participant in sortie.inscriptions %}
-                                    {% set compteur = 0 %}
-                                    {% if app.user.id != participant.id and compteur < 1 %}
-                                        {% if sortie.etat.libelle == 'Ouverte' %}
-                                            {% if app.user.id != sortie.organisateur.id %}
-                                                - <a href="{{ path('sortie_creer') }}">S'inscrire</a >
-                                                {% set compteur = 1 %}
+                            {# Je peux m'inscrire ou me désinscrire uniquement si la sortie est ouverte
+                               et que je ne suis pas l'organisateur #}
+                            {% if sortie.etat.libelle == 'Ouverte' and app.user.id != sortie.organisateur.id %}
+                                {# Si je reçois au moins une inscription, je rentre dans la boucle #}
+                                {% if sortie.inscriptions.count > 0%}
+                                    {% set break = false %}
+                                    {# Boucle sur les inscriptions à la sortie pour savoir si je suis inscrit #}
+                                    {% for inscription in sortie.inscriptions %}
+                                        {% if not break %}
+                                            {# Si je suis inscrit, je peux me désister #}
+                                            {% if app.user.id == inscription.participant.id %}
+                                                - <a href="{{ path('sortie_seDesister', {'id': sortie.id}) }}">Se désister</a>
+                                                {% set break = true %}
                                             {% endif %}
                                         {% endif %}
-                                    {% endif %}
-                                {% endfor %}
-                            {% else %}
-                                {% if sortie.etat.libelle == 'Ouverte' %}
-                                    {% if app.user.id != sortie.organisateur.id %}
-                                        - <a href="{{ path('sortie_creer') }}">S'inscrire</a >
-                                        {% set compteur = 1 %}
-                                    {% endif %}
+                                    {% endfor %}
+                                    {% for inscription in sortie.inscriptions %}
+                                        {% if not break %}
+                                            {% if app.user.id != inscription.participant.id %}
+                                                - <a href="{{ path('sortie_inscrire', {'id': sortie.id}) }}">S'inscrire</a >
+                                                {% set break = true %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                {# S'il n'y a pas d'inscriptions, je peux m'inscrire #}
+                                {% else %}
+                                    - <a href="{{ path('sortie_inscrire', {'id': sortie.id}) }}">S'inscrire</a >
                                 {% endif %}
-                            {% endif %}#}
-
-
-                            {% if sortie.etat.libelle == 'Ouverte' and app.user.id != sortie.organisateur.id and sortie.inscriptions%}
-                                {% set compteur = 0 %}
-                                {% for participant in sortie.inscriptions %}
-                                    {% if app.user.id != participant.id and compteur < 1 %}
-                                        - <a href="{{ path('sortie_creer') }}">S'inscrire</a >
-                                        {% set compteur = 1 %}
-                                    {% endif %}
-                                {% endfor %}
                             {% endif %}
 
                             {# Si je suis organisateur et que la sortie est ouverte, je peux l'annuler #}
                             {% if app.user.id == sortie.organisateur.id and sortie.etat.libelle == 'Ouverte' %}
-                                - <a href="{{ path('sortie_annuler') }}">Annuler</a>
+                                - <a href="{{ path('sortie_annuler', {'id': sortie.id}) }}">Annuler</a>
                             {% endif %}
                         </td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
+
+            <a href="{{ path('sortie_creer') }}" class="btn btn-primary">Créer une sortie</a>
 
         </div>
 

@@ -9,4 +9,5 @@ sorties/annuler: sortie_annuler
 admin: admin
 admin/campus: admin_campus
 admin/villes: admin_villes
+admin/villes: admin_participants
 

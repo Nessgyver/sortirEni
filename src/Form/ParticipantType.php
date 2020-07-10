@@ -15,6 +15,13 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Créé par Amandine
+ * Méthodes implémentées par Amandine
+ *
+ * Class ParticipantType
+ * @package App\Form
+ */
 class ParticipantType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)

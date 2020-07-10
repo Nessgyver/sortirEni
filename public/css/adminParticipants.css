@@ -1,0 +1,11 @@
+.custom-file-input ~ .custom-file-label::after {
+    content: "Choisir un fichier";
+}
+
+h2, input, label, button {
+    margin-bottom: 2vw;
+}
+
+.custom-file-input {
+    width: 50%;
+}
