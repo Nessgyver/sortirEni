@@ -30,25 +30,14 @@ class InscriptionRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('i');
         $qb -> join('i.participant', 'p')
             -> join('i.sortie', 's')
-            -> andWhere('p.id = :currentUser')
-            -> setParameter('currentUser', $currentUser->getId());
-
-        return $qb->getQuery()->getResult();
-    }
-
-    public function findByUnsubscribedSorties()
-    {
-        $currentUser = $this->security->getUser();
-
-        $qb = $this->createQueryBuilder('i');
-        $qb -> join('i.participant', 'p')
-            -> join('i.sortie', 's')
-            -> andWhere('p.id != :currentUser')
-            -> setParameter('currentUser', $currentUser->getId());
+            -> andWhere('p = :currentUser')
+            -> setParameter('currentUser', $currentUser);
 
 
         return $qb->getQuery()->getResult();
     }
+
+
 
 
 
