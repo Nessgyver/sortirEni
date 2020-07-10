@@ -10,6 +10,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\File;
 
+/**
+ * Créé par Amandine
+ * Méthodes implémentées par Amandine
+ * Class UploadAdminType
+ * @package App\Form
+ */
+
 class UploadAdminType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)

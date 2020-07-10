@@ -17,6 +17,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 
 /**
+ * Créé par Amandine
+ * Méthodes implémentées par Amandine
  * @Route("/admin", name="admin_")
  */
 class AdminController extends AbstractController

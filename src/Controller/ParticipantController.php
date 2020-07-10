@@ -21,6 +21,9 @@ use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 class ParticipantController extends AbstractController
 {
     /**
+     * Créé et implémenté par Amandine
+     * Méthodes implémentées par Amandine
+     *
      * @Route("/profil/{id}", name="profil", methods={"GET", "POST"})
      */
     public function showProfile($id, ParticipantRepository $partiRepo, PhotoParticipantRepository $photoRepo, Request $request, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder, GuardAuthenticatorHandler $guardHandler, LoginAuthenticator $authenticator) {
@@ -39,6 +42,7 @@ class ParticipantController extends AbstractController
 
             if ($form->isSubmitted() && $form->isValid()) {
 
+                //encodage du mot de passe en base de données
                 $password = $participantCo->getPassword();
                 $encodedPassword = $encoder->encodePassword($participantCo, $password);
                 $participantCo->setPassword($encodedPassword);
@@ -68,6 +72,7 @@ class ParticipantController extends AbstractController
                 $em->flush();
 
                 $this->addFlash("success", "Profil mis à jour");
+
                 return $guardHandler->authenticateUserAndHandleSuccess(
                     $participantCo,
                     $request,
