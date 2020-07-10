@@ -46,6 +46,7 @@ class Sortie
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     *
      */
     private $infosSortie;
 

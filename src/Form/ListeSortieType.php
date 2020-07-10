@@ -26,7 +26,7 @@ class ListeSortieType extends AbstractType
             ->add('nomSortie', TextType::class, [
                 'label'=>'Le nom de la sortie contient : ',
                 'attr' => [
-                  'placeholder' => 'Affine ta recherche !'
+                  'placeholder' => 'Affines ta recherche !'
                 ],
                 'constraints' => [
                    new Length([
@@ -36,10 +36,13 @@ class ListeSortieType extends AbstractType
                 ],
             ])
             ->add('dateDebut', DateType::class, [
-                'label' => 'Entre '
+                'label' => 'Entre ',
+                'format' => 'dd/MM/yyyy',
+
             ])
             ->add('dateFin', DateType::class, [
-                'label' => ' et '
+                'label' => ' et ',
+                'format' => 'dd/MM/yyyy',
             ])
             ->add('Filtres', ChoiceType::class, [
                 'label' => false,

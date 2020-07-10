@@ -67,7 +67,7 @@
                                et que je ne suis pas l'organisateur #}
                             {% if sortie.etat.libelle == 'Ouverte' and app.user.id != sortie.organisateur.id %}
                                 {# Si je reçois au moins une inscription, je rentre dans la boucle #}
-                                {% if sortie.inscriptions.count > 0 %}
+                                {% if sortie.inscriptions.count > 0%}
                                     {% set break = false %}
                                     {# Boucle sur les inscriptions à la sortie pour savoir si je suis inscrit #}
                                     {% for inscription in sortie.inscriptions %}
@@ -76,8 +76,12 @@
                                             {% if app.user.id == inscription.participant.id %}
                                                 - <a href="{{ path('sortie_seDesister', {'id': sortie.id}) }}">Se désister</a>
                                                 {% set break = true %}
-                                            {# Sinon je peux m'inscrire #}
-                                            {% elseif app.user.id != inscription.participant.id %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% for inscription in sortie.inscriptions %}
+                                        {% if not break %}
+                                            {% if app.user.id != inscription.participant.id %}
                                                 - <a href="{{ path('sortie_inscrire', {'id': sortie.id}) }}">S'inscrire</a >
                                                 {% set break = true %}
                                             {% endif %}
