@@ -15,6 +15,12 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * classe de formulaire permettant de créer, de modifier ou d'afficher des sorties
+ * implémentée par damien
+ * Class SortieType
+ * @package App\Form
+ */
 class SortieType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)

@@ -1,6 +1,6 @@
 {% extends 'sortie/sortie.html.twig' %}
 
-{% block title %}Modifier une sortie{% endblock %}
+{% block title %}Afficher une sortie{% endblock %}
 
 {% block titrePage %}Afficher{{ parent() }} {% endblock %}
 
@@ -16,10 +16,12 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>Mark</td>
-                <td>Otto</td>
-            </tr>
+            {% for inscription in inscriptions%}
+                <tr>
+                    <td><a href="{{ path('profil',{id:inscription.participant.id}) }}">{{ inscription.participant.username }}</a></td>
+                    <td>{{ inscription.participant.nom }} {{ inscription.participant.prenom }}</td>
+                </tr>
+            {% endfor %}
             </tbody>
         </table>
     </div>
