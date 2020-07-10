@@ -27,38 +27,84 @@
                 </tr>
                 </thead>
                 <tbody>
+                {#{{ dump(listeSorties) }}#}
+
+                {# Affichage des sorties #}
                 {% for sortie in listeSorties %}
-                <tr>
-                    <td>{{ sortie.nom }}</td>
-                    <td>{{ sortie.dateHeureDebut }}</td>
-                    <td>{{ sortie.dateLimiteInscription }}</td>
-                    <td>{{ sortie.nbInscriptionMax }}</td>
-                    <td>{{ sortie.etat }}</td>
-                    {% if app.user.id in sortie.inscriptions %}
-                        <td> X </td>
-                    {% endif %}
-                    <td> {{ sortie.organisateur }}</td>
-                </tr>
+                    <tr>
+                        <td>{{ sortie.nom }}</td>
+                        <td>{{ sortie.dateHeureDebut | date("m/d/Y H:m") }}</td>
+                        <td>{{ sortie.dateLimiteInscription | date("m/d/Y")}}</td>
+                        <td>
+                            {# Nombre d'inscrits à la sortie #}
+                            {% set compteur = 0 %}
+                            {% for participant in sortie.inscriptions %}
+                                {% set compteur = compteur+1%}
+                            {% endfor %}
+                            {{ compteur }} / {{ sortie.nbInscriptionMax }}
+                        </td>
+                        <td>{{ sortie.etat.libelle }}</td>
+                        {# Si je suis inscrit à la sortie, la case est cochée #}
+                        <td>
+                            {% for participant in sortie.inscriptions %}
+                                {% if app.user.id == participant.id %}
+                                    X
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td> {{ sortie.organisateur.username }}</td>
+                        <td>
+                            {# Si je suis organisateur et que la sortie n'est pas publiée (ouverte)
+                               Je peux modifier et publier ma sortie #}
+                            {% if sortie.etat.libelle == 'Créée' %}
+                                <a href="{{ path('sortie_modifier') }}">Modifier</a> - <a href="{{ path('sortie_publier') }}">Publier</a>
+                            {# Sinon je peux afficher la sortie #}
+                            {% else %}
+                                <a href="{{ path('sortie_afficher') }}">Afficher</a>
+                            {% endif %}
+
+                            {# Si je suis inscrit, je peux me désister #}
+                            {% for participant in sortie.inscriptions %}
+                                {% if app.user.id == participant.id and sortie.etat.libelle == 'Ouverte'%}
+                                    - <a href="{{ path('sortie_seDesister') }}">Se désister</a>
+                                {% endif %}
+                            {% endfor %}
+
+
+                            {# Si je ne suis pas organisateur, ni inscrit à la sortie et que la sortie est ouverte
+                               Je peux m'inscrire #}
+                            {% if not sortie.inscriptions %}
+                                {% for participant in sortie.inscriptions %}
+                                    {% set compteur = 0 %}
+                                    {% if app.user.id != participant.id and compteur < 1 %}
+                                        {% if sortie.etat.libelle == 'Ouverte' %}
+                                            {% if app.user.id != sortie.organisateur.id %}
+                                                - <a href="{{ path('sortie_creer') }}">S'inscrire</a >
+                                                {% set compteur = 1 %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                {% if sortie.etat.libelle == 'Ouverte' %}
+                                    {% if app.user.id != sortie.organisateur.id %}
+                                        - <a href="{{ path('sortie_creer') }}">S'inscrire</a >
+                                        {% set compteur = 1 %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+
+
+
+                            {# Si je suis organisateur et que la sortie est ouverte, je peux l'annuler #}
+                            {% if app.user.id == sortie.organisateur.id and sortie.etat.libelle == 'Ouverte' %}
+                                - <a href="{{ path('sortie_annuler') }}">Annuler</a>
+                            {% endif %}
+                        </td>
+                    </tr>
                 {% endfor %}
                 </tbody>
             </table>
-
-                {#
-                {% if sortie.etat === 'Créée' %}
-                    <td><a href="#">Modifier</a> - <a href="#">Publier</a></td>
-                {% else %}
-                    <td><a href="#">Afficher</a></td>
-                {% endif %}
-                {% if je suis inscrit et je ne suis pas organisateur %}
-                    <td><a href="#">Se désister</a></td>
-                {% endif %}
-                {% if je ne suis pas inscrit et et je ne suis pas organisateur %}
-                    <td><a>S'inscrire</a></td>
-                {% endif %}
-                {% if je suis organisateur et la sortie est ouverte %}
-                    <td><a>Annuler</a></td>
-                {% endif %}#}
-
 
         </div>
 
