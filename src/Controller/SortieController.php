@@ -207,4 +207,12 @@ class SortieController extends AbstractController
 
     }
 
+    /**
+     * @Route("/inscrire/{id}", name="inscrire")
+     */
+    public function inscrire()
+    {
+
+    }
+
 }
