@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Inscription;
 use App\Entity\Sortie;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
@@ -10,6 +9,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -86,7 +87,7 @@ class SortieController extends AbstractController
     /**
      * @Route("/creer", name="creer")
      */
-    public function creer(Request $request, EntityManagerInterface $em)
+    public function creer(Request $request, EntityManagerInterface $em, EtatRepository $etatRepository)
     {
         //créé une nouvelle sortie pour pouvoir créer un formulaire vide
         $sortie = new Sortie();
@@ -150,13 +151,13 @@ class SortieController extends AbstractController
      * récupère la valeur du bouton cliqué pour modifier le champ état de la sortie si besoin
      * enregistre en base de données le cas échéant
      * et oriente sur la page appropriée
-     * @param \Symfony\Component\Form\FormInterface $sortieForm
+     * @param FormInterface $sortieForm
      * @param Sortie $sortie
      * @param EtatRepository $etatRepository
      * @param EntityManagerInterface $em
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
-    private function redirectionFormulaire(\Symfony\Component\Form\FormInterface $sortieForm, Sortie $sortie, EtatRepository $etatRepository, EntityManagerInterface $em): \Symfony\Component\HttpFoundation\RedirectResponse
+    private function redirectionFormulaire(FormInterface $sortieForm, Sortie $sortie, EtatRepository $etatRepository, EntityManagerInterface $em): RedirectResponse
     {
         $route = 'sortie_';
         $persist = false;
@@ -199,7 +200,7 @@ class SortieController extends AbstractController
     }
 
     /**
-     * @Route("/publier", name="publier")
+     * @Route("/publier/{id}", name="publier")
      */
     public function publier()
     {
