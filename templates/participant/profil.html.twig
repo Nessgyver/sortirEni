@@ -64,12 +64,13 @@
 {% endblock %}
 
 {% block javascripts %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $('.custom-file-input').click(function() {
-                $(this).text('Choisir une photo');
-            })
-        });
+        $(document).ready(function () {
+            bsCustomFileInput.init()
+        })
+    </script>
     </script>
 {% endblock %}
 

@@ -3,8 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Sortie;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @method Sortie|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,10 +16,103 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class SortieRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $security;
+
+    public function __construct(ManagerRegistry $registry, Security $security)
     {
         parent::__construct($registry, Sortie::class);
+        $this->security = $security;
     }
+
+    public function findByOrganisateur()
+    {
+        $currentUser = $this->security->getUser();
+        $qb = $this->createQueryBuilder('s');
+        $qb -> andWhere('s.organisateur = :currentUser')
+            ->setParameter('currentUser', $currentUser);
+        $qb->join('s.organisateur', 'o');
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findByArchivedSortie()
+    {
+        $qb = $this->createQueryBuilder('s');
+        $qb->andWhere('s.etat = :etat')
+            ->setParameter('etat', '6')
+            ->join('s.etat', 'e');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findByMotCle($motCle)
+    {
+        $qb = $this->createQueryBuilder('s');
+        $qb->andWhere('s.nom LIKE :motCle')
+            ->setParameter('motCle', "%$motCle%");
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findSubscribed()
+    {
+        $currentUser = $this->security->getUser();
+
+        $qb = $this->createQueryBuilder('s');
+        $qb->join('s.inscriptions', 'i')
+            ->join('i.participant', 'p')
+            ->andWhere('p = :currentUser')
+            ->setParameter('currentUser', $currentUser);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findUnsubscribed()
+    {
+        $currentUser = $this->security->getUser();
+
+        $qb = $this->createQueryBuilder('s');
+        $qb->leftJoin('s.inscriptions', 'i')
+            ->addSelect('i')
+            ->leftJoin('i.participant', 'p')
+            ->addSelect('p')
+            ->andWhere('p != :currentUser')
+            ->setParameter('currentUser', $currentUser);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findByCampus($campus)
+    {
+        $qb = $this->createQueryBuilder('s');
+        $qb->join('s.organisateur', 'o')
+            ->addSelect('o')
+            ->andWhere('o.campus = :campus')
+            ->setParameter('campus', $campus);
+
+        return $qb->getQuery()->getArrayResult();
+    }
+
+    public function findByDateInterval(DateTime $dateDebut, DateTime $dateFin)
+    {
+        $qb = $this->createQueryBuilder('s');
+        $qb->andWhere('s.dateHeureDebut BETWEEN :dateDebut AND :dateFin')
+            ->setParameter('dateDebut', $dateDebut)
+            ->setParameter('dateFin', $dateFin);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findAllWhileConnected()
+    {
+        $currentUser = $this->security->getUser();
+
+        $qb= $this->createQueryBuilder('s');
+
+
+        return $qb->getQuery()->getResult();
+
+    }
+
 
     // /**
     //  * @return Sortie[] Returns an array of Sortie objects
