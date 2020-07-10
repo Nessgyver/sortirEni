@@ -16,18 +16,12 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>Mark</td>
-                <td>Otto</td>
-            </tr>
-            {#
-            {% for participant in inscriptions%}
+            {% for inscription in inscriptions%}
                 <tr>
-                    <td>{{ participant.pseudo }}</td>
-                    <td>{{ participant.nom }} {{ participant.prenom }}</td>
+                    <td><a href="{{ path('profil',{id:inscription.participant.id}) }}">{{ inscription.participant.username }}</a></td>
+                    <td>{{ inscription.participant.nom }} {{ inscription.participant.prenom }}</td>
                 </tr>
             {% endfor %}
-            #}
             </tbody>
         </table>
     </div>

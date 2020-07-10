@@ -31,10 +31,9 @@ class SortieController extends AbstractController
         $sortieForm = $this->createForm(SortieType::class, $sortie,['disabled'=>true]);
 
         //to do: récupère la liste des participants associés à cette sortie
-        $inscriptionRepo = $em->getRepository(Inscription::class);
-        $inscriptions = $inscriptionRepo->findBy([
-            'sortie'=>$sortie
-        ]);
+
+        $inscriptions = $sortie->getInscriptions();
+
 
         return $this->render('sortie/afficher.html.twig', [
             'sortieForm'=> $sortieForm->createView(),
