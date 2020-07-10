@@ -71,16 +71,14 @@
                                     {% set break = false %}
                                     {# Boucle sur les inscriptions à la sortie pour savoir si je suis inscrit #}
                                     {% for inscription in sortie.inscriptions %}
-                                        {% if not break %}
-                                            {# Si je suis inscrit, je peux me désister #}
-                                            {% if app.user.id == inscription.participant.id %}
-                                                - <a href="{{ path('sortie_seDesister', {'id': sortie.id}) }}">Se désister</a>
-                                                {% set break = true %}
-                                            {% endif %}
+                                        {# Si je suis inscrit, je peux me désister #}
+                                        {% if app.user.id == inscription.participant.id %}
+                                            - <a href="{{ path('sortie_seDesister', {'id': sortie.id}) }}">Se désister</a>
                                         {% endif %}
                                     {% endfor %}
                                     {% for inscription in sortie.inscriptions %}
                                         {% if not break %}
+                                            {# Sinon je peux m'inscrire #}
                                             {% if app.user.id != inscription.participant.id %}
                                                 - <a href="{{ path('sortie_inscrire', {'id': sortie.id}) }}">S'inscrire</a >
                                                 {% set break = true %}

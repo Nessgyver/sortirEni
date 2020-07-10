@@ -12,6 +12,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\Length;
 
+/**
+ * Class ListeSortieType
+ * @package App\Form
+ * Formulaire créé par Mathieu
+ */
+
 class ListeSortieType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)

@@ -21,6 +21,7 @@ use Symfony\Component\Security\Core\Security;
 
 /**
  * contrôleur créé par Mathieu pour les routes
+ * méthodes seDesister, inscrire et publier implémentées par Mathieu
  * méthodes implémentées par Damien
  * @Route("/sortie", name="sortie_")
  */

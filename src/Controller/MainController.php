@@ -23,9 +23,7 @@ class MainController extends AbstractController
 
         if ($listeSortiesForm->isSubmitted() && $listeSortiesForm->isValid())
         {
-            unset($listeSortiesForm);
             $listeSorties = $sortieRepository->findByFilters($data);
-            $listeSortiesForm = $this->createForm(ListeSortieType::class);
         }
 
 
