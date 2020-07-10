@@ -6,6 +6,7 @@ use App\Repository\ParticipantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 
@@ -14,6 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class Participant implements UserInterface, \Serializable
 {
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -32,7 +34,7 @@ class Participant implements UserInterface, \Serializable
     private $prenom;
 
     /**
-     * @ORM\Column(type="string", length=180)
+     * @ORM\Column(type="string", length=180, unique=true)
      */
     private $username;
 
@@ -87,16 +89,6 @@ class Participant implements UserInterface, \Serializable
      * @ORM\JoinColumn(nullable=true)
      */
     private $photo;
-
-
-
-
-    public function __construct()
-    {
-        $this->sorties = new ArrayCollection();
-        $this->inscriptions = new ArrayCollection();
-        $this->sortieOrganisee = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -276,6 +268,13 @@ class Participant implements UserInterface, \Serializable
         return $this;
     }
 
+
+    public function __construct(){
+        $this->sorties = new ArrayCollection();
+        $this->inscriptions = new ArrayCollection();
+        $this->sortieOrganisee = new ArrayCollection();
+    }
+
     /**
      * @return Collection|Sortie[]
      */
@@ -331,4 +330,7 @@ class Participant implements UserInterface, \Serializable
         list ($this->id, $this->username, $this->mail, $this->nom, $this->prenom, $this->roles, $this->administrateur,
             $this->actif, $this->campus, $this->sortieOrganisee, $this->inscriptions, $this->password) = unserialize($serialized, array('allowed_classes' => false));
     }
+
+
+
 }
