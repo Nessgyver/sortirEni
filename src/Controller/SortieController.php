@@ -17,6 +17,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * contrôleur créé par Mathieu pour les routes
@@ -197,11 +198,34 @@ class SortieController extends AbstractController
     /**
      * @Route("/seDesister/{id}", name="seDesister")
      */
-    public function seDesister()
+    public function seDesister(int $id, SortieRepository $sortieRepository, EntityManagerInterface $entityManager, InscriptionRepository $inscriptionRepository, Security $security)
     {
+        $currentUser = $security->getUser();
 
+        //Création de la route et récupération de l'id
+        $route = 'sortie_afficher';
+        $sortie = $sortieRepository->findOneBy([
+            'id' => $id
+        ]);
 
+        $inscriptions = $inscriptionRepository->findBy([
+            'sortie' => $sortie
+        ]);
 
+        foreach ($inscriptions as $currentInscription)
+        {
+            if ($currentInscription->getParticipant()->getId() == $currentUser->getId())
+            {
+                $entityManager->remove($currentInscription);
+            }
+        }
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute($route, [
+                'id' => $sortie->getId()
+            ]
+        );
     }
 
     /**
