@@ -34,6 +34,14 @@ class SortieRepository extends ServiceEntityRepository
         $dataDateFin = $data['dateFin'];
 
         $qb = $this->createQueryBuilder('s');
+        //$orModule = $qb->expr()->orX();
+        //$orModule->add($qb->expr()->eq('s.etat', ':etat'));
+        //$orModule->add($qb->expr()->eq('s.organisateur', ':currentUser'));
+        //$qb -> andWhere('s.etat != :etat')
+        //-> orWhere($orModule)
+        //-> setParameter('etat', Sortie::CREATE)
+
+
 
         //Gestion intervalle de dates
         if ($dataDateFin && $dataDateDebut) {
@@ -50,29 +58,95 @@ class SortieRepository extends ServiceEntityRepository
 
         }
 
-        //Sorties dont je suis l'organisateur
-        if (in_array(0, $dataFiltres)) {
-            $qb->andWhere('s.organisateur = :currentUser')
-                ->setParameter('currentUser', $currentUser);
-            $qb->join('s.organisateur', 'o')
-                ->addSelect('o');
+        /**
+         * @todo : gestion campus + gestion cas particuliers fitlres + unsubscribed
+         */
+        /*
+        //Gestion pour campus
+        if ($campus)
+        {
+            $qb->innerJoin('s.organisateur', 'p')
+                ->andWhere('p.campus = :campus')
+                ->setParameter('campus', $campus);
+        }
+        */
 
+        //Gestion des filtres
+        if ($dataFiltres)
+        {
+            //Sorties dont je suis l'organisateur
+            if (in_array(0, $dataFiltres)) {
+                $qb->orWhere('s.organisateur = :currentUser');
+                $qb->join('s.organisateur', 'o')
+                    ->addSelect('o');
+
+
+            }
+
+            //Sorties dont je suis inscrit
+            if (in_array(1, $dataFiltres))
+            {
+                $qb->leftJoin('s.inscriptions', 'i')
+                    ->orWhere('i.participant = :currentUser');
+            }
+
+
+            //Sorties dont je ne suis pas inscrit
+            if (in_array(2, $dataFiltres))
+            {
+
+            }
+
+            //Sorties passées
+            if (in_array(3, $dataFiltres)) {
+                $qb->orWhere('s.etat = :etat')
+                    ->setParameter('etat', Sortie::FINISHED)
+                    ->join('s.etat', 'e')
+                    ->addSelect('e');
+            }
+
+            if (in_array(0, $dataFiltres) || in_array(1, $dataFiltres) || in_array(2, $dataFiltres) || in_array(3, $dataFiltres))
+            {
+                $qb -> setParameter('currentUser', $currentUser);
+            }
         }
 
-        //Sorties dont je suis inscrit
 
-        //Sorties dont je ne suis pas inscrit
 
-        //Sorties passées
-        if (in_array(3, $dataFiltres)) {
-            $qb->andWhere('s.etat = :etat')
-                ->setParameter('etat', '6')
-                ->join('s.etat', 'e')
-                ->addSelect('e');
-        }
         return $qb->getQuery()->getResult();
     }
 
+
+
+    public function findUnsubscribed()
+    {
+        $currentUser = $this->security->getUser();
+        $qb = $this->createQueryBuilder('s');
+
+        //Sorties auxquelles je suis inscrit
+        $qb->leftJoin('s.inscriptions', 'i')
+            ->andWhere('i.participant = :currentUser')
+            ->setParameter('currentUser', $currentUser);
+        $listeSortiesInscrit = $qb->getQuery()->getArrayResult();
+
+        $qb2 = $this->createQueryBuilder('s2');
+        $qb2 ->addSelect('s2')
+            ->where($qb2->expr()->notIn('s2.id', ':listeSortiesInscrit'))
+            ->setParameter('listeSortiesInscrit', $listeSortiesInscrit);
+
+        return $qb2->getQuery()->getResult();
+    }
+
+    /*
+    public function findByCampus($campus)
+    {
+        $qb = $this->createQueryBuilder('s');
+        $qb->innerJoin('s.organisateur', 'o')
+            ->andWhere('o.campus = :campus')
+            ->setParameter('campus', $campus);
+        return $qb->getQuery()->getResult();
+    }
+    */
 
 
     /*
@@ -118,31 +192,9 @@ class SortieRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findUnsubscribed()
-    {
-        $currentUser = $this->security->getUser();
 
-        $qb = $this->createQueryBuilder('s');
-        $qb->leftJoin('s.inscriptions', 'i')
-            ->addSelect('i')
-            ->leftJoin('i.participant', 'p')
-            ->addSelect('p')
-            ->andWhere('p != :currentUser')
-            ->setParameter('currentUser', $currentUser);
 
-        return $qb->getQuery()->getResult();
-    }
 
-    public function findByCampus($campus)
-    {
-        $qb = $this->createQueryBuilder('s');
-        $qb->join('s.organisateur', 'o')
-            ->addSelect('o')
-            ->andWhere('o.campus = :campus')
-            ->setParameter('campus', $campus);
-
-        return $qb->getQuery()->getArrayResult();
-    }
 
     public function findByDateInterval(DateTime $dateDebut, DateTime $dateFin)
     {
