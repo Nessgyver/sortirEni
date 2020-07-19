@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\SortieRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,6 +14,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Sortie
 {
+    const CREATE = '1';
+    const OPEN = '2';
+    const CLOSED = '3';
+    const ACTIVITY = '4';
+    const CANCELLED = '5';
+    const FINISHED = '6';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -115,12 +123,12 @@ class Sortie
         return $this;
     }
 
-    public function getDateHeureDebut(): ?\DateTime
+    public function getDateHeureDebut(): ?DateTime
     {
         return $this->dateHeureDebut;
     }
 
-    public function setDateHeureDebut(\DateTime $dateHeureDebut): self
+    public function setDateHeureDebut(DateTime $dateHeureDebut): self
     {
         $this->dateHeureDebut = $dateHeureDebut;
 
@@ -139,12 +147,12 @@ class Sortie
         return $this;
     }
 
-    public function getDateLimiteInscription(): ?\DateTime
+    public function getDateLimiteInscription(): ?DateTime
     {
         return $this->dateLimiteInscription;
     }
 
-    public function setDateLimiteInscription(\DateTime $dateLimiteInscription): self
+    public function setDateLimiteInscription(DateTime $dateLimiteInscription): self
     {
         $this->dateLimiteInscription = $dateLimiteInscription;
 
