@@ -15,16 +15,19 @@ class MainController extends AbstractController
      */
     public function home(SortieRepository $sortieRepository, Request $request)
     {
-        $listeSorties = $sortieRepository->findAll();
 
 
         $listeSortiesForm = $this->createForm(ListeSortieType::class);
         $data = $listeSortiesForm->handleRequest($request)->getData();
+        $campus = $data['campus'];
+
+        $listeSorties = $sortieRepository->findByFilters($data);
 
         if ($listeSortiesForm->isSubmitted() && $listeSortiesForm->isValid())
         {
             $listeSorties = $sortieRepository->findByFilters($data);
         }
+
 
 
 
