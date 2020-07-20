@@ -35,12 +35,14 @@ class SortieRepository extends ServiceEntityRepository
 
 
         $qb = $this->createQueryBuilder('s');
-        //$orModule = $qb->expr()->orX();
-        //$orModule->add($qb->expr()->eq('s.etat', ':etat1'));
-        //$orModule->add($qb->expr()->eq('s.organisateur', ':currentUser'));
-        //$qb -> orWhere($orModule)
-            //-> setParameter('etat1', Sortie::CREATE)
-        ;
+
+        //Récupération des sorties dont je ne suis pas l'organisateur et dont l'état est 'Créée'
+        $listeSortiesPasOrgaEtCreee = $this->subQueryDefaultDisplay($currentUser);
+
+        //Soustraction de la 'listeSortiesPasOrgaEtCreee' du findAll()
+        $qb -> addSelect('s')
+            ->orWhere($qb->expr()->notIn('s.id', ':listeSortiesPasOrgaEtCreee'))
+            ->setParameter('listeSortiesPasOrgaEtCreee', $listeSortiesPasOrgaEtCreee);
 
 
 
@@ -122,6 +124,17 @@ class SortieRepository extends ServiceEntityRepository
         $qb->leftJoin('s.inscriptions', 'i')
             ->andWhere('i.participant = :currentUser')
             ->setParameter('currentUser', $currentUser);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function subQueryDefaultDisplay($currentUser)
+    {
+        $qb = $this->createQueryBuilder('s');
+        $qb -> andWhere('s.organisateur != :currentUser')
+            -> andWhere('s.etat = :etat')
+            ->setParameter('currentUser', $currentUser)
+            ->setParameter('etat', '1');
 
         return $qb->getQuery()->getResult();
     }
