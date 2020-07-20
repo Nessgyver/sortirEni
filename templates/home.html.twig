@@ -27,14 +27,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                {#{{ dump(listeSorties) }}#}
-
                 {# Affichage des sorties #}
                 {% for sortie in listeSorties %}
                     <tr>
                         <td>{{ sortie.nom }}</td>
-                        <td>{{ sortie.dateHeureDebut | date("m/d/Y H:m") }}</td>
-                        <td>{{ sortie.dateLimiteInscription | date("m/d/Y")}}</td>
+                        <td>{{ sortie.dateHeureDebut | date("d/m/Y H:m") }}</td>
+                        <td>{{ sortie.dateLimiteInscription | date("d/m/Y")}}</td>
                         <td>
                             {# Nombre d'inscrits à la sortie #}
                             {% set compteur = 0 %}

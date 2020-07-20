@@ -23,8 +23,6 @@ class MainController extends AbstractController
         if ($listeSortiesForm->isSubmitted() && $listeSortiesForm->isValid())
         {
             $listeSorties = $sortieRepository->findByFilters($data);
-            //$listeSorties = $sortieRepository->findUnsubscribed();
-            //dd($data);
         } else {
             $listeSorties = $sortieRepository->findByFilters($data);
         }
