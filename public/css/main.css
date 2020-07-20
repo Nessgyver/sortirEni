@@ -8,7 +8,7 @@ body{
 }
 
 .flash-error {
-    background-color: #B0413E;
+    background-color: tomato;
     color: #313131;
 }
 
@@ -21,7 +21,7 @@ main {
 
 }
 
-.sortireni {
+.sortireni, h1{
     font-family: 'Fredoka One', cursive;
 }
 
@@ -29,10 +29,14 @@ main {
 h1{
     margin-bottom: 5vw !important;
     text-align: center;
-    font-family: 'Fredoka One', cursive;
 }
 
 label {
     font-size: 1vw;
     font-weight: bold;
+}
+
+.center-div {
+    display: flex;
+    justify-content: center;
 }

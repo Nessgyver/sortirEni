@@ -1,0 +1,36 @@
+.btn-center {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+
+    margin-bottom: 3vw;
+}
+
+.btn-outline-primary {
+    font-family: 'Fredoka One', cursive;
+}
+
+.form-control {
+    width: 70%;
+}
+
+label, input, select {
+    margin-left: 3vw;
+}
+
+.custom-file-input ~ .custom-file-label::after {
+    content: "Choisir un fichier";
+}
+
+h2, input, button {
+    margin-bottom: 2vw;
+}
+
+label {
+    margin-bottom: 1vw;
+}
+
+.custom-file-input {
+    width: 50%;
+}
