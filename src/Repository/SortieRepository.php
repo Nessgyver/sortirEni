@@ -89,11 +89,21 @@ class SortieRepository extends ServiceEntityRepository
 
 
         }
-
+        /*
         //Gestion intervalle de dates
         if ($dataDateFin && $dataDateDebut)
         {
             $qb->andWhere('s.dateHeureDebut BETWEEN :dateDebut AND :dateFin')
+                ->setParameter('dateDebut', $dataDateDebut)
+                ->setParameter('dateFin', $dataDateFin);
+        }
+        */
+
+        //Gestion intervalle de dates
+        if ($dataDateFin && $dataDateDebut)
+        {
+            $qb->andWhere('s.dateHeureDebut <= :dateFin')
+                ->andWhere('s.dateHeureDebut >= :dateDebut')
                 ->setParameter('dateDebut', $dataDateDebut)
                 ->setParameter('dateFin', $dataDateFin);
         }
