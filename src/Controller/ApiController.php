@@ -27,6 +27,21 @@ class ApiController extends AbstractController
         //on renvoie toutes les infos utiles sous forme de response JSON
         return $this->json([
            'lieuxAssocies'  =>  $lieuxAssocies,
+           'codePostal'          =>  $ville->getCodePostal(),
+           'status'         =>  "ok"
+        ], 200);
+    }
+    /**
+     * @Route("/api/1/lieu")
+     */
+    public function getLieu(Request $request, LieuRepository $lr){
+        //on récupère le lieu sélectionné
+        $lieuId = $request->query->get('lieuId');
+        $lieu = $lr->findById($lieuId);
+
+        //on renvoie toutes les infos utiles sous forme de response JSON
+        return $this->json([
+           'lieu'  =>  $lieu,
            'status'         =>  "ok"
         ], 200);
     }
