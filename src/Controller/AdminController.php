@@ -100,10 +100,7 @@ class AdminController extends AbstractController
                         $participant->setPassword($encodedPassword);
 
                         //photo par défault
-                        $defaultPhoto = new PhotoParticipant();
-                        $defaultPhoto->setPhotoNom('default.png');
-                        $finder = new Finder();
-                        $defaultPhoto->setPhotoFile($finder->name($defaultPhoto->getPhotoNom())->in('uploads'));
+                        $defaultPhoto = $participant->getDefaultPhoto();
                         $participant->setPhoto($defaultPhoto);
 
                         array_push($listUsers, $user);
@@ -150,7 +147,23 @@ class AdminController extends AbstractController
             $encodedPassword = $encoder->encodePassword($participant, $password);
             $participant->setPassword($encodedPassword);
 
+            $role = $form["roles"]->getData();
+            if ($role[0]==="ROLE_USER"){
+                $participant->setAdministrateur(false);
+            } else {
+                $participant->setAdministrateur(true);
+            }
+
+            //Par défault le nouveau participant est actif
+            $participant->setActif(true);
+
+            //photo par défault
+            $defaultPhoto = $participant->getDefaultPhoto();
+            $participant->setPhoto($defaultPhoto);
+
+            $em->persist($defaultPhoto);
             $em->persist($participant);
+            
             $em->flush();
 
             $this->addFlash("success", "Participant ajouté en base de données");
@@ -160,5 +173,6 @@ class AdminController extends AbstractController
 
         return $this->render('admin/participants-form.html.twig', ['participant'=>$participant, 'form' => $form->createView()]);
     }
+
 
 }

@@ -64,18 +64,18 @@ class RegistrationFormType extends AbstractType
                     return $repo->createQueryBuilder('c')->addOrderBy('c.nom', 'ASC');
                 }
             ])
-            ->add('roles',ChoiceType::class,
-                array('choices' => array(
-                    'participant' => '["ROLE_USER"]',
-                    'administrateur' => '["ROLE_ADMIN"]',
-                    'choices_as_values' => true,'multiple'=>false,'expanded'=>true)
-                ))
-            ->add('actif',ChoiceType::class,
-                array('choices' => array(
-                    'actif' => '1',
-                    'inactif' => '0',
-                    'choices_as_values' => true,'multiple'=>false,'expanded'=>true)
-                ))
+            ->add('roles', ChoiceType::class, array(
+                'choices'  => array(
+                    'Basic' => 'ROLE_USER',
+                    'Administrateur' => 'ROLE_ADMIN',),
+                'multiple' => true
+            ))
+//            ->add('actif', ChoiceType::class, array(
+//                'choices'  => array(
+//                    'Actif' => 1,
+//                    'Inactif' => 0,),
+//                'multiple' => true
+//            ))
             ->add('save', SubmitType::class, [
                 'attr' => ['class' => 'save'],
             ])

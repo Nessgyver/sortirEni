@@ -6,6 +6,7 @@ use App\Repository\ParticipantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -309,6 +310,17 @@ class Participant implements UserInterface, \Serializable
     public function getPhoto(): ?PhotoParticipant
     {
         return $this->photo;
+    }
+
+    public function getDefaultPhoto(): ?PhotoParticipant
+    {
+        //photo par défault
+        $defaultPhoto = new PhotoParticipant();
+        $defaultPhoto->setPhotoNom('default.png');
+        $finder = new Finder();
+        $defaultPhoto->setPhotoFile($finder->name($defaultPhoto->getPhotoNom())->in('uploads'));
+
+        return $defaultPhoto;
     }
 
     public function setPhoto(?PhotoParticipant $photo): self
