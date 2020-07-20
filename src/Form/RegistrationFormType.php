@@ -66,19 +66,11 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('roles', ChoiceType::class, array(
                 'choices'  => array(
-                    'Basic' => 'ROLE_USER',
+                    'Utilisateur basique' => 'ROLE_USER',
                     'Administrateur' => 'ROLE_ADMIN',),
-                'multiple' => true
+                'multiple' => true,
+                'label' => 'Choisissez les droits de l\'utilisateur'
             ))
-//            ->add('actif', ChoiceType::class, array(
-//                'choices'  => array(
-//                    'Actif' => 1,
-//                    'Inactif' => 0,),
-//                'multiple' => true
-//            ))
-            ->add('save', SubmitType::class, [
-                'attr' => ['class' => 'save'],
-            ])
         ;
     }
 
