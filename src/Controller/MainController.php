@@ -19,13 +19,12 @@ class MainController extends AbstractController
 
         $listeSortiesForm = $this->createForm(ListeSortieType::class);
         $data = $listeSortiesForm->handleRequest($request)->getData();
-        $campus = $data['campus'];
-
         $listeSorties = $sortieRepository->findByFilters($data);
 
         if ($listeSortiesForm->isSubmitted() && $listeSortiesForm->isValid())
         {
             $listeSorties = $sortieRepository->findByFilters($data);
+            //dd($data);
         }
 
 

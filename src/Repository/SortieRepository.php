@@ -33,13 +33,14 @@ class SortieRepository extends ServiceEntityRepository
         $dataDateDebut = $data['dateDebut'];
         $dataDateFin = $data['dateFin'];
 
+
         $qb = $this->createQueryBuilder('s');
-        //$orModule = $qb->expr()->orX();
-        //$orModule->add($qb->expr()->eq('s.etat', ':etat'));
-        //$orModule->add($qb->expr()->eq('s.organisateur', ':currentUser'));
-        //$qb -> andWhere('s.etat != :etat')
-        //-> orWhere($orModule)
-        //-> setParameter('etat', Sortie::CREATE)
+        $orModule = $qb->expr()->orX();
+        $orModule->add($qb->expr()->eq('s.etat', ':etat1'));
+        $orModule->add($qb->expr()->eq('s.organisateur', ':currentUser'));
+        $qb -> orWhere($orModule)
+            -> setParameter('etat1', Sortie::CREATE)
+            ;
 
 
 
@@ -59,17 +60,17 @@ class SortieRepository extends ServiceEntityRepository
         }
 
         /**
-         * @todo : gestion campus + gestion cas particuliers fitlres + unsubscribed
+         * @todo : gestion cas particuliers fitlres + unsubscribed
          */
-        /*
+
         //Gestion pour campus
-        if ($campus)
+        if ($campus != null)
         {
             $qb->innerJoin('s.organisateur', 'p')
                 ->andWhere('p.campus = :campus')
                 ->setParameter('campus', $campus);
         }
-        */
+
 
         //Gestion des filtres
         if ($dataFiltres)
@@ -83,7 +84,7 @@ class SortieRepository extends ServiceEntityRepository
 
             }
 
-            //Sorties dont je suis inscrit
+            //Sorties dont je suis inscris
             if (in_array(1, $dataFiltres))
             {
                 $qb->leftJoin('s.inscriptions', 'i')
@@ -91,24 +92,25 @@ class SortieRepository extends ServiceEntityRepository
             }
 
 
-            //Sorties dont je ne suis pas inscrit
+            //Sorties dont je ne suis pas inscris
             if (in_array(2, $dataFiltres))
             {
+
 
             }
 
             //Sorties passées
             if (in_array(3, $dataFiltres)) {
-                $qb->orWhere('s.etat = :etat')
-                    ->setParameter('etat', Sortie::FINISHED)
+                $qb->orWhere('s.etat = :etat6')
+                    ->setParameter('etat6', Sortie::FINISHED)
                     ->join('s.etat', 'e')
                     ->addSelect('e');
             }
 
-            if (in_array(0, $dataFiltres) || in_array(1, $dataFiltres) || in_array(2, $dataFiltres) || in_array(3, $dataFiltres))
-            {
+            //if (in_array(0, $dataFiltres) || in_array(1, $dataFiltres) || in_array(2, $dataFiltres) || in_array(3, $dataFiltres))
+            //{
                 $qb -> setParameter('currentUser', $currentUser);
-            }
+           // }
         }
 
 
