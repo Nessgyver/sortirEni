@@ -22,7 +22,11 @@
     margin-left: 2vw;
 }
 
-.pad-l-40 {
-    padding-left: 40%;
+.pad-l-30 {
+    padding-left: 30%;
+}
+
+h1 {
+    padding: 0 10vw;
 }
 
