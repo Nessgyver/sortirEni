@@ -27,12 +27,15 @@ class ListeSortieType extends AbstractType
             ->add('campus', EntityType::class, [
                 'class' => Campus::class,
                 'choice_label'=> 'nom',
-                'placeholder' => 'Choisissez un campus'
+                'placeholder' => 'Choisissez un campus',
+                'required' => false,
+
             ])
             ->add('nomSortie', TextType::class, [
                 'label'=>'Le nom de la sortie contient : ',
                 'attr' => [
-                  'placeholder' => 'Affines ta recherche !'
+                  'placeholder' => 'Affines ta recherche !',
+                    'required' => false,
                 ],
                 'constraints' => [
                    new Length([
@@ -49,7 +52,8 @@ class ListeSortieType extends AbstractType
                     'day' => 'Jour',
                     'month' => 'Mois',
                     'year' => 'Année'
-                ]
+                ],
+                'required' => false,
 
             ])
             ->add('dateFin', DateType::class, [
@@ -60,7 +64,8 @@ class ListeSortieType extends AbstractType
                     'day' => 'Jour',
                     'month' => 'Mois',
                     'year' => 'Année'
-                ]
+                ],
+                'required' => false,
             ])
             ->add('Filtres', ChoiceType::class, [
                 'label' => false,
@@ -72,6 +77,7 @@ class ListeSortieType extends AbstractType
                 ],
                 'expanded' => true,
                 'multiple' => true,
+                'required' => false,
             ])
 
         ;
