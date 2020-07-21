@@ -67,6 +67,7 @@ class SortieController extends AbstractController
             ;
         }
 
+        //créé de nouveaux champs spécifiques à cette page
         $annulationForm = $this->createFormBuilder()
             ->add('motif', TextareaType::class)
             ->add('enregistrer', SubmitType::class, [
