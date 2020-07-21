@@ -11,6 +11,8 @@ use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -30,8 +32,12 @@ class SortieType extends AbstractType
         $optionBoutons = $options['optionBoutons'];
         $builder
             ->add('nom')
-            ->add('dateHeureDebut')
-            ->add('dateLimiteInscription')
+            ->add('dateHeureDebut', DateTimeType::class,[
+                'widget'    => 'single_text',
+            ])
+            ->add('dateLimiteInscription', DateTimeType::class,[
+                'widget'    => 'single_text',
+            ])
             ->add('nbInscriptionMax')
             ->add('duree')
             ->add('infosSortie')
@@ -56,18 +62,15 @@ class SortieType extends AbstractType
                 function(FormEvent $event)
                 {
                     $form = $event->getForm();
-                    if($form){
-                        dump($form->getData());
-
-                    }
-                    $form->getParent()->add('lieu', EntityType::class,[
-                        'class'         => Lieu::class,
-                        'choices'       => $form->getData() != null ? $form->getData()->getLieu() :[],
-                        'choice_label'  => function(Lieu $l){
-                            return $l->getNom();
-                        },
-                        'placeholder'   => 'veuillez sélectionner un lieu'
-                    ]);
+                    $form->getParent()
+                        ->add('lieu', EntityType::class,[
+                            'class'         => Lieu::class,
+                            'choices'       => $form->getData() != null ? $form->getData()->getLieu() :[],
+                            'choice_label'  => function(Lieu $l){
+                                return $l->getNom();
+                            },
+                            'placeholder'   => 'veuillez sélectionner un lieu'
+                        ]);
                 }
         );
 
