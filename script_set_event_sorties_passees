@@ -1,0 +1,17 @@
+/*les commandes sont à effectuer séparemment */
+
+SET GLOBAL event_scheduler = ON;
+
+/*check if the event_scheduler is ON or OFF */
+SELECT @@event_scheduler;
+
+CREATE EVENT close_outing
+    ON SCHEDULE
+      EVERY 1 DAY STARTS '2020-07-20 01:00:00'
+      ENABLE COMMENT 'change le statut de la sortie à \"passée\" en fonction de sa date'
+    DO
+      UPDATE sortie SET etat_id = 3 WHERE DATE(date_heure_debut) <= CURDATE();
+
+
+
+
