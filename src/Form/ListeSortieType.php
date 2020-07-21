@@ -46,19 +46,14 @@ class ListeSortieType extends AbstractType
             ])
             ->add('dateDebut', DateType::class, [
                 'label' => 'Entre ',
-                'format' => 'dd/MM/yyyy',
                 'years' => range(date('Y')-1, date('Y')+5),
-                'placeholder' => [
-                    'day' => 'Jour',
-                    'month' => 'Mois',
-                    'year' => 'Année'
-                ],
+                'placeholder' => 'test',
                 'required' => false,
+                'widget' => 'single_text',
 
             ])
             ->add('dateFin', DateType::class, [
                 'label' => ' et ',
-                'format' => 'dd/MM/yyyy',
                 'years' => range(date('Y')-1, date('Y')+5),
                 'placeholder' => [
                     'day' => 'Jour',
@@ -66,6 +61,7 @@ class ListeSortieType extends AbstractType
                     'year' => 'Année'
                 ],
                 'required' => false,
+                'widget' => 'single_text',
             ])
             ->add('Filtres', ChoiceType::class, [
                 'label' => false,
