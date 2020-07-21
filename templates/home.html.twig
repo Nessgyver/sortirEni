@@ -6,9 +6,10 @@
     <div class="container">
         <div class="row col-4">
             <h1>Filtrer les sorties</h1>
-            {{ form_start(form, {'attr': {'novalidate':'novalidate'}}) }}
+            {{ form_start(form) }}
 
             {{ form_widget(form)}}
+
             <button type="submit" class="btn btn-primary">Rechercher</button>
             {{ form_end(form) }}
         </div>
@@ -27,14 +28,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                {#{{ dump(listeSorties) }}#}
-
                 {# Affichage des sorties #}
                 {% for sortie in listeSorties %}
                     <tr>
                         <td>{{ sortie.nom }}</td>
-                        <td>{{ sortie.dateHeureDebut | date("m/d/Y H:m") }}</td>
-                        <td>{{ sortie.dateLimiteInscription | date("m/d/Y")}}</td>
+                        <td>{{ sortie.dateHeureDebut | date("d/m/Y H:m") }}</td>
+                        <td>{{ sortie.dateLimiteInscription | date("d/m/Y")}}</td>
                         <td>
                             {# Nombre d'inscrits à la sortie #}
                             {% set compteur = 0 %}
@@ -108,4 +107,9 @@
 
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="{{ asset('js/home.js') }}"></script>
 {% endblock %}

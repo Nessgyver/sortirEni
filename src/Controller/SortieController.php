@@ -278,13 +278,20 @@ class SortieController extends AbstractController
     /**
      * @Route("/inscrire/{id}", name="inscrire")
      */
-    public function inscrire(int $id, SortieRepository $sortieRepository, EntityManagerInterface $entityManager)
+    public function inscrire(int $id, SortieRepository $sortieRepository, EntityManagerInterface $entityManager, EtatRepository $etatRepository)
     {
         //Création de la route et récupération de l'id
         $route = 'sortie_afficher';
         $sortie = $sortieRepository->findOneBy([
             'id' => $id
         ]);
+
+        if ($sortie->getInscriptions()->count() == $sortie->getNbInscriptionMax()-1)
+        {
+            $sortie->setEtat($etatRepository->findOneBy([
+                'id' => Sortie::CLOSED,
+            ]));
+        }
 
         //Création et hydratation de l'inscription à insérer en base
         $inscription = new Inscription();
@@ -297,6 +304,9 @@ class SortieController extends AbstractController
         //Insertion en base
         $entityManager->persist($inscription);
         $entityManager->flush();
+
+        $this->addFlash('error', 'Nombre maximum d\'inscrit atteint');
+
 
         return $this->redirectToRoute($route, [
                 'id' => $sortie->getId()
