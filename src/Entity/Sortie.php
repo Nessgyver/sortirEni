@@ -70,13 +70,13 @@ class Sortie
     private $urlPhoto;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\ManyToOne(targetEntity=Lieu::class, inversedBy="sorties")
      * @ORM\JoinColumn(nullable=false)
      */
     private $lieu;
 
     /**
-     * @Assert\NotBlank()
      * @ORM\ManyToOne(targetEntity=Etat::class, inversedBy="sorties")
      * @ORM\JoinColumn(nullable=false)
      */
