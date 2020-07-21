@@ -26,7 +26,6 @@ class SortieRepository extends ServiceEntityRepository
     public function findByFilters($data)
     {
         $currentUser = $this->security->getUser();
-        $motCle = $data['nomSortie'];
         $campus = $data['campus'];
         $dataFiltres = $data['Filtres'];
         $dataMotCle = $data['nomSortie'];
@@ -36,38 +35,27 @@ class SortieRepository extends ServiceEntityRepository
 
         $qb = $this->createQueryBuilder('s');
 
-        //Récupération des sorties dont je ne suis pas l'organisateur et dont l'état est 'Créée'
-        $listeSortiesPasOrgaEtCreee = $this->subQueryDefaultDisplay($currentUser);
-
-        //Soustraction de la 'listeSortiesPasOrgaEtCreee' du findAll()
-        $qb -> addSelect('s')
-            ->orWhere($qb->expr()->notIn('s.id', ':listeSortiesPasOrgaEtCreee'))
-            ->setParameter('listeSortiesPasOrgaEtCreee', $listeSortiesPasOrgaEtCreee);
-
-
-
-
-
         //Gestion des filtres
         if ($dataFiltres) {
             //Sorties dont je suis l'organisateur
-            if (in_array(0, $dataFiltres)) {
+            if (in_array(0, $dataFiltres))
+            {
                 $qb->orWhere('s.organisateur = :currentUser');
                 $qb->join('s.organisateur', 'o')
                     ->addSelect('o');
-
-
             }
 
             //Sorties auxquelles je suis inscrit
-            if (in_array(1, $dataFiltres)) {
+            if (in_array(1, $dataFiltres))
+            {
                 $qb->leftJoin('s.inscriptions', 'i')
                     ->orWhere('i.participant = :currentUser');
             }
 
 
             //Sorties auxquelles je ne suis pas inscrit
-            if (in_array(2, $dataFiltres)) {
+            if (in_array(2, $dataFiltres))
+            {
                 $listeSortiesInscrit = $this->subQueryFindUnSubsribed($currentUser);
 
                 $qb ->addSelect('s')
@@ -76,28 +64,29 @@ class SortieRepository extends ServiceEntityRepository
             }
 
             //Sorties passées
-            if (in_array(3, $dataFiltres)) {
+            if (in_array(3, $dataFiltres))
+            {
                 $qb->orWhere('s.etat = :etat6')
                     ->setParameter('etat6', Sortie::FINISHED)
                     ->join('s.etat', 'e')
                     ->addSelect('e');
             }
 
-            if (in_array(0, $dataFiltres) || in_array(1, $dataFiltres) || in_array(3, $dataFiltres)) {
+            if (in_array(0, $dataFiltres) || in_array(1, $dataFiltres)) {
                 $qb->setParameter('currentUser', $currentUser);
             }
 
 
+        } else {
+            //Récupération des sorties dont je ne suis pas l'organisateur et dont l'état est 'Créée'
+            $listeSortiesPasOrgaEtCreee = $this->subQueryDefaultDisplay($currentUser);
+
+            //Soustraction de la 'listeSortiesPasOrgaEtCreee' du findAll()
+            $qb -> addSelect('s')
+                ->orWhere($qb->expr()->notIn('s.id', ':listeSortiesPasOrgaEtCreee'))
+                ->setParameter('listeSortiesPasOrgaEtCreee', $listeSortiesPasOrgaEtCreee);
         }
-        /*
-        //Gestion intervalle de dates
-        if ($dataDateFin && $dataDateDebut)
-        {
-            $qb->andWhere('s.dateHeureDebut BETWEEN :dateDebut AND :dateFin')
-                ->setParameter('dateDebut', $dataDateDebut)
-                ->setParameter('dateFin', $dataDateFin);
-        }
-        */
+
 
         //Gestion intervalle de dates
         if ($dataDateFin && $dataDateDebut)
@@ -111,7 +100,7 @@ class SortieRepository extends ServiceEntityRepository
         //Gestion pour un mot clé
         if ($dataMotCle) {
             $qb->andWhere('s.nom LIKE :motCle')
-                ->setParameter('motCle', "%$motCle%");
+                ->setParameter('motCle', "%$dataMotCle%");
         }
 
         //Gestion pour campus
