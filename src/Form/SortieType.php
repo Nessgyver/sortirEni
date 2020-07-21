@@ -11,10 +11,13 @@ use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -30,8 +33,15 @@ class SortieType extends AbstractType
         $optionBoutons = $options['optionBoutons'];
         $builder
             ->add('nom')
-            ->add('dateHeureDebut')
-            ->add('dateLimiteInscription')
+            ->add('dateHeureDebut', DateTimeType::class,[
+                'widget'    => 'single_text',
+                'attr'      =>  [
+                    'min'   => '21/07/2020'
+                ]
+            ])
+            ->add('dateLimiteInscription', DateTimeType::class,[
+                'widget'    => 'single_text',
+            ])
             ->add('nbInscriptionMax')
             ->add('duree')
             ->add('infosSortie')
@@ -52,24 +62,28 @@ class SortieType extends AbstractType
                 'placeholder'   => 'veuillez sélectionner une ville'
             ]);
             $builder->get('ville')->addEventListener(
-        FormEvents::POST_SET_DATA,
-                function(FormEvent $event)
-                {
-                    $form = $event->getForm();
-                    if($form){
-                        dump($form->getData());
-
+            FormEvents::POST_SUBMIT,
+                    function(FormEvent $event)
+                    {
+                        $form = $event->getForm();
+                        $this->addLieuField($form->getParent(), $form->getData());
                     }
-                    $form->getParent()->add('lieu', EntityType::class,[
-                        'class'         => Lieu::class,
-                        'choices'       => $form->getData() != null ? $form->getData()->getLieu() :[],
-                        'choice_label'  => function(Lieu $l){
-                            return $l->getNom();
-                        },
-                        'placeholder'   => 'veuillez sélectionner un lieu'
-                    ]);
+            );
+            $builder->addEventListener(
+                FormEvents::POST_SET_DATA,
+                function (FormEvent $event){
+                    $data = $event->getData();
+                    $lieu = $data->getLieu();
+                    $form = $event->getForm();
+                    if($lieu){
+                        $ville = $lieu->getVille();
+                        $this->addLieuField($form, $ville);
+                        $form->get('ville')->setData($ville);
+                    }else{
+                        $this->addLieuField($form, null);
+                    }
                 }
-        );
+            );
 
 
             if($optionBoutons == 'modifier' || $optionBoutons == 'creer')
@@ -94,6 +108,23 @@ class SortieType extends AbstractType
 
                 };
             }
+    }
+
+    /**
+     * permet d'ajouter le champ de Lieu et de modifier son contenu dynamiquement en fonction de la ville sélectionnée
+     * @param FormInterface $form
+     * @param Ville|null $ville
+     */
+    private function addLieuField(FormInterface $form, ?Ville $ville){
+        $form
+            ->add('lieu', EntityType::class,[
+                'class'         => Lieu::class,
+                'choices'       => $ville != null ? $ville->getLieu() :[],
+                'choice_label'  => function(Lieu $l){
+                    return $l->getNom();
+                },
+                'placeholder'   => 'veuillez sélectionner un lieu'
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -37,7 +37,7 @@ class SortieController extends AbstractController
         $sortie = $sortieRepo->find($id);
         $sortieForm = $this->createForm(SortieType::class, $sortie,['disabled'=>true]);
 
-        //to do: récupère la liste des participants associés à cette sortie
+        //récupère la liste des participants associés à cette sortie
 
         $inscriptions = $sortie->getInscriptions();
 
@@ -56,6 +56,16 @@ class SortieController extends AbstractController
         //récupère la sortie passée en $id pour l'afficher
         $sortieRepo = $em->getRepository(Sortie::class);
         $sortie = $sortieRepo->find($id);
+
+
+        //vérifie que l'utilisateur est bien autorisé à accéder à la page demandée
+        if($this->getUser()->getUsername() !== $sortie->getOrganisateur()->getUsername() && !$this->isGranted(['ROLE_ADMIN']))
+        {
+            return $this->redirectToRoute('sortie_afficher', [
+                'id'=> $id
+                ])
+            ;
+        }
 
         $annulationForm = $this->createFormBuilder()
             ->add('motif', TextareaType::class)
@@ -130,6 +140,15 @@ class SortieController extends AbstractController
         $sortieForm = $this->createForm(SortieType::class, $sortie, [
             'optionBoutons'=>'modifier',
         ]);
+
+        //vérifie que l'utilisateur est bien autorisé à accéder à la page demandée
+        if($this->getUser()->getUsername() !== $sortie->getOrganisateur()->getUsername() && !$this->isGranted(['ROLE_ADMIN']))
+        {
+            return $this->redirectToRoute('sortie_afficher', [
+                'id'=> $id
+            ])
+                ;
+        }
 
         $sortieForm->handleRequest($request);
 

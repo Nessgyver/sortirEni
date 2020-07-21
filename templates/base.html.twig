@@ -18,10 +18,17 @@
         <header>
             <nav class="navbar navbar-expand-md navbar-light bg-light sortireni">
                 <div class="col-6">
-                    <a class="navbar-brand" href="{{ path('home') }}">
-                        <img src="https://source.unsplash.com/1600x800?nature,water" width="30" height="30" class="d-inline-block align-top" alt="">
-                        SortirENI.com
-                    </a>
+
+                        <div class="row">
+                            <div class="col-sm">
+                                <a class="navbar-brand" href="{{ path('home') }}">
+                                    <img src="{{ asset('img/logosortireni.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
+                                    <p>SortirENI.com</p>
+                                </a>
+                            </div>
+                        </div>
+
+
                 </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>

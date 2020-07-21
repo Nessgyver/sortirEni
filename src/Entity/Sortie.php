@@ -77,7 +77,6 @@ class Sortie
     private $lieu;
 
     /**
-     * @Assert\NotBlank()
      * @ORM\ManyToOne(targetEntity=Etat::class, inversedBy="sorties")
      * @ORM\JoinColumn(nullable=false)
      */
