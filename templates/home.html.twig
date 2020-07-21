@@ -6,9 +6,13 @@
     <div class="container">
         <div class="row col-4">
             <h1>Filtrer les sorties</h1>
-            {{ form_start(form, {'attr': {'novalidate':'novalidate'}}) }}
+            {{ form_start(form) }}
 
-            {{ form_widget(form)}}
+            {{ form_row(form.campus)}}
+            {{ form_row(form.nomSortie)}}
+            {{ form_row(form.dateDebut)}}
+            {{ form_row(form.dateFin)}}
+            {{ form_row(form.Filtres)}}
             <button type="submit" class="btn btn-primary">Rechercher</button>
             {{ form_end(form) }}
         </div>
@@ -106,4 +110,9 @@
 
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="{{ asset('js/home.js') }}"></script>
 {% endblock %}
