@@ -8,11 +8,8 @@
             <h1>Filtrer les sorties</h1>
             {{ form_start(form) }}
 
-            {{ form_row(form.campus)}}
-            {{ form_row(form.nomSortie)}}
-            {{ form_row(form.dateDebut)}}
-            {{ form_row(form.dateFin)}}
-            {{ form_row(form.Filtres)}}
+            {{ form_widget(form)}}
+
             <button type="submit" class="btn btn-primary">Rechercher</button>
             {{ form_end(form) }}
         </div>
