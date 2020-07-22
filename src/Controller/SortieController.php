@@ -42,8 +42,9 @@ class SortieController extends AbstractController
 
         //injecte les infos pour pouvoir les afficher
         return $this->render('sortie/afficher.html.twig', [
-            'sortieForm'=> $sortieForm->createView(),
-            'inscriptions'=> $inscriptions
+            'sortieForm'    => $sortieForm->createView(),
+            'inscriptions'  => $inscriptions,
+            'sortie'        => $sortie
         ]);
     }
 
@@ -171,49 +172,6 @@ class SortieController extends AbstractController
         ]);
     }
 
-    /**
-     * récupère la valeur du bouton cliqué pour modifier le champ état de la sortie si besoin
-     * enregistre en base de données le cas échéant
-     * et oriente sur la page appropriée
-     * @param FormInterface $sortieForm
-     * @param Sortie $sortie
-     * @param EtatRepository $etatRepository
-     * @param EntityManagerInterface $em
-     * @return RedirectResponse
-     */
-    private function redirectionFormulaire(FormInterface $sortieForm, Sortie $sortie, EtatRepository $etatRepository, EntityManagerInterface $em): RedirectResponse
-    {
-        $route = 'sortie_';
-        $persist = false;
-        //récupère la valeur du bouton cliqué pour modifier le champ état de la sortie
-        if ($sortieForm->get('enregistrer')->isClicked()) {
-            $sortie->setEtat($etatRepository->findOneBy([
-                'libelle' => 'Créée'
-            ]));
-            $route .= 'afficher';
-            $persist = true;
-        } elseif ($sortieForm->get('publier')->isClicked()) {
-            $sortie->setEtat($etatRepository->findOneBy([
-                'libelle' => 'Ouverte'
-            ]));
-            $route .= 'afficher';
-            $persist = true;
-        } elseif ($sortieForm->get('supprimer')->isClicked()) {
-            $route .= 'annuler';
-        } elseif ($sortieForm->get('annuler')->isClicked()) {
-            $route = 'home';
-        }
-        if($persist)
-        {
-            $em->persist($sortie);
-            $em->flush();
-        }
-        //renvoie vers la route adéquate
-        return $this->redirectToRoute($route, [
-                'id' => $sortie->getId()
-            ]
-        );
-    }
 
     /**
      * @Route("/seDesister/{id}", name="seDesister")
@@ -262,6 +220,7 @@ class SortieController extends AbstractController
         $em->persist($sortie);
         $em->flush();
 
+        //renvoie vers la page sortie_afficher
         return $this->redirectToRoute($route, [
                 'id' => $sortie->getId()
             ]
@@ -285,12 +244,12 @@ class SortieController extends AbstractController
             $sortie->setEtat($etatRepository->findOneBy([
                 'id' => Sortie::CLOSED,
             ]));
+        //ajoute un message pour prévenir que le nombre maximim est atteint
         $this->addFlash('error', 'Nombre maximum d\'inscrit atteint');
         }
 
         //Création et hydratation de l'inscription à insérer en base
         $inscription = new Inscription();
-
         $currentUser = $this->getUser();
         $inscription->setParticipant($currentUser);
         $inscription->setDateInscription(new DateTime());
@@ -300,12 +259,54 @@ class SortieController extends AbstractController
         $entityManager->persist($inscription);
         $entityManager->flush();
 
-
-
+        //renvoie vers la page afficher_sortie
         return $this->redirectToRoute($route, [
                 'id' => $sortie->getId()
             ]
         );
     }
 
+    /**
+     * récupère la valeur du bouton cliqué pour modifier le champ état de la sortie si besoin
+     * enregistre en base de données le cas échéant
+     * et oriente sur la page appropriée
+     * @param FormInterface $sortieForm
+     * @param Sortie $sortie
+     * @param EtatRepository $etatRepository
+     * @param EntityManagerInterface $em
+     * @return RedirectResponse
+     */
+    private function redirectionFormulaire(FormInterface $sortieForm, Sortie $sortie, EtatRepository $etatRepository, EntityManagerInterface $em): RedirectResponse
+    {
+        $route = 'sortie_';
+        $persist = false;
+        //récupère la valeur du bouton cliqué pour modifier le champ état de la sortie
+        if ($sortieForm->get('enregistrer')->isClicked()) {
+            $sortie->setEtat($etatRepository->findOneBy([
+                'libelle' => 'Créée'
+            ]));
+            $route .= 'afficher';
+            $persist = true;
+        } elseif ($sortieForm->get('publier')->isClicked()) {
+            $sortie->setEtat($etatRepository->findOneBy([
+                'libelle' => 'Ouverte'
+            ]));
+            $route .= 'afficher';
+            $persist = true;
+        } elseif ($sortieForm->get('supprimer')->isClicked()) {
+            $route .= 'annuler';
+        } elseif ($sortieForm->get('annuler')->isClicked()) {
+            $route = 'home';
+        }
+        if($persist)
+        {
+            $em->persist($sortie);
+            $em->flush();
+        }
+        //renvoie vers la route adéquate
+        return $this->redirectToRoute($route, [
+                'id' => $sortie->getId()
+            ]
+        );
+    }
 }

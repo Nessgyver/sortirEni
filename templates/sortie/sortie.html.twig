@@ -9,7 +9,7 @@
     {% block contenu %}
         {{ form_start(sortieForm) }}
         <div class="row">
-            <div class="col">
+            <div class="col-sm">
                 {{ form_row(sortieForm.nom) }}
                 {{ form_row(sortieForm.dateHeureDebut) }}
                 {{ form_row(sortieForm.dateLimiteInscription) }}
@@ -17,13 +17,19 @@
                 {{ form_row(sortieForm.duree) }}
                 {{ form_row(sortieForm.infosSortie) }}
             </div>
-            <div class="col">
+            <div class="col-sm">
                 {{ form_row(sortieForm.organisateur) }}
                 {{ form_row(sortieForm.ville) }}
                 {% if sortieForm.lieu is defined%}
                     {{ form_row(sortieForm.lieu) }}
                 {% endif %}
-                <div id="info_lieu"></div>
+                <div id="info_lieu">
+                    {% if sortie is defined %}
+                        <div class="form-group "><label>Rue :</label> <input class="form-control" value="{{ sortie.lieu.rue }}" disabled></div>
+                        <div class="form-group "><label>Longitude :</label> <input class="form-control" value="{{ sortie.lieu.longitude }}" disabled></div>
+                        <div class="form-group "><label>Latitude :</label> <input class="form-control" value="{{ sortie.lieu.latitude }}" disabled></div>
+                    {% endif %}
+                </div>
             </div>
         </div>
         <div class="row justify-content-around">
