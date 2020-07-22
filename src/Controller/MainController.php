@@ -9,6 +9,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class MainController
+ * créée et implémentée par Mathieu
+ * ce contrôleur gère la page d'accueil
+ * @package App\Controller
+ */
 class MainController extends AbstractController
 {
     /**
