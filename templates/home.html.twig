@@ -118,9 +118,9 @@
                 {% endfor %}
                 </tbody>
             </table>
+            {{ knp_pagination_render(listeSorties) }}
             <a href="{{ path('sortie_creer') }}" class="btn btn-primary">Créer une sortie</a>
         </div>
-
     </div>
 {% endblock %}
 
