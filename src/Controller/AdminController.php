@@ -22,6 +22,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class AdminController extends AbstractController
 {
     /**
+     * TO DO: route permettant à un administrateur d'ajouter des villes en BDD
      * @Route("/villes", name="villes")
      */
     public function villes()
@@ -32,6 +33,7 @@ class AdminController extends AbstractController
     }
 
     /**
+     * TO DO: route permettant à un administrateur d'ajouter des Campus en BDD
      * @Route("/campus", name="campus")
      */
     public function campus()
@@ -42,6 +44,7 @@ class AdminController extends AbstractController
     }
 
     /**
+     * TO DO: route permettant à un administrateur d'ajouter des Participants en BDD
      * @Route("/participants", name="participants")
      */
     public function choixAjoutParticipants()

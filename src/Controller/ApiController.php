@@ -11,24 +11,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class ApiController extends AbstractController
 {
     /**
-     * @Route("/api/1/lieux")
-     */
-    public function getLieux(Request $request, LieuRepository $lr, VilleRepository $vr){
-        //on récupère la ville sélectionnée
-        $villeId = $request->query->get('villeId');
-        $ville = $vr->find($villeId);
-
-        //on charge tous les lieux associés à la ville
-        $lieuxAssocies = $lr->findByVilleId($ville);
-
-        //on renvoie toutes les infos utiles sous forme de response JSON
-        return $this->json([
-           'lieuxAssocies'  =>  $lieuxAssocies,
-           'codePostal'          =>  $ville->getCodePostal(),
-           'status'         =>  "ok"
-        ], 200);
-    }
-    /**
+     * api permettant de récupérer toutes les infos concernant un lieu
+     * prend en paramètre l'id du lieu concerné
      * @Route("/api/1/lieu")
      */
     public function getLieu(Request $request, LieuRepository $lr){
