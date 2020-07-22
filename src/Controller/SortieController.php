@@ -162,10 +162,6 @@ class SortieController extends AbstractController
             return $this->redirectionFormulaire($sortieForm, $sortie, $etatRepository, $em);
 
         }
-
-
-
-
         return $this->render('sortie/modifier.html.twig', [
             "sortieForm" => $sortieForm->createView()
         ]);
@@ -228,10 +224,12 @@ class SortieController extends AbstractController
             'id' => $id
         ]);
 
+        //Récupération des inscriptions à la sortie sélectionnée
         $inscriptions = $inscriptionRepository->findBy([
             'sortie' => $sortie
         ]);
 
+        //Je vérifie chaque inscription. Si je suis dessus, l'inscription est supprimmée
         foreach ($inscriptions as $currentInscription)
         {
             if ($currentInscription->getParticipant()->getId() == $currentUser->getId())
@@ -285,6 +283,7 @@ class SortieController extends AbstractController
             'id' => $id
         ]);
 
+        //Si le nombre maximum d'inscriptions est atteint, l'état de la sortie passe sur close
         if ($sortie->getInscriptions()->count() == $sortie->getNbInscriptionMax()-1)
         {
             $sortie->setEtat($etatRepository->findOneBy([
