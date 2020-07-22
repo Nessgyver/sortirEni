@@ -17,7 +17,7 @@ class MainController extends AbstractController
     {
 
 
-        $listeSortiesForm = $this->createForm(ListeSortieType::class);
+        $listeSortiesForm = $this->createForm(ListeSortieType::class, null, ['required'=>false]);
         $data = $listeSortiesForm->handleRequest($request)->getData();
 
         if ($listeSortiesForm->isSubmitted() && $listeSortiesForm->isValid())
