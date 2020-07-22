@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Form\ListeSortieType;
 use App\Repository\SortieRepository;
 use DateTime;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,7 +15,7 @@ class MainController extends AbstractController
     /**
      * @Route("/home", name="home")
      */
-    public function home(SortieRepository $sortieRepository, Request $request)
+    public function home(SortieRepository $sortieRepository, Request $request, PaginatorInterface $paginator)
     {
         //création du formulaire de filtration des sorties affichées
         $listeSortiesForm = $this->createForm(ListeSortieType::class, null, ['required'=>false]);
@@ -28,9 +29,19 @@ class MainController extends AbstractController
         //traitement du formulaire de filtration des sorties
         if ($listeSortiesForm->isSubmitted() && $listeSortiesForm->isValid())
         {
-            $listeSorties = $sortieRepository->findByFilters($data);
+            $donnees = $sortieRepository->findByFilters($data);
+            $listeSorties = $paginator -> paginate(
+                $donnees,
+                $request->query->getInt('page', 1),
+                20
+            );
         } else {
-            $listeSorties = $sortieRepository->findByFilters($data);
+            $donnees = $sortieRepository->findByFilters($data);
+            $listeSorties = $paginator -> paginate(
+                $donnees,
+                $request->query->getInt('page', 1),
+                20
+            );
         }
 
         //génération des variables à transmettre à la page à afficher
