@@ -1,12 +1,15 @@
 $(document).on('change', '#sortie_ville',function(){
-    console.log('coucou')
     let $field = $(this)
+    let $dateHeureDebut = $('#sortie_dateHeureDebut')
+    let $dateLimite = $('#sortie_dateLimiteInscription')
     let $form = $field.closest('form')
     let data = {}
     data[$field.attr('name')] = $field.val()
+    data[$dateHeureDebut.attr('name')] = $dateHeureDebut.val()
+    data[$dateLimite.attr('name')] = $dateLimite.val()
     $.post($form.attr('action'), data).then(function(data){
         let $input = $(data).find('#sortie_lieu')
-        $('#sortieLieu').replaceWith($input)
+        $('#sortie_lieu').replaceWith($input)
     })
 })
 

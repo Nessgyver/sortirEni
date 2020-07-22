@@ -107,6 +107,8 @@ class SortieController extends AbstractController
     {
         //créé une nouvelle sortie pour pouvoir créer un formulaire vide
         $sortie = new Sortie();
+        $now = new DateTime();
+        $sortie->setDateHeureDebut($now)->setDateLimiteInscription($now);
         $sortieForm = $this->createForm(SortieType::class, $sortie, [
             'optionBoutons'=>'creer',
         ]);
