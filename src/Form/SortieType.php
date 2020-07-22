@@ -6,13 +6,9 @@ use App\Entity\Lieu;
 use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Entity\Ville;
-use Doctrine\DBAL\Types\TextType;
-use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -31,11 +27,13 @@ class SortieType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $optionBoutons = $options['optionBoutons'];
+        //création des champs du formulaire de base
         $builder
             ->add('nom')
             ->add('dateHeureDebut', DateTimeType::class,[
-                'widget'    => 'single_text',
-                'attr'      =>  [
+                'widget'        => 'single_text',
+                'with_seconds'  => false,
+                'attr'          =>  [
                     'min'   => '21/07/2020'
                 ]
             ])
@@ -61,6 +59,8 @@ class SortieType extends AbstractType
                 'mapped'        => false,
                 'placeholder'   => 'veuillez sélectionner une ville'
             ]);
+
+            //ajout du listener pour générer dynamiquement le champ pour sélectionner le lieu en fonction de la ville choisie
             $builder->get('ville')->addEventListener(
             FormEvents::POST_SUBMIT,
                     function(FormEvent $event)
@@ -69,6 +69,8 @@ class SortieType extends AbstractType
                         $this->addLieuField($form->getParent(), $form->getData());
                     }
             );
+
+            //ajout du listener permettant d'afficher les informations de ville et de lieu
             $builder->addEventListener(
                 FormEvents::POST_SET_DATA,
                 function (FormEvent $event){

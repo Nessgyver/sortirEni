@@ -58,7 +58,7 @@ class ListeSortieType extends AbstractType
                 ],
                 'widget' => 'single_text',
             ])
-            ->add('Filtres', ChoiceType::class, [
+            ->add('filtres', ChoiceType::class, [
                 'label' => false,
                 'choices' =>  [
                     'Sorties dont je suis l\'organisateur/rice' => 0,

@@ -22,7 +22,7 @@ use Symfony\Component\Security\Core\Security;
 /**
  * contrôleur créé par Mathieu pour les routes
  * méthodes seDesister, inscrire et publier implémentées par Mathieu
- * méthodes implémentées par Damien
+ * autres méthodes implémentées par Damien
  * @Route("/sortie", name="sortie_")
  */
 class SortieController extends AbstractController
@@ -67,6 +67,7 @@ class SortieController extends AbstractController
             ;
         }
 
+        //créé de nouveaux champs spécifiques à cette page
         $annulationForm = $this->createFormBuilder()
             ->add('motif', TextareaType::class)
             ->add('enregistrer', SubmitType::class, [
@@ -106,6 +107,12 @@ class SortieController extends AbstractController
     {
         //créé une nouvelle sortie pour pouvoir créer un formulaire vide
         $sortie = new Sortie();
+        //assignation automatique de dates pour corriger bug ajax
+        $now = DateTime::createFromFormat('d/m/Y H:i',
+            (new DateTime())
+                ->add(date_interval_create_from_date_string('2 days'))
+                ->format('d/m/Y H:i'));
+        $sortie->setDateHeureDebut($now)->setDateLimiteInscription($now);
         $sortieForm = $this->createForm(SortieType::class, $sortie, [
             'optionBoutons'=>'creer',
         ]);
