@@ -25,10 +25,14 @@ class SortieRepository extends ServiceEntityRepository
 
     public function findByFilters($data)
     {
+        //Récupération de l'utilisateur courant
         $currentUser = $this->security->getUser();
+
+        //Récupération des données du formulaire
         $campus = $data['campus'];
         $dataFiltres = $data['Filtres'];
-        $dataMotCle = $data['nomSortie'];
+        $dataRawMotsCles = $data['motCle'];
+        $dataMotsCles = $this->multiexplode(array(" ", ",", ".",":", ", "), $dataRawMotsCles);
         $dataDateDebut = $data['dateDebut'];
         $dataDateFin = $data['dateFin'];
 
@@ -52,11 +56,10 @@ class SortieRepository extends ServiceEntityRepository
                     ->orWhere('i.participant = :currentUser');
             }
 
-
             //Sorties auxquelles je ne suis pas inscrit
             if (in_array(2, $dataFiltres))
             {
-                $listeSortiesInscrit = $this->subQueryFindUnSubsribed($currentUser);
+                $listeSortiesInscrit = $this->getListeSortiesInscrit($currentUser);
 
                 $qb ->addSelect('s')
                     ->orWhere($qb->expr()->notIn('s.id', ':listeSortiesInscrit'))
@@ -75,18 +78,15 @@ class SortieRepository extends ServiceEntityRepository
             if (in_array(0, $dataFiltres) || in_array(1, $dataFiltres)) {
                 $qb->setParameter('currentUser', $currentUser);
             }
-
-
         } else {
             //Récupération des sorties dont je ne suis pas l'organisateur et dont l'état est 'Créée'
-            $listeSortiesPasOrgaEtCreee = $this->subQueryDefaultDisplay($currentUser);
+            $listeSortiesPasOrgaEtCreee = $this->getListeSortiesOrganisateurEtCreee($currentUser);
 
             //Soustraction de la 'listeSortiesPasOrgaEtCreee' du findAll()
             $qb -> addSelect('s')
                 ->orWhere($qb->expr()->notIn('s.id', ':listeSortiesPasOrgaEtCreee'))
                 ->setParameter('listeSortiesPasOrgaEtCreee', $listeSortiesPasOrgaEtCreee);
         }
-
 
         //Gestion intervalle de dates
         if ($dataDateFin && $dataDateDebut)
@@ -97,10 +97,14 @@ class SortieRepository extends ServiceEntityRepository
                 ->setParameter('dateFin', $dataDateFin);
         }
 
-        //Gestion pour un mot clé
-        if ($dataMotCle) {
-            $qb->andWhere('s.nom LIKE :motCle')
-                ->setParameter('motCle', "%$dataMotCle%");
+        //Gestion pour un ou plusieur(s) mot(s) clé(s)
+        if ($dataMotsCles) {
+
+            foreach ($dataMotsCles as $m => $motCle)
+            {
+                $qb->andWhere("s.nom LIKE :motCle$m");
+                $qb->setParameter("motCle$m", "%$motCle%");
+            }
         }
 
         //Gestion pour campus
@@ -113,9 +117,13 @@ class SortieRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    //Sous-requete nécessaire au fonctionnement du filtre sorties auxuqelles je ne suis pas inscrit
-    //Récupération de la liste des sorties auxquelles je suis inscrit
-    public function subQueryFindUnSubsribed($currentUser)
+    /**
+     * Fonction retournant une liste de sorties pour lesquelles je suis inscrit
+     * @param $currentUser
+     * @return int|mixed|string
+     */
+
+    public function getListeSortiesInscrit($currentUser)
     {
         $qb = $this->createQueryBuilder('s');
 
@@ -127,7 +135,13 @@ class SortieRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function subQueryDefaultDisplay($currentUser)
+    /**
+     * Fonction retournant une liste de sorties pour lesquelles je suis organisateur ET l'état de la sortie est "Créée"(1 en BDD).
+     *
+     * @param $currentUser
+     * @return int|mixed|string
+     */
+    public function getListeSortiesOrganisateurEtCreee($currentUser)
     {
         $qb = $this->createQueryBuilder('s');
         $qb -> andWhere('s.organisateur != :currentUser')
@@ -137,4 +151,19 @@ class SortieRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    /**
+     * Fonction permettant de faire un explode() avec plusieurs délimiteurs
+     *
+     * @param $delimiters
+     * @param $string
+     * @return false|string[]
+     */
+    public function multiexplode ($delimiters,$string) {
+
+        $ready = str_replace($delimiters, $delimiters[0], $string);
+        $launch = explode($delimiters[0], $ready);
+        return  $launch;
+    }
+
 }
