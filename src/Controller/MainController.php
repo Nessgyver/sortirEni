@@ -35,6 +35,7 @@ class MainController extends AbstractController
 
         //génération des variables à transmettre à la page à afficher
         return $this->render('home.html.twig', [
+            'controller_name' => 'MainController',
             'dateDuJour' => $dateDuJour,
             'form'=>$listeSortiesForm->createView(),
             'listeSorties' => $listeSorties,

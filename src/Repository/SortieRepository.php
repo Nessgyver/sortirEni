@@ -30,9 +30,9 @@ class SortieRepository extends ServiceEntityRepository
 
         //Récupération des données du formulaire
         $campus = $data['campus'];
-        $dataFiltres = $data['Filtres'];
+        $dataFiltres = $data['filtres'];
         $dataRawMotsCles = $data['motCle'];
-        $dataMotsCles = $this->multiexplode(array(" ", ",", ".",":", ", "), $dataRawMotsCles);
+        $dataMotsCles = $this->multiExplode(array(" ", ",", ".",":", ", "), $dataRawMotsCles);
         $dataDateDebut = $data['dateDebut'];
         $dataDateFin = $data['dateFin'];
 
@@ -60,7 +60,6 @@ class SortieRepository extends ServiceEntityRepository
             if (in_array(2, $dataFiltres))
             {
                 $listeSortiesInscrit = $this->getListeSortiesInscrit($currentUser);
-
                 $qb ->addSelect('s')
                     ->orWhere($qb->expr()->notIn('s.id', ':listeSortiesInscrit'))
                     ->setParameter('listeSortiesInscrit', $listeSortiesInscrit);
@@ -98,8 +97,7 @@ class SortieRepository extends ServiceEntityRepository
         }
 
         //Gestion pour un ou plusieur(s) mot(s) clé(s)
-        if ($dataMotsCles) {
-
+        if ($dataMotsCles[0] != "") {
             foreach ($dataMotsCles as $m => $motCle)
             {
                 $qb->andWhere("s.nom LIKE :motCle$m");
@@ -113,7 +111,6 @@ class SortieRepository extends ServiceEntityRepository
                 ->andWhere('p.campus = :campus')
                 ->setParameter('campus', $campus);
         }
-
         return $qb->getQuery()->getResult();
     }
 
@@ -159,10 +156,11 @@ class SortieRepository extends ServiceEntityRepository
      * @param $string
      * @return false|string[]
      */
-    public function multiexplode ($delimiters,$string) {
-
+    public function multiExplode ($delimiters,$string)
+    {
         $ready = str_replace($delimiters, $delimiters[0], $string);
         $launch = explode($delimiters[0], $ready);
+
         return  $launch;
     }
 
