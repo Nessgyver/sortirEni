@@ -30,11 +30,16 @@ class Sortie
 
     /**
      * @Assert\NotBlank()
+     * @Assert\Length(  min="3", minMessage="le nom de la sortie doit comporter 3 caractères au minimum",
+     *                  max="30", maxMessage="le nom de la sortie doit comporter 30 caractères au maximum")
      * @ORM\Column(type="string", length=30)
      */
     private $nom;
 
     /**
+     * @Assert\GreaterThan("+48 hours", message="Vous devez organiser une sortie au moins 48h à l'avance")
+     * @Assert\GreaterThan(propertyPath="dateLimiteInscription",
+     *     message="les inscriptions doivent se clôturer avant l'événement")
      * @Assert\NotBlank()
      * @ORM\Column(type="datetime")
      */
@@ -46,6 +51,7 @@ class Sortie
     private $duree;
 
     /**
+     * @Assert\GreaterThan("+24 hours", message="La date limite d'inscription doit être décalée d'au moins 24h")
      * @Assert\NotBlank()
      * @ORM\Column(type="datetime")
      */

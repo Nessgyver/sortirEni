@@ -4,14 +4,32 @@
 
 {% block main %}
     <div class="container">
-        <div class="row col-4">
-            <h1>Filtrer les sorties</h1>
-            {{ form_start(form) }}
-
-            {{ form_widget(form)}}
-
-            <button type="submit" class="btn btn-primary">Rechercher</button>
-            {{ form_end(form) }}
+        <div class="row">
+            <div class="col offset-1">
+                <h2>Filtrer les sorties</h2>
+            </div>
+            <div class="col-md-3">
+                <p>Date du jour : {{ dateDuJour }}</p>
+                <p>Participant : {{ app.user.username }}</p>
+            </div>
+        </div>
+        {{ form_start(form) }}
+        <div class="row col d-flex align-items-center">
+            <div class="col-sm-5">
+                {{ form_row(form.campus) }}
+                {{ form_row(form.nomSortie) }}
+                <div class="row">
+                    <div class="col">{{ form_row(form.dateDebut) }}</div>
+                    <div class="col">{{ form_row(form.dateFin) }}</div>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                {{ form_row(form.filtres) }}
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-primary">Rechercher</button>
+            </div>
+        {{ form_end(form) }}
         </div>
         <div>
             <table class="table table-border table-hover table-striped">
@@ -100,13 +118,10 @@
                 {% endfor %}
                 </tbody>
             </table>
-
             <a href="{{ path('sortie_creer') }}" class="btn btn-primary">Créer une sortie</a>
-
         </div>
 
     </div>
-
 {% endblock %}
 
 {% block javascripts %}

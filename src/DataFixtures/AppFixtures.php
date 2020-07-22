@@ -10,16 +10,11 @@ use App\Entity\Participant;
 use App\Entity\PhotoParticipant;
 use App\Entity\Sortie;
 use App\Entity\Ville;
-use App\Repository\CampusRepository;
 use App\Repository\EtatRepository;
-use App\Repository\LieuRepository;
-use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use phpDocumentor\Reflection\Types\AbstractList;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * Créé par Mathieu
@@ -172,7 +167,6 @@ class AppFixtures extends Fixture
             array_push($this->sortieEntities, $sortie);
             $manager->persist($sortie);
         }
-        echo (new \DateTime())->format('Y-m-d H:i:s');
         $manager->flush();
 
         //création des inscriptions par sortie

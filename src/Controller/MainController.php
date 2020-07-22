@@ -15,11 +15,16 @@ class MainController extends AbstractController
      */
     public function home(SortieRepository $sortieRepository, Request $request)
     {
-
-
+        //création du formulaire de filtration des sorties affichées
         $listeSortiesForm = $this->createForm(ListeSortieType::class);
+        //initialisation des valeurs pour l'affichage
+        $dateDuJour = (new \DateTime())->format("d/m/Y");
+
+
+        //récupération du formulaire de filtration des sorties si soummis
         $data = $listeSortiesForm->handleRequest($request)->getData();
 
+        //traitement du formulaire de filtration des sorties
         if ($listeSortiesForm->isSubmitted() && $listeSortiesForm->isValid())
         {
             $listeSorties = $sortieRepository->findByFilters($data);
@@ -28,10 +33,9 @@ class MainController extends AbstractController
         }
 
 
-
-
+        //génération des variables à transmettre à la page à afficher
         return $this->render('home.html.twig', [
-            'controller_name' => 'MainController',
+            'dateDuJour' => $dateDuJour,
             'form'=>$listeSortiesForm->createView(),
             'listeSorties' => $listeSorties,
         ]);
