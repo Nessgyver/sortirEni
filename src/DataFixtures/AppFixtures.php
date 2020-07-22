@@ -10,16 +10,13 @@ use App\Entity\Participant;
 use App\Entity\PhotoParticipant;
 use App\Entity\Sortie;
 use App\Entity\Ville;
-use App\Repository\CampusRepository;
 use App\Repository\EtatRepository;
-use App\Repository\LieuRepository;
-use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use phpDocumentor\Reflection\Types\AbstractList;
+use Faker\Factory;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * Créé par Mathieu
@@ -46,10 +43,9 @@ class AppFixtures extends Fixture
     }
     public function load(ObjectManager $manager)
     {
-        $faker = \Faker\Factory::create('fr_FR');
+        $faker = Factory::create('fr_FR');
         $faker->setDefaultTimezone('Europe/Paris');
         date_default_timezone_set('UTC');
-
 
         //création des campus
         $campuses = ["Nantes", "Rennes", "Niort"];
@@ -60,7 +56,6 @@ class AppFixtures extends Fixture
             array_push($this->campusEntities, $c);
         }
         $manager->flush();
-
 
         //création des états pour les sorties
         $etats = ["Créée", "Ouverte", "Clôturée", "Activité en cours", "Annulée", "Passée"];
@@ -74,9 +69,7 @@ class AppFixtures extends Fixture
 
         //création des participants
         //création des participants au hasard grâce à faker
-
         for ($i = 0; $i < 20; $i++) {
-
             $participant = new Participant();
             $participant->setUsername($faker->userName);
             $participant->setNom($faker->lastname);
@@ -94,26 +87,24 @@ class AppFixtures extends Fixture
                 $participant->setAdministrateur(1);
                 $participant->setRoles(["ROLE_ADMIN"]);
             }
-
             $participant->setActif(1);
             $campus = $this->campusEntities[$faker->numberBetween(0,2)];
             $participant->setCampus($campus);
             array_push($this->participantEntities, $participant);
 
+            //Créaton d'une photo pour le participant
             $photo = new PhotoParticipant();
+
             //les participants ont une photo par défaut qu'ils pourront modifier via leur profil
             $photo->setPhotoNom('default.png');
             $manager->persist($photo);
             $participant->setPhoto($photo);
-
             $manager->persist($participant);
         }
         $manager->flush();
 
         //creation des lieux avec leur ville
-
         for ($i = 0; $i < 5; $i++) {
-
             $lieu = new Lieu();
             $lieu->setLatitude($faker->latitude);
             $lieu->setLongitude($faker->longitude);
@@ -125,14 +116,12 @@ class AppFixtures extends Fixture
             $manager->persist($ville);
             $lieu->setVille($ville);
             array_push($this->lieuEntities, $lieu);
-
             $manager->persist($lieu);
         }
         $manager->flush();
 
         //création des sorties
-
-        for($i = 0; $i < 10; $i++){
+        for($i = 0; $i < 200; $i++){
             $sortie = new Sortie();
             $lieu = $this->lieuEntities[$faker->numberBetween(0,3)];
             $sortie->setLieu($lieu);
@@ -144,6 +133,7 @@ class AppFixtures extends Fixture
             $sortie->setDateHeureDebut($faker->dateTimeBetween('-10 days', '+20 days'));
             $dateDebut = $sortie->getDateHeureDebut();
             $dateDebutClone = clone $dateDebut;
+
             //la date limite d'inscription est la veille de la sortie
             $dateLimite = $dateDebutClone->modify('-1 day');
             $sortie->setDateLimiteInscription($dateLimite);
@@ -154,12 +144,11 @@ class AppFixtures extends Fixture
             $sortie->setOrganisateur($orga);
 
             //gestion de l'état en fonction de la date de début de la sortie
-
-            if($dateDebut < (new \DateTime())) {
+            if($dateDebut < (new DateTime())) {
                 $sortie->setEtat($this->etatRepo->findOneBy([
                     'libelle'=>'Passée'
                 ]));
-            } else if($dateDebut==(new \DateTime())){
+            } else if($dateDebut==(new DateTime())){
                 $sortie->setEtat($this->etatRepo->findOneBy([
                     'libelle'=>'Activité en cours'
                 ]));
@@ -172,14 +161,13 @@ class AppFixtures extends Fixture
             array_push($this->sortieEntities, $sortie);
             $manager->persist($sortie);
         }
-        echo (new \DateTime())->format('Y-m-d H:i:s');
+        echo (new DateTime())->format('Y-m-d H:i:s');
         $manager->flush();
 
         //création des inscriptions par sortie
         $sortiesFromBdd = $this->sortieRepo->findAll();
 
         foreach ($sortiesFromBdd as $sortie ){
-
             $etatSortie = $sortie->getEtat()->getLibelle();
 
             if($etatSortie!='Créée') {
@@ -194,6 +182,7 @@ class AppFixtures extends Fixture
                     $inscription->setSortie($sortie);
                     $indexMax = count($this->participantEntities)-1;
                     $offset = $faker->numberBetween(0, $indexMax);
+
                     if($indexMax!=0){
                         $participantInscrit = $this->participantEntities[$offset];
                         array_splice($this->participantEntities, $offset, 1);
@@ -213,7 +202,6 @@ class AppFixtures extends Fixture
                 }
             }
         }
-
         $manager->flush();
     }
 
