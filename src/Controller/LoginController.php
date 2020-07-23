@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\ParticipantRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,7 +23,7 @@ class LoginController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('actif');
         }
 
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -32,7 +33,23 @@ class LoginController extends AbstractController
     }
 
     /**
-     * la route est interprétée par synfony directement et renvoie vers la page de connexion
+     * @Route("/Actif", name="actif")
+     */
+    public function isAccessGranted(ParticipantRepository $pr)
+    {
+        $participant = $pr->findOneBy([
+            'username'  =>  $this->getUser()->getUsername()
+        ]);
+        if ($participant->isActif()){
+            return $this->redirectToRoute('home');
+        }else{
+            $this->addFlash('warning', 'Votre compte a été désactivé, veuillez contacter un administrateur');
+            return $this->redirectToRoute('logout');
+        }
+    }
+
+    /**
+     * la route est interprétée par symfony directement et renvoie vers la page de connexion
      * dans notre cas, on ne rentre pas dans la méthode ou elle renvoie une erreur
      * @Route("/logout", name="logout")
      */

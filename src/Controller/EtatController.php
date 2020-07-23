@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class EtatController extends AbstractController
 {
     /**
-     * @Route("/publier/{id}", name="publier")
+     * @Route("/publier/{id}", name="sortie_publier")
      */
     public function publier(int $id, SortieRepository $sortieRepository, EtatRepository $etatRepository, EntityManagerInterface $em)
     {

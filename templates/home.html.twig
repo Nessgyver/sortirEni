@@ -90,7 +90,7 @@
                                     {% for inscription in sortie.inscriptions %}
                                         {# Si je suis inscrit, je peux me désister #}
                                         {% if app.user.id == inscription.participant.id %}
-                                            - <a href="{{ path('sortie_seDesister', {'id': sortie.id}) }}">Se désister</a>
+                                            - <a href="{{ path('seDesister', {'id': sortie.id}) }}">Se désister</a>
                                             {% set break = true %}
                                         {% endif %}
                                     {% endfor %}
@@ -98,14 +98,14 @@
                                         {% if not break %}
                                             {# Sinon je peux m'inscrire #}
                                             {% if app.user.id != inscription.participant.id %}
-                                                - <a href="{{ path('sortie_inscrire', {'id': sortie.id}) }}">S'inscrire</a >
+                                                - <a href="{{ path('inscrire', {'id': sortie.id}) }}">S'inscrire</a >
                                                 {% set break = true %}
                                             {% endif %}
                                         {% endif %}
                                     {% endfor %}
                                 {# S'il n'y a pas d'inscriptions, je peux m'inscrire #}
                                 {% else %}
-                                    - <a href="{{ path('sortie_inscrire', {'id': sortie.id}) }}">S'inscrire</a >
+                                    - <a href="{{ path('inscrire', {'id': sortie.id}) }}">S'inscrire</a >
                                 {% endif %}
                             {% endif %}
 
