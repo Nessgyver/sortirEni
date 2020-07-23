@@ -5,14 +5,14 @@ namespace App\Controller;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use mysql_xdevapi\Exception;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 class EtatController extends AbstractController
 {
     /**
-     * @Route("/publier/{id}", name="publier")
+     * @Route("/publier/{id}", name="sortie_publier")
      */
     public function publier(int $id, SortieRepository $sortieRepository, EtatRepository $etatRepository, EntityManagerInterface $em)
     {
