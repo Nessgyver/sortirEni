@@ -113,7 +113,7 @@ class SortieType extends AbstractType
         $form
             ->add('lieu', EntityType::class,[
                 'class'         => Lieu::class,
-                'choices'       => $ville != null ? $ville->getLieu() :[],
+                'choices'       => $ville != null ? $ville->getLieux() :[],
                 'choice_label'  => function(Lieu $l){
                     return $l->getNom();
                 },

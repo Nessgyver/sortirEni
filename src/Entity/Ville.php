@@ -71,7 +71,7 @@ class Ville
     /**
      * @return Collection|Lieu[]
      */
-    public function getLieu(): Collection
+    public function getLieux(): Collection
     {
         return $this->lieu;
     }
