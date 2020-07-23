@@ -130,3 +130,11 @@ legend {
     color: white;
     font-size: 0;
 }
+
+footer.box {
+    text-align: center;
+    background-color: #dfe6e9;
+    color: #636e72;
+    font-size: 0.8rem;
+    margin-top: 2vw;
+}
