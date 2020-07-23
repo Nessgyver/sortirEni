@@ -113,6 +113,13 @@
                             {% if app.user.id == sortie.organisateur.id and sortie.etat.libelle == 'Ouverte' %}
                                 - <a href="{{ path('sortie_annuler', {'id': sortie.id}) }}">Annuler</a>
                             {% endif %}
+
+                            {# Si je suis administrateur et que l'état de la sortie est 'Ouverte' (2 en BDD), je peux annuler la sortie#}
+                            {% for role in app.user.roles %}
+                                {% if role == "ROLE_ADMIN" and sortie.etat.libelle == 'Ouverte'%}
+                                - <a href="{{ path('sortie_annuler', {'id': sortie.id}) }}">Annuler en tant qu'admin</a>
+                                {% endif %}
+                            {% endfor %}
                         </td>
                     </tr>
                 {% endfor %}
