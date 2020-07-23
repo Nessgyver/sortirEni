@@ -66,7 +66,7 @@ class InscriptionController extends AbstractController
         $inscription = new Inscription();
         $currentUser = $this->getUser();
         $inscription->setParticipant($currentUser);
-        $inscription->setDateInscription(new DateTime());
+        $inscription->setDateInscription(new \DateTime());
         $inscription->setSortie($sortie);
 
         //Insertion en base
