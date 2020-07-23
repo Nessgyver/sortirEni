@@ -9,7 +9,7 @@
                 <h2>Filtrer les sorties</h2>
             </div>
             <div class="col-md-3">
-                <p>Date du jour : {{ dateDuJour }}</p>
+                <p>Date du jour : {{ "now" | date("d/m/Y") }}</p>
                 <p>Participant : {{ app.user.username }}</p>
             </div>
         </div>
@@ -115,11 +115,9 @@
                             {% endif %}
 
                             {# Si je suis administrateur et que l'état de la sortie est 'Ouverte' (2 en BDD), je peux annuler la sortie#}
-                            {% for role in app.user.roles %}
-                                {% if role == "ROLE_ADMIN" and sortie.etat.libelle == 'Ouverte'%}
+                            {% if is_granted('ROLE_ADMIN') and sortie.etat.libelle == 'Ouverte'%}
                                 - <a href="{{ path('sortie_annuler', {'id': sortie.id}) }}">Annuler en tant qu'admin</a>
-                                {% endif %}
-                            {% endfor %}
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}
