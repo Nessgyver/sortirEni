@@ -17,13 +17,18 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
-
+/**
+ * Class ParticipantController
+ * Créé et implémenté par Amandine
+ * Méthodes implémentées par Amandine
+ * @package App\Controller
+ */
 class ParticipantController extends AbstractController
 {
     /**
-     * Créé et implémenté par Amandine
-     * Méthodes implémentées par Amandine
-     *
+     * permet d'afficher le profil d'un participant
+     * le rendu sera différent selon le statut de la personne connectée
+     * et du profil auquel elle doit accéder
      * @Route("/profil/{id}", name="profil", methods={"GET", "POST"})
      */
     public function showProfile($id, ParticipantRepository $partiRepo, PhotoParticipantRepository $photoRepo, Request $request, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder, GuardAuthenticatorHandler $guardHandler, LoginAuthenticator $authenticator) {

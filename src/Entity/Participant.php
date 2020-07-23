@@ -180,7 +180,7 @@ class Participant implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getAdministrateur(): ?bool
+    public function isAdministrateur(): ?bool
     {
         return $this->administrateur;
     }
@@ -192,7 +192,7 @@ class Participant implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getActif(): ?bool
+    public function isActif(): ?bool
     {
         return $this->actif;
     }
@@ -279,7 +279,7 @@ class Participant implements UserInterface, \Serializable
     /**
      * @return Collection|Sortie[]
      */
-    public function getSortieOrganisee(): Collection
+    public function getSortiesOrganisees(): Collection
     {
         return $this->sortieOrganisee;
     }
