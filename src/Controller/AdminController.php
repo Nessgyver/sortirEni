@@ -199,17 +199,24 @@ class AdminController extends AbstractController
      */
     public function desactiverUtilisateur($id, ParticipantRepository $participantRepository, EntityManagerInterface $entityManager)
     {
-        $participant = $participantRepository->findOneBy([
-            'id' => $id,
-        ]);
+        try {
+            $participant = $participantRepository->findOneBy([
+                'id' => $id,
+            ]);
 
-        $participant->setActif(false);
-        $entityManager->persist($participant);
-        $entityManager->flush();
+            $participant->setActif(false);
+            $entityManager->persist($participant);
+            $entityManager->flush();
 
-        return $this->redirectToRoute('profil', [
-            'id' => $id,
-        ]);
+            $this->addFlash('success', "L'utilisateur a été désactivé avec succès");
+        } catch (Exception $e){
+            $this->addFlash('error', "L'utilisateur n'a pas pu être désactivé");
+        } finally {
+            return $this->redirectToRoute('profil', [
+                'id' => $id,
+            ]);
+        }
+
     }
 
     /**
@@ -218,15 +225,27 @@ class AdminController extends AbstractController
      */
     public function supprimmerUtilisateur($id, ParticipantRepository $participantRepository, EntityManagerInterface $entityManager)
     {
-        $participant = $participantRepository->findOneBy([
-            'id' => $id
-        ]);
+        try {
+            $participant = $participantRepository->findOneBy([
+                'id' => $id
+            ]);
 
-        $entityManager->remove($participant);
-        $entityManager->flush();
+            $entityManager->remove($participant);
+            $entityManager->flush();
 
-        return $this->redirectToRoute('home', [
-        ]);
+            $this->addFlash('success', 'Le compte utilisateur a été correctement supprimé');
+
+            return $this->redirectToRoute('home', [
+            ]);
+        }catch (Exception $e){
+            $this->addFlash('error', "Erreur : Le compte utilisateur n'a pas été supprimé");
+
+            return $this->redirectToRoute('profil', [
+                'id' => $id,
+            ]);
+        }
+
+
     }
 
 }
