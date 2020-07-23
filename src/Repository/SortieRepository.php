@@ -111,6 +111,11 @@ class SortieRepository extends ServiceEntityRepository
                 ->andWhere('p.campus = :campus')
                 ->setParameter('campus', $campus);
         }
+
+        //Tri par défault par état (croissant) puis par date (croissant)
+        $qb->addOrderBy('s.etat', 'ASC')
+            ->addOrderBy('s.dateHeureDebut', 'ASC');
+
         return $qb->getQuery()->getResult();
     }
 
