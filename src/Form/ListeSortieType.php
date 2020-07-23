@@ -22,13 +22,11 @@ class ListeSortieType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $builder
             ->add('campus', EntityType::class, [
-                'class' => Campus::class,
-                'choice_label'=> 'nom',
-                'placeholder' => 'Choisissez un campus',
-
+                'class'         => Campus::class,
+                'choice_label'  => 'nom',
+                'placeholder'   => 'Choisissez un campus'
             ])
             ->add('motCle', TextType::class, [
                 'label'=>'Le nom de la sortie contient : ',
@@ -69,7 +67,6 @@ class ListeSortieType extends AbstractType
                 'expanded' => true,
                 'multiple' => true,
             ])
-
         ;
     }
 

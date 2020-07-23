@@ -32,10 +32,7 @@ class SortieType extends AbstractType
             ->add('nom')
             ->add('dateHeureDebut', DateTimeType::class,[
                 'widget'        => 'single_text',
-                'with_seconds'  => false,
-                'attr'          =>  [
-                    'min'   => '21/07/2020'
-                ]
+                'with_seconds'  => false
             ])
             ->add('dateLimiteInscription', DateTimeType::class,[
                 'widget'    => 'single_text',
@@ -87,27 +84,22 @@ class SortieType extends AbstractType
                 }
             );
 
-
+            //création des boutons de formulaire en fonction des options demandées
             if($optionBoutons == 'modifier' || $optionBoutons == 'creer')
             {
                 $builder
                 ->add('enregistrer', SubmitType::class, [
                 'label'=> 'Enregistrer'
+                ])
+                ->add('publier', SubmitType::class, [
+                    'label'=> 'Publier'
                 ]);
-                if($optionBoutons == 'modifier' || $optionBoutons == 'creer')
+                if($optionBoutons == 'modifier')
                 {
                     $builder
-                    ->add('publier', SubmitType::class, [
-                        'label'=> 'Publier'
+                    ->add('supprimer', SubmitType::class, [
+                        'label'=> 'Supprimer'
                     ]);
-                    if($optionBoutons == 'modifier')
-                    {
-                        $builder
-                        ->add('supprimer', SubmitType::class, [
-                            'label'=> 'Supprimer'
-                        ]);
-                    }
-
                 };
             }
     }
@@ -129,6 +121,13 @@ class SortieType extends AbstractType
             ]);
     }
 
+    /**
+     * liste d'options qui peuvent être passées lors de la création du formulaire
+     * optionBoutons accepte les valeurs:
+     * 'créer': pour avoir les boutons "Enregistrer" et "Publier"
+     * 'modifier': pour ajouter le bouton "Supprimer" à ceux de l'option 'créer'
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

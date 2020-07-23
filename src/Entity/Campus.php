@@ -54,7 +54,7 @@ class Campus
     /**
      * @return Collection|Participant[]
      */
-    public function getStagiaire(): Collection
+    public function getStagiaires(): Collection
     {
         return $this->stagiaire;
     }
