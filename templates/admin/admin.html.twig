@@ -9,10 +9,11 @@
 {% endblock %}
 
 {% block main %}
-    <h1>Ajouter des participants</h1>
+
     <div class="container btn-center">
-            <a href="{{ path('admin_participants_fichier') }}"><button class="btn btn-outline-primary btn-lg">Inscrire à partir d'un fichier</button></a>
-            <a href="{{ path('admin_participants_form') }}"><button class="btn btn-outline-primary btn-lg">Inscrire via un formulaire</button></a>
+        <h1>Ajouter des participants</h1>
+        <a href="{{ path('admin_participants_fichier') }}"><button class="btn btn-outline-primary btn-lg">Inscrire à partir d'un fichier</button></a>
+        <a href="{{ path('admin_participants_form') }}"><button class="btn btn-outline-primary btn-lg">Inscrire via un formulaire</button></a>
     </div>
 
 {% endblock %}

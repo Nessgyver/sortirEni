@@ -1,11 +1,11 @@
 .profile-pic {
     max-width: 60%;
-    border-radius: 30%;
+    border-radius: 50%;
 }
 
 .left-profile {
     max-width: 30%;
-    padding-top: 20%;
+    padding-top: 10%;
 }
 
 .right-profile h1 {
