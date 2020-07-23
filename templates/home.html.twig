@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% block stylesheets %}<link rel="stylesheet" href="{{ asset('css/home.css') }}">{% endblock %}
 
 {% block title %}Liste des sorties | {{ parent() }}{% endblock %}
 
@@ -74,10 +75,10 @@
                             {# Si je suis organisateur et que la sortie n'est pas publiée (ouverte)
                                Je peux modifier et publier ma sortie #}
                             {% if sortie.etat.libelle == 'Créée' and app.user.id == sortie.organisateur.id %}
-                                <a href="{{ path('sortie_modifier', {'id': sortie.id}) }}">Modifier</a> - <a href="{{ path('sortie_publier', {'id': sortie.id}) }}">Publier</a>
+                                <a href="{{ path('sortie_modifier', {'id': sortie.id}) }}" class="modifier">Modifier</a> - <a href="{{ path('sortie_publier', {'id': sortie.id}) }}">Publier</a>
                             {# Sinon je peux afficher la sortie #}
                             {% else %}
-                                <a href="{{ path('sortie_afficher', {'id': sortie.id}) }}">Afficher</a>
+                                <a href="{{ path('sortie_afficher', {'id': sortie.id}) }}" class="afficher">Afficher</a>
                             {% endif %}
 
                             {# Je peux m'inscrire ou me désinscrire uniquement si la sortie est ouverte
@@ -90,7 +91,7 @@
                                     {% for inscription in sortie.inscriptions %}
                                         {# Si je suis inscrit, je peux me désister #}
                                         {% if app.user.id == inscription.participant.id %}
-                                            - <a href="{{ path('sortie_seDesister', {'id': sortie.id}) }}">Se désister</a>
+                                            - <a href="{{ path('sortie_seDesister', {'id': sortie.id}) }}"  class="desister">Se désister</a>
                                             {% set break = true %}
                                         {% endif %}
                                     {% endfor %}
@@ -98,25 +99,25 @@
                                         {% if not break %}
                                             {# Sinon je peux m'inscrire #}
                                             {% if app.user.id != inscription.participant.id %}
-                                                - <a href="{{ path('sortie_inscrire', {'id': sortie.id}) }}">S'inscrire</a >
+                                                - <a href="{{ path('sortie_inscrire', {'id': sortie.id}) }}" class="inscrire">S'inscrire</a >
                                                 {% set break = true %}
                                             {% endif %}
                                         {% endif %}
                                     {% endfor %}
                                 {# S'il n'y a pas d'inscriptions, je peux m'inscrire #}
                                 {% else %}
-                                    - <a href="{{ path('sortie_inscrire', {'id': sortie.id}) }}">S'inscrire</a >
+                                    - <a href="{{ path('sortie_inscrire', {'id': sortie.id}) }}" class="inscrire">S'inscrire</a >
                                 {% endif %}
                             {% endif %}
 
                             {# Si je suis organisateur et que la sortie est ouverte, je peux l'annuler #}
                             {% if app.user.id == sortie.organisateur.id and sortie.etat.libelle == 'Ouverte' %}
-                                - <a href="{{ path('sortie_annuler', {'id': sortie.id}) }}">Annuler</a>
+                                - <a href="{{ path('sortie_annuler', {'id': sortie.id}) }}" class="annuler">Annuler</a>
                             {% endif %}
 
                             {# Si je suis administrateur et que l'état de la sortie est 'Ouverte' (2 en BDD), je peux annuler la sortie#}
                             {% if is_granted('ROLE_ADMIN') and sortie.etat.libelle == 'Ouverte'%}
-                                - <a href="{{ path('sortie_annuler', {'id': sortie.id}) }}">Annuler en tant qu'admin</a>
+                                - <a href="{{ path('sortie_annuler', {'id': sortie.id}) }}" class="annuler-admin">Annuler en tant qu'admin</a>
                             {% endif %}
                         </td>
                     </tr>
