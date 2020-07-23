@@ -6,15 +6,15 @@ use App\Repository\ParticipantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Serializable;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 
 /**
  * @ORM\Entity(repositoryClass=ParticipantRepository::class)
  */
-class Participant implements UserInterface, \Serializable
+class Participant implements UserInterface, Serializable
 {
 
     /**
@@ -76,12 +76,12 @@ class Participant implements UserInterface, \Serializable
     private $campus;
 
     /**
-     * @ORM\OneToMany(targetEntity=Inscription::class, mappedBy="participant")
+     * @ORM\OneToMany(targetEntity=Inscription::class, mappedBy="participant", cascade={"remove"})
      */
     private $inscriptions;
 
     /**
-     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organisateur")
+     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organisateur", cascade={"remove"})
      */
     private $sortieOrganisee;
 

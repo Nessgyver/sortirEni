@@ -7,7 +7,9 @@ use App\Entity\Participant;
 use App\Form\RegistrationFormType;
 use App\Form\UploadAdminType;
 use App\Repository\CampusRepository;
+use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -126,7 +128,7 @@ class AdminController extends AbstractController
                             'unencodedPassword' => $unencodedPassword
                         ]);
 
-                    } catch(\Exception $e){ //La contrainte d'unicité du pseudo est vérifiée
+                    } catch(Exception $e){ //La contrainte d'unicité du pseudo est vérifiée
                         $this->addFlash('error','Pseudo déjà utilisé: '.$user['username']);
                     }
                 }
@@ -135,7 +137,7 @@ class AdminController extends AbstractController
 
             }
 
-        } catch (\Exception $e1) {
+        } catch (Exception $e1) {
                 $this->addFlash('error','Données non traitées, veuillez vous référer au modèle de saisie des données du fichier');
 
                 return $this->render('admin/adminFileParticipant.html.twig',[
@@ -191,5 +193,40 @@ class AdminController extends AbstractController
         return $this->render('admin/participants-form.html.twig', ['participant'=>$participant, 'form' => $form->createView()]);
     }
 
+    /**
+     * route permettant à un administrateur de désactiver un compte utilisateur en BDD
+     * @Route("/desactiverUtilisateur/{id}", name="desactiverUtilisateur")
+     */
+    public function desactiverUtilisateur($id, ParticipantRepository $participantRepository, EntityManagerInterface $entityManager)
+    {
+        $participant = $participantRepository->findOneBy([
+            'id' => $id,
+        ]);
+
+        $participant->setActif(false);
+        $entityManager->persist($participant);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('profil', [
+            'id' => $id,
+        ]);
+    }
+
+    /**
+     * route permettant à un administrateur de supprimer un compte utilisateur BDD
+     * @Route("/supprimmerUtilisateur/{id}", name="supprimmerUtilisateur")
+     */
+    public function supprimmerUtilisateur($id, ParticipantRepository $participantRepository, EntityManagerInterface $entityManager)
+    {
+        $participant = $participantRepository->findOneBy([
+            'id' => $id
+        ]);
+
+        $entityManager->remove($participant);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('home', [
+        ]);
+    }
 
 }

@@ -8,15 +8,15 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm left-profile">
-                    <img class="profile-pic" src="{{ asset('uploads/'~app.user.photo.photoNom) }}">
+                    <img class="profile-pic" src="{{ asset('uploads/'~app.user.photo.photoNom) }}" alt="image de profil">
                 </div>
                 <div class="col-sm right-profile">
                     <h1>Mon profil</h1>
                     {{ form_start(form) }}
                     {{ form_widget(form) }}
 
-                    <button type="submit">Enregistrer</button>
-                    <a href="{{ path('home') }}"><button>Annuler</button></a>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                    <a href="{{ path('home') }}"><button class="btn btn-primary">Annuler</button></a>
 
                     {{ form_end(form) }}
                 </div>
@@ -27,7 +27,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm left-profile">
-                    <img class="profile-pic" src="{{ asset('img/default.png') }}">
+                    <img class="profile-pic" src="{{ asset('img/default.png') }}" alt="image de profil" >
                 </div>
                 <div class="col-sm right-profile">
                     <h1>{{ participantLambda.username }}</h1>
@@ -53,9 +53,21 @@
                             <td class="label-table">Campus: </td>
                             <td>{{ participantLambda.campus.nom }}</td>
                         </tr>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <tr>
+                                <td class="label-table">Actif : </td>
+                                <td>{{ participantLambda.actif ? 'Oui' : 'Non'  }}</td>
+                            </tr>
+                        {% endif %}
                         </tbody>
                     </table>
-                    <a href="{{ path('home') }}"><button class="btn btn-primary btn-profile-back">Retour</button></a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        {% if participantLambda.actif%}
+                            <a href="{{ path('admin_desactiverUtilisateur', {'id': participantLambda.id}) }}"><button class="btn btn-primary">Désactiver le compte utilisateur</button></a>
+                        {% endif %}
+                        <a href="{{ path('admin_supprimmerUtilisateur', {'id': participantLambda.id}) }}"><button class="btn btn-primary">Supprimmer le compte utilisateur</button></a>
+                    {% endif %}
+                    <a href="{{ path('home') }} "><button class="btn btn-primary">Retour</button></a>
                 </div>
 
             </div>

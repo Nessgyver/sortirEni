@@ -89,7 +89,7 @@ class Sortie
     private $etat;
 
     /**
-     * @ORM\OneToMany(targetEntity=Inscription::class, mappedBy="sortie")
+     * @ORM\OneToMany(targetEntity=Inscription::class, mappedBy="sortie", cascade={"remove"})
      */
     private $inscriptions;
 
