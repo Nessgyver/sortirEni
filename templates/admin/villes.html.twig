@@ -1,5 +1,35 @@
-{% extends 'admin/admin.html.twig' %}
+{% extends 'admin/campus.html.twig' %}
 
 {% block title %}
-    <p>Villes !</p>
+    Gérer les {{ eltAGerer }}
+{% endblock %}
+
+{% block tableCenterTh %}
+    <th scope="col">Code Postal</th>
+{% endblock %}
+
+{% block tableBody %}
+    {% for ville in listeVille %}
+        <tr>
+            <th scope="row">{{ ville.nom }}</th>
+            <td>{{ ville.codePostal }}</td>
+            <td>
+                <a href="#">Modifier</a>
+                <a href="#">Supprimer</a>
+            </td>
+        </tr>
+    {% endfor %}
+    {{ form_start(villeForm) }}
+    <tr>
+        <th scope="row">
+            {{ form_widget(villeForm.nom) }}
+        </th>
+        <th scope="row">
+            {{ form_widget(villeForm.codePostal) }}
+        </th>
+        <td>
+            <button type="submit" class="btn">Ajouter</button>
+        </td>
+    </tr>
+    {{ form_end(villeForm) }}
 {% endblock %}

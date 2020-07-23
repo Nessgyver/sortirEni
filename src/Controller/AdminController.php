@@ -3,10 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Admin;
+use App\Entity\Campus;
 use App\Entity\Participant;
+use App\Entity\Ville;
+use App\Form\CampusType;
 use App\Form\RegistrationFormType;
 use App\Form\UploadAdminType;
+use App\Form\VilleType;
 use App\Repository\CampusRepository;
+use App\Repository\VilleRepository;
 use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -27,10 +32,16 @@ class AdminController extends AbstractController
      * TO DO: route permettant à un administrateur d'ajouter des villes en BDD
      * @Route("/villes", name="villes")
      */
-    public function villes()
+    public function villes(VilleRepository $vr)
     {
+        $listeVille = $vr->findAll();
+        $ville = new Ville();
+        $villeForm = $this->createForm(VilleType::class, $ville);
+
         return $this->render('admin/villes.html.twig', [
-            'controller_name' => 'AdminController',
+            'eltAGerer'     =>  'Villes',
+            'listeVille'    =>  $listeVille,
+            'villeForm'     =>  $villeForm->createView()
         ]);
     }
 
@@ -38,10 +49,16 @@ class AdminController extends AbstractController
      * TO DO: route permettant à un administrateur d'ajouter des Campus en BDD
      * @Route("/campus", name="campus")
      */
-    public function campus()
+    public function campus(CampusRepository $cr)
     {
+        $listeCampus = $cr->findAll();
+        $campus = new Campus();
+        $campusForm = $this->createForm(CampusType::class, $campus);
+
         return $this->render('admin/campus.html.twig', [
-            'controller_name' => 'AdminController',
+            'eltAGerer'     =>  'Campus',
+            'listeCampus'   =>  $listeCampus,
+            'campusForm'    =>  $campusForm->createView()
         ]);
     }
 

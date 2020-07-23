@@ -20,7 +20,7 @@ class LieuRepository extends ServiceEntityRepository
     }
 
      /**
-      * @return Lieu[] Returns an array of Lieu objects
+      * @return Lieu[] Retourne un Array contenant tous les lieux associés à la ville passée en paramètre
       */
     public function findByVilleId($ville)
     {
@@ -32,7 +32,12 @@ class LieuRepository extends ServiceEntityRepository
         ;
         return $lieux;
     }
-    public function findById($lieuId)
+
+    /**
+     * renvoie un Array avec un seul élément qui est le lieu dont l'id a été passé en paramètre
+     * @param $lieuId
+     */
+    public function findById(int $lieuId)
     {
         $lieu = $this->createQueryBuilder('l')
             ->andWhere('l.id = :lieuId')
