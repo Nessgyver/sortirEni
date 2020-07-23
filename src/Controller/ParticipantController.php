@@ -4,14 +4,13 @@ namespace App\Controller;
 
 
 
-use App\Entity\Participant;
 use App\Form\ParticipantType;
-use App\Form\PhotoType;
 use App\Repository\ParticipantRepository;
 use App\Repository\PhotoParticipantRepository;
 use App\Security\LoginAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -90,7 +89,7 @@ class ParticipantController extends AbstractController
         }
 
         //Si l'id de l'url ne correspond pas à l'utilisateur connecté, on cherche en bdd l'utilisateur correspondant à l'id
-        else if($participantCo->getId()!=$id){
+        else {
             $participantLambda = $partiRepo->find($id);
 
             return $this->render('participant/profil.html.twig', ['participantLambda'=>$participantLambda, 'id' => $id]);
