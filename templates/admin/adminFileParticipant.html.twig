@@ -8,8 +8,9 @@
 {% endblock %}
 
 {% block main %}
-    <h1>Inscrire des participants par fichier</h1>
+
     <div class="container">
+        <h1>Inscrire des participants par fichier</h1>
         <div class="col-sm-10 row col offset-1">
             {{ form_start(formUpload) }}
             {{ form_row(formUpload.fichierInscriptionFile, {attr: {'placeholder': 'Sélectionnez un fichier .json, .txt ou .csv', 'type': 'file', 'name':'file'} }) }}
@@ -19,60 +20,60 @@
             </div>
             {{ form_end(formUpload) }}
         </div>
-
-    </div>
-
-
-    {% if listUsers is defined %}
-        <h2>Les participants suivants ont été ajoutés en base de données</h2>
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Nom</th>
-                <th scope="col">Prénom</th>
-                <th scope="col">Pseudo</th>
-                <th scope="col">Téléphone</th>
-                <th scope="col">Email</th>
-                <th scope="col">Campus</th>
-                <th scope="col">Mot de passe</th>
-                <th scope="col">Administrateur</th>
-                <th scope="col">Actif</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% set rowCount=1 %}
-            {% for user in listUsers %}
+        {% if listUsers is defined %}
+            <h2>Les participants suivants ont été ajoutés en base de données</h2>
+            <table class="table">
+                <thead>
                 <tr>
-                    <th scope=row">{{ rowCount }}</th>
-                    <td>{{ user.nom }}</td>
-                    <td>{{ user.prenom }}</td>
-                    <td>{{ user.username }}</td>
-                    <td>{{ user.telephone }}</td>
-                    <td>{{ user.mail }}</td>
-                    <td>{{ campus.nom }}</td>
-                    <td>{{ unencodedPassword }}</td>
-                    {% if user.administrateur==0 %}
-                        <td>Non</td>
-                    {% else %}
-                        <td>Oui</td>
-                    {% endif %}
-                    {% if user.actif==0 %}
-                        <td>Non</td>
-                    {% else %}
-                        <td>Oui</td>
-                    {% endif %}
+                    <th scope="col">#</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Prénom</th>
+                    <th scope="col">Pseudo</th>
+                    <th scope="col">Téléphone</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Campus</th>
+                    <th scope="col">Mot de passe</th>
+                    <th scope="col">Administrateur</th>
+                    <th scope="col">Actif</th>
                 </tr>
-                {% set rowCount = rowCount + 1 %}
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {% set rowCount=1 %}
+                {% for user in listUsers %}
+                    <tr>
+                        <th scope=row">{{ rowCount }}</th>
+                        <td>{{ user.nom }}</td>
+                        <td>{{ user.prenom }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.telephone }}</td>
+                        <td>{{ user.mail }}</td>
+                        <td>{{ campus.nom }}</td>
+                        <td>{{ unencodedPassword }}</td>
+                        {% if user.administrateur==0 %}
+                            <td>Non</td>
+                        {% else %}
+                            <td>Oui</td>
+                        {% endif %}
+                        {% if user.actif==0 %}
+                            <td>Non</td>
+                        {% else %}
+                            <td>Oui</td>
+                        {% endif %}
+                    </tr>
+                    {% set rowCount = rowCount + 1 %}
+                {% endfor %}
+                </tbody>
+            </table>
         {% else %}
             <div class="center-div">
                 {% include 'admin/modeleUploadJson.html.twig' %}
             </div>
 
-    {% endif %}
+        {% endif %}
+
+    </div>
+
+
 
 
 {% endblock %}

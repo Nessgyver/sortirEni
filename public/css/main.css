@@ -1,65 +1,63 @@
 body{
-    font-family: 'IBM Plex Sans', sans-serif;
-
-}
-
-body:before {
-    content: ' ';
-    display: block;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    opacity: 0.6;
-    background-image: url("https://source.unsplash.com/featured/?landscape,fun,night,sport,museum");
+    font-family: 'Raleway', sans-serif;
+    padding-bottom: 1vw;
+    background-image: url("https://source.unsplash.com/1600x900/?travel,fun,surf");
     background-repeat: no-repeat;
-    background-position: 50% 0;
-    -ms-background-size: cover;
-    -o-background-size: cover;
-    -moz-background-size: cover;
-    -webkit-background-size: cover;
+    background-position: center center;
     background-size: cover;
+    background-attachment: fixed;
 }
+
 
 main {
     padding: 0 3vw;
-    letter-spacing: .1rem;
 }
 
-
+header {
+    box-shadow: 1px 1.5px 5px -2px rgba(0,0,0,0.5);
+}
 
 .container {
     background-color: white;
-    padding: 3vw 0;
+    padding: 3vw 2vw;
     border-radius: 2em;
-    box-shadow: 1em 1em 1em #bdc3c7;
+    box-shadow: 1px 1.5px 5px -2px rgba(0,0,0,0.5)
 }
 
 
 .flash-success {
+    text-align: center;
+    font-size: 1.3vw;
     background-color: aquamarine;
-    color: #313131;
+    color: #fdcb6e;
 }
 
 .flash-error {
-    background-color: tomato;
-    color: #313131;
+    text-align: center;
+    font-size: 1.3vw;
+    background-color: #d63031;
+    color: white;
 }
 
 .navbar {
     margin-bottom: 3vw;
-    padding: 2vw 1vw;
-
+    padding: 1vw 1vw;
+    background-color: white;
 }
 
 .navbar-brand {
-    font-size:calc(8px + 1vw);
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    height: 5vw;
+    width: 40%;
 }
+
+.navbar-brand p {
+    color: #00b894;
+}
+
+
 
 .nav-item {
     font-size:calc(2px + 1vw);
@@ -70,13 +68,23 @@ main {
 }
 
 .navbar-brand img {
-   max-width: 30%;
-    margin-right: 1vw
+    width: 80%;
+    height: auto;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #636e72;
+}
+
+#navbarNav ul li:not(:first-child)
+{
+    border-left: thick double #b2bec3;
 }
 
 h1{
     margin-bottom: 5vw !important;
     text-align: center;
+    padding: 0 1vw;
 }
 
 label {
@@ -87,4 +95,38 @@ label {
 .center-div {
     display: flex;
     justify-content: center;
+}
+
+table {
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: #00b894;
+    border-color: #00b894;
+}
+
+.btn-danger {
+    background-color: #636e72;
+    border-color: #636e72;
+}
+
+.btn-primary:hover {
+    background-color: #a29bfe;
+    border-color: #a29bfe;
+}
+
+.btn-outline-primary {
+    color: #636e72;
+    border-color: #636e72;
+}
+
+.btn-outline-primary:hover {
+    background-color: #00b894;
+    border-color: #00b894;
+}
+
+legend {
+    color: white;
+    font-size: 0;
 }

@@ -44,45 +44,50 @@ class ParticipantController extends AbstractController
             $form = $this->createForm(ParticipantType::class, $participantCo);
             $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                if ($form->isSubmitted() && $form->isValid()) {
 
-                //encodage du mot de passe en base de données
-                $password = $participantCo->getPassword();
-                $encodedPassword = $encoder->encodePassword($participantCo, $password);
-                $participantCo->setPassword($encodedPassword);
+                    //encodage du mot de passe en base de données
+                    $password = $participantCo->getPassword();
+                    $encodedPassword = $encoder->encodePassword($participantCo, $password);
+                    $participantCo->setPassword($encodedPassword);
 
-                //Traitement de la photo uploadée
+                    //Traitement de la photo uploadée
 
-                $photoFile = $photo->getPhotoFile();
-                if ($photoFile) {
-                    $safeFilename = uniqid();
-                    $newFilename = $safeFilename .'.' . $photoFile->guessExtension();
-                    $photo->setPhotoNom($newFilename);
+                    $photoFile = $photo->getPhotoFile();
+                    if ($photoFile) {
+                        $safeFilename = uniqid();
+                        $newFilename = $safeFilename .'.' . $photoFile->guessExtension();
+                        $photo->setPhotoNom($newFilename);
 
-                    //Déplace le fichier uploadé dans le répertoire public
-                    try {
-                        $photoFile->move(
-                            $this->getParameter('upload_photo_dir'),
-                            $newFilename
-                        );
-                    } catch (FileException $e) {
-                        // ... handle exception if something happens during file upload
+                        //Déplace le fichier uploadé dans le répertoire public
+                        try {
+                            $photoFile->move(
+                                $this->getParameter('upload_photo_dir'),
+                                $newFilename
+                            );
+                        } catch (FileException $e) {
+                            // ... handle exception if something happens during file upload
+                        }
+
+                        $participantCo->setPhoto($photo);
                     }
+                    $em->persist($photo);
+                    $em->persist($participantCo);
+                    $em->flush();
 
-                    $participantCo->setPhoto($photo);
+                    $this->addFlash("success", "Profil mis à jour");
+
+                    return $guardHandler->authenticateUserAndHandleSuccess(
+                        $participantCo,
+                        $request,
+                        $authenticator,
+                        'main' // firewall name in security.yaml
+                    );
                 }
-                $em->persist($photo);
-                $em->persist($participantCo);
-                $em->flush();
+            } catch(\Exception $e1){ //La contrainte d'unicité du pseudo est vérifiée
+            $this->addFlash('error','Pseudo déjà utilisé');
 
-                $this->addFlash("success", "Profil mis à jour");
-
-                return $guardHandler->authenticateUserAndHandleSuccess(
-                    $participantCo,
-                    $request,
-                    $authenticator,
-                    'main' // firewall name in security.yaml
-                );
             }
 
             return $this->render('participant/profil.html.twig', ['participantCo'=>$participantCo, 'form' => $form->createView(), 'id' => $id]);
