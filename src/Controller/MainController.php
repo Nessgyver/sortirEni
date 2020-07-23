@@ -82,6 +82,7 @@ class MainController extends AbstractController
             {
                 unset($listeSortie[$s]);
             }
+            $dateArchivage->sub(new DateInterval('P30D'));
         }
         return $listeSortie;
     }
