@@ -27,9 +27,6 @@ class MainController extends AbstractController
         //création du formulaire de filtration des sorties affichées
         $listeSortiesForm = $this->createForm(ListeSortieType::class, null, ['required'=>false]);
 
-        //initialisation des valeurs pour l'affichage
-        $dateDuJour = (new DateTime())->format("d/m/Y");
-
         //récupération du formulaire de filtration des sorties si soummis
         $data = $listeSortiesForm->handleRequest($request)->getData();
 
@@ -56,7 +53,6 @@ class MainController extends AbstractController
         //génération des variables à transmettre à la page à afficher
         return $this->render('home.html.twig', [
             'controller_name' => 'MainController',
-            'dateDuJour' => $dateDuJour,
             'form'=>$listeSortiesForm->createView(),
             'listeSorties' => $listeSorties,
         ]);
