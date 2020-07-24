@@ -38,7 +38,7 @@ class MainController extends AbstractController
             $listeSorties = $paginator -> paginate(
                 $donneesSansArchivees,
                 $request->query->getInt('page', 1),
-                5
+                100
             );
         } else {
             $donneesRaw = $sortieRepository->findByFilters($data);
@@ -46,7 +46,7 @@ class MainController extends AbstractController
             $listeSorties = $paginator -> paginate(
                 $donneesSansArchivees,
                 $request->query->getInt('page', 1),
-                5
+                100
             );
         }
 

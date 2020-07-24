@@ -38,6 +38,12 @@ class SortieRepository extends ServiceEntityRepository
 
 
         $qb = $this->createQueryBuilder('s');
+        $qb->leftJoin('s.inscriptions', 'i')
+            ->addSelect('i')
+            ->innerJoin('s.organisateur', 'p')
+            ->addSelect('p')
+            ->innerJoin('s.etat', 'e')
+            ->addSelect('e');
 
         //Gestion des filtres
         if ($dataFiltres) {
@@ -45,15 +51,12 @@ class SortieRepository extends ServiceEntityRepository
             if (in_array(0, $dataFiltres))
             {
                 $qb->andWhere('s.organisateur = :currentUser');
-                $qb->join('s.organisateur', 'o')
-                    ->addSelect('o');
             }
 
             //Sorties auxquelles je suis inscrit
             if (in_array(1, $dataFiltres))
             {
-                $qb->leftJoin('s.inscriptions', 'i')
-                    ->andWhere('i.participant = :currentUser');
+                $qb->andWhere('i.participant = :currentUser');
             }
 
             //Sorties auxquelles je ne suis pas inscrit
@@ -69,9 +72,7 @@ class SortieRepository extends ServiceEntityRepository
             if (in_array(3, $dataFiltres))
             {
                 $qb->andWhere('s.etat = :etat6')
-                    ->setParameter('etat6', Sortie::FINISHED)
-                    ->join('s.etat', 'e')
-                    ->addSelect('e');
+                    ->setParameter('etat6', Sortie::FINISHED);
             }
 
             if (in_array(0, $dataFiltres) || in_array(1, $dataFiltres)) {
@@ -107,8 +108,7 @@ class SortieRepository extends ServiceEntityRepository
 
         //Gestion pour campus
         if ($campus) {
-            $qb->innerJoin('s.organisateur', 'p')
-                ->andWhere('p.campus = :campus')
+            $qb->andWhere('p.campus = :campus')
                 ->setParameter('campus', $campus);
         }
 
