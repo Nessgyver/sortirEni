@@ -35,8 +35,8 @@
                         {{ campus.nom }}
                     </th>
                     <td>
-                        <a href="#">Modifier</a>
-                        <a href="#">Supprimer</a>
+                        <a href="#" class="modifier">Modifier</a>
+                        <a href="#" class="annuler">Supprimer</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -46,7 +46,7 @@
                         {{ form_widget(campusForm.nom) }}
                     </th>
                     <td>
-                        <button type="submit" class="btn">Ajouter</button>
+                        <button type="submit" class="btn btn-primary">Ajouter</button>
                     </td>
                 </tr>
                 {{ form_end(campusForm) }}

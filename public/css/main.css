@@ -138,3 +138,24 @@ footer.box {
     font-size: 0.8rem;
     margin-top: 2vw;
 }
+
+
+.modifier {
+    color: #e17055;
+}
+
+.desister {
+    color: #d63031;
+}
+
+.annuler {
+    color: #636e72;
+}
+
+.inscrire {
+    color: #00b894;
+}
+
+.afficher {
+    color: #0984e3;
+}

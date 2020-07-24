@@ -14,8 +14,8 @@
             <th scope="row">{{ ville.nom }}</th>
             <td>{{ ville.codePostal }}</td>
             <td>
-                <a href="#">Modifier</a>
-                <a href="#">Supprimer</a>
+                <a href="#" class="modifier">Modifier</a>
+                <a href="#" class="annuler">Supprimer</a>
             </td>
         </tr>
     {% endfor %}
@@ -28,7 +28,7 @@
             {{ form_widget(villeForm.codePostal) }}
         </th>
         <td>
-            <button type="submit" class="btn">Ajouter</button>
+            <button type="submit" class="btn btn-primary">Ajouter</button>
         </td>
     </tr>
     {{ form_end(villeForm) }}
