@@ -31,8 +31,8 @@ class SortieRepository extends ServiceEntityRepository
         //Récupération des données du formulaire
         $campus = $data['campus'];
         $dataFiltres = $data['filtres'];
-        $dataRawMotsCles = $data['motCle'];
-        $dataMotsCles = $this->multiExplode(array(" ", ",", ".",":", ", "), $dataRawMotsCles);
+        $dataBrutesMotsCles = $data['motCle'];
+        $dataMotsCles = $this->multiExplode(array(" ", ",", ".",":", ", "), $dataBrutesMotsCles);
         $dataDateDebut = $data['dateDebut'];
         $dataDateFin = $data['dateFin'];
 
@@ -44,7 +44,7 @@ class SortieRepository extends ServiceEntityRepository
             //Sorties dont je suis l'organisateur
             if (in_array(0, $dataFiltres))
             {
-                $qb->orWhere('s.organisateur = :currentUser');
+                $qb->andWhere('s.organisateur = :currentUser');
                 $qb->join('s.organisateur', 'o')
                     ->addSelect('o');
             }
@@ -53,7 +53,7 @@ class SortieRepository extends ServiceEntityRepository
             if (in_array(1, $dataFiltres))
             {
                 $qb->leftJoin('s.inscriptions', 'i')
-                    ->orWhere('i.participant = :currentUser');
+                    ->andWhere('i.participant = :currentUser');
             }
 
             //Sorties auxquelles je ne suis pas inscrit
@@ -61,14 +61,14 @@ class SortieRepository extends ServiceEntityRepository
             {
                 $listeSortiesInscrit = $this->getListeSortiesInscrit($currentUser);
                 $qb ->addSelect('s')
-                    ->orWhere($qb->expr()->notIn('s.id', ':listeSortiesInscrit'))
+                    ->andWhere($qb->expr()->notIn('s.id', ':listeSortiesInscrit'))
                     ->setParameter('listeSortiesInscrit', $listeSortiesInscrit);
             }
 
             //Sorties passées
             if (in_array(3, $dataFiltres))
             {
-                $qb->orWhere('s.etat = :etat6')
+                $qb->andWhere('s.etat = :etat6')
                     ->setParameter('etat6', Sortie::FINISHED)
                     ->join('s.etat', 'e')
                     ->addSelect('e');

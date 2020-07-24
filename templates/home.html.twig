@@ -69,7 +69,7 @@
                                 {% endif %}
                             {% endfor %}
                         </td>
-                        <td> {{ sortie.organisateur.username }}</td>
+                        <td><a href="{{ path('profil', {'id':sortie.organisateur.id}) }}"> {{ sortie.organisateur.username }} </a></td>
                         <td>
                             {# Si je suis organisateur et que la sortie n'est pas publiée (ouverte)
                                Je peux modifier et publier ma sortie #}
